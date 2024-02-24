@@ -19,7 +19,10 @@ use App\Http\Controllers\RolesController;
 
 Route::controller(UserController::class)->group(function ($route) {
 
-    Route::get('/Usuarios', 'index');
+    Route::get('/Usuarios', 'index')->name('users');
+    Route::post('/Usuarios/roles', 'getRoles');
+    Route::post('newUser', 'new');
+    Route::get('Users', 'show');
 });
 
 Route::controller(OfficesController::class)->group(function ($route) {
@@ -38,6 +41,4 @@ Route::controller(RolesController::class)->group(function ($route) {
     Route::post('/insertRol', 'insert');
     Route::post('/statusRol', 'updateStatus');
     Route::post('/updateRol', 'update');
-
-    
 });
