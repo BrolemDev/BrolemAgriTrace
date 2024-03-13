@@ -31,8 +31,7 @@
                 </table>
             </div>
             <!-- Offcanvas to add new user -->
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAddUser"
-                aria-labelledby="offcanvasAddUserLabel">
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasUser" aria-labelledby="offcanvasAddUserLabel">
                 <div class="offcanvas-header">
                     <h5 id="offcanvasAddUserLabel" class="offcanvas-title add-new"></h5>
                     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
@@ -40,6 +39,7 @@
                 </div>
                 <div class="offcanvas-body mx-0 flex-grow-0 h-100">
                     <form class="add-new-user pt-0" id="addNewUserForm" onsubmit="return false">
+                        <input type="hidden" id="userID" name="userID">
                         <div class="form-floating form-floating-outline mb-4">
                             <input type="text" class="form-control" id="add-user-lastname"
                                 placeholder="Valenzuela Estrada" name="userLastname" aria-label="">
@@ -51,13 +51,15 @@
                             <label for="add-user-fullname">Nombres</label>
                         </div>
                         <div class="form-floating form-floating-outline mb-4">
-                            <input type="text" id="add-user-dni" class="form-control phone-mask"
-                                placeholder="65847152" aria-label="" name="userDNI">
+                            <input type="text" id="add-user-dni"
+                                class="form-control phone-mask bootstrap-maxlength-example" placeholder="65847152"
+                                aria-label="" name="userDNI" maxlength="8" autocomplete="off">
                             <label for="add-user-dni">DNI</label>
                         </div>
                         <div class="form-floating form-floating-outline mb-4">
-                            <input type="text" id="add-user-contact" class="form-control phone-mask"
-                                placeholder="956841257" aria-label="" name="userContact">
+                            <input type="text" id="add-user-contact"
+                                class="form-control phone-mask bootstrap-maxlength-example" placeholder="956841257"
+                                maxlength="9" name="userContact" autocomplete="off">
                             <label for="add-user-contact">Telefono</label>
                         </div>
                         <div class="form-floating form-floating-outline mb-4">
@@ -75,7 +77,8 @@
                             <label for="user-office">Oficina</label>
                         </div>
                         <div class="form-floating form-floating-outline mb-4">
-                            <select id="user-role" class="select2 form-select" data-placeholder="Seleccionar Rol" name="userRol">
+                            <select id="user-role" class="select2 form-select" data-placeholder="Seleccionar Rol"
+                                name="userRol">
                             </select>
                             <label for="user-role">Rol</label>
                         </div>
@@ -100,6 +103,7 @@
 @endsection()
 
 @section('styles')
+    <link rel="stylesheet" href="{{ asset('vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css') }}">
 @endsection()
 
 @section('scripts')
@@ -107,5 +111,6 @@
     <script src="{{ asset('vendor/libs/%40form-validation/umd/plugin-auto-focus/index.min.js') }}"></script>
     <script src="{{ asset('vendor/libs/cleavejs/cleave.js') }}"></script>
     <script src="{{ asset('vendor/libs/cleavejs/cleave-phone.js') }}"></script>
+    <script src="{{ asset('vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
     <script src="{{ asset('js/app-user-list.js') }}"></script>
 @endsection

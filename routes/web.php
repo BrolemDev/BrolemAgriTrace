@@ -21,8 +21,9 @@ Route::controller(UserController::class)->group(function ($route) {
 
     Route::get('/Usuarios', 'index')->name('users');
     Route::post('/Usuarios/roles', 'getRoles');
-    Route::post('newUser', 'new');
-    Route::get('Users', 'show');
+    Route::post('/newUser', 'new');
+    Route::get('/Users', 'show');
+    Route::post('/updateUser', 'update');
 });
 
 Route::controller(OfficesController::class)->group(function ($route) {

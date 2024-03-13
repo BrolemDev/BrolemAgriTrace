@@ -22,7 +22,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="../../../css2?family=Inter:wght@300;400;500;600;700&ampdisplay=swap" rel="stylesheet">
+    <link href="{{ asset('css/css2?family=Inter:wght@300;400;500;600;700&ampdisplay=swap') }}" rel="stylesheet">
 
     <!-- Icons -->
     <link rel="stylesheet" href="{{ asset('vendor/fonts/materialdesignicons.css') }}">
@@ -46,6 +46,7 @@
     <link rel="stylesheet" href="{{ asset('vendor/libs/select2/select2.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/libs/%40form-validation/umd/styles/index.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/libs/sweetalert2/sweetalert2.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/libs/spinkit/spinkit.css') }}">
 
     @yield('styles')
 
@@ -322,25 +323,25 @@
                         </a>
                         <ul class="menu-sub">
                             <li class="menu-item">
-                                <a href="{{route('users')}}" class="menu-link">
+                                <a href="{{ route('users') }}" class="menu-link">
                                     <div data-i18n="List">List</div>
                                 </a>
                             </li>
                         </ul>
                     </li>
                     <li class="menu-item">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">    
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class='menu-icon tf-icons mdi mdi-shield-outline'></i>
                             <div data-i18n="Offices & Roles">Oficinas y Roles</div>
                         </a>
                         <ul class="menu-sub">
                             <li class="menu-item">
-                                <a href="{{route('Oficinas')}}" class="menu-link">
+                                <a href="{{ route('Oficinas') }}" class="menu-link">
                                     <div data-i18n="Offices">Oficinas</div>
                                 </a>
                             </li>
                             <li class="menu-item">
-                                <a href="{{route('Roles')}}" class="menu-link">
+                                <a href="{{ route('Roles') }}" class="menu-link">
                                     <div data-i18n="Roles">Roles</div>
                                 </a>
                             </li>
@@ -372,47 +373,6 @@
                         </div>
                         <!-- /Search -->
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
-                            <!-- Language -->
-                            <li class="nav-item dropdown-language dropdown me-1 me-xl-0">
-                                <a class="nav-link btn btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow"
-                                    href="javascript:void(0);" data-bs-toggle="dropdown">
-                                    <i class='mdi mdi-translate mdi-24px'></i>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li>
-                                        <a class="dropdown-item" href="javascript:void(0);" data-language="es"
-                                            data-text-direction="ltr">
-                                            <span class="align-middle">Español</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="javascript:void(0);" data-language="en"
-                                            data-text-direction="ltr">
-                                            <span class="align-middle">English</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="javascript:void(0);" data-language="fr"
-                                            data-text-direction="ltr">
-                                            <span class="align-middle">French</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="javascript:void(0);" data-language="ar"
-                                            data-text-direction="rtl">
-                                            <span class="align-middle">Arabic</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="javascript:void(0);" data-language="de"
-                                            data-text-direction="ltr">
-                                            <span class="align-middle">German</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <!--/ Language -->
-
                             <!-- Style Switcher -->
                             <li class="nav-item dropdown-style-switcher dropdown me-1 me-xl-0">
                                 <a class="nav-link btn btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow"
@@ -428,7 +388,8 @@
                                     </li>
                                     <li>
                                         <a class="dropdown-item" href="javascript:void(0);" data-theme="dark">
-                                            <span class="align-middle"><i
+                                            <span class="
+                                            align-middle"><i
                                                     class="mdi mdi-weather-night me-2"></i>Dark</span>
                                         </a>
                                     </li>
@@ -604,8 +565,7 @@
                                                     <div class="flex-shrink-0">
                                                         <div class="avatar me-1">
                                                             <img src="{{ asset('img/avatars/2.png') }}"
-                                                                alt=""
-                                                                class="w-px-40 h-auto rounded-circle">
+                                                                alt="" class="w-px-40 h-auto rounded-circle">
                                                         </div>
                                                     </div>
                                                     <div
@@ -647,8 +607,7 @@
                                                     <div class="flex-shrink-0">
                                                         <div class="avatar me-1">
                                                             <img src="{{ asset('img/avatars/9.png') }}"
-                                                                alt=""
-                                                                class="w-px-40 h-auto rounded-circle">
+                                                                alt="" class="w-px-40 h-auto rounded-circle">
                                                         </div>
                                                     </div>
                                                     <div
@@ -691,8 +650,7 @@
                                                     <div class="flex-shrink-0">
                                                         <div class="avatar me-1">
                                                             <img src="{{ asset('img/avatars/5.png') }}"
-                                                                alt=""
-                                                                class="w-px-40 h-auto rounded-circle">
+                                                                alt="" class="w-px-40 h-auto rounded-circle">
                                                         </div>
                                                     </div>
                                                     <div
@@ -712,8 +670,7 @@
                                                     <div class="flex-shrink-0">
                                                         <div class="avatar me-1">
                                                             <img src="{{ asset('img/avatars/6.png') }}"
-                                                                alt=""
-                                                                class="w-px-40 h-auto rounded-circle">
+                                                                alt="" class="w-px-40 h-auto rounded-circle">
                                                         </div>
                                                     </div>
                                                     <div
@@ -920,6 +877,7 @@
     <script src="{{ asset('vendor/libs/%40form-validation/umd/bundle/popular.min.js') }}"></script>
     <script src="{{ asset('vendor/libs/%40form-validation/umd/plugin-bootstrap5/index.min.js') }}"></script>
     <script src="{{ asset('vendor/libs/%40form-validation/umd/plugin-auto-focus/index.min.js') }}"></script>
+    <script src="{{ asset('vendor/libs/block-ui/block-ui.js') }}"></script>
     <script src="{{ asset('vendor/libs/quill/katex.js') }}"></script>
     <script src="{{ asset('vendor/libs/quill/quill.js') }}"></script>
     <script src="{{ asset('vendor/libs/sweetalert2/sweetalert2.js') }}"></script>

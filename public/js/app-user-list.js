@@ -12,9 +12,9 @@ $(function () {
               (a = config.colors.bodyBg),
               config.colors)
     ).headingColor;
-    var e,
-        s = $(".datatables-users"),
+    let s = $(".datatables-users"),
         i = $(".select2"),
+        m = $(".bootstrap-maxlength-example"),
         l = "Mi_Perfil",
         o = {
             1: { title: "Activo", class: "bg-label-success" },
@@ -31,8 +31,20 @@ $(function () {
                     placeholder: i.data("placeholder"),
                 });
         }),
+        m.length &&
+            m.each(function () {
+                $(this).maxlength({
+                    warningClass: "label label-success bg-success text-white",
+                    limitReachedClass: "label label-danger",
+                    separator: " de ",
+                    preText: "Has escrito ",
+                    postText: " caracteres disponibles.",
+                    validate: !0,
+                    threshold: +this.getAttribute("maxlength"),
+                });
+            }),
         s.length &&
-            (e = s.DataTable({
+            s.DataTable({
                 ajax: "Users",
                 columns: [
                     { data: "" },
@@ -160,7 +172,7 @@ $(function () {
                             return (
                                 '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="mdi mdi-dots-vertical mdi-20px"></i></button><div class="dropdown-menu dropdown-menu-end m-0"><a href="' +
                                 l +
-                                '" class="dropdown-item"><i class="mdi mdi-eye-outline me-2"></i><span>View</span></a><a href="javascript:;" class="dropdown-item"><i class="mdi mdi-pencil-outline me-2"></i><span>Edit</span></a><a href="javascript:;" class="dropdown-item delete-record"><i class="mdi mdi-delete-outline me-2"></i><span>Delete</span></a></div></div>'
+                                '" class="dropdown-item"><i class="mdi mdi-eye-outline me-2"></i><span>Ver</span></a><a href="javascript:void(0);" class="dropdown-item btn-edit"><i class="mdi mdi-pencil-outline me-2"></i><span>Editar</span></a></div></div>'
                             );
                         },
                     },
@@ -170,7 +182,7 @@ $(function () {
                 language: {
                     sLengthMenu: "Show _MENU_",
                     search: "",
-                    searchPlaceholder: "Search..",
+                    searchPlaceholder: "Buscar..",
                 },
                 buttons: [
                     {
@@ -184,7 +196,7 @@ $(function () {
                                 text: '<i class="mdi mdi-printer-outline me-1" ></i>Print',
                                 className: "dropdown-item",
                                 exportOptions: {
-                                    columns: [1, 2, 3, 4, 5],
+                                    columns: [2, 3, 4, 5, 6],
                                     format: {
                                         body: function (e, t, a) {
                                             var n;
@@ -228,7 +240,7 @@ $(function () {
                                 text: '<i class="mdi mdi-file-document-outline me-1" ></i>Csv',
                                 className: "dropdown-item",
                                 exportOptions: {
-                                    columns: [1, 2, 3, 4, 5],
+                                    columns: [2, 3, 4, 5, 6],
                                     format: {
                                         body: function (e, t, a) {
                                             var n;
@@ -260,7 +272,7 @@ $(function () {
                                 text: '<i class="mdi mdi-file-excel-outline me-1"></i>Excel',
                                 className: "dropdown-item",
                                 exportOptions: {
-                                    columns: [1, 2, 3, 4, 5],
+                                    columns: [2, 3, 4, 5, 6],
                                     format: {
                                         body: function (e, t, a) {
                                             var n;
@@ -292,7 +304,7 @@ $(function () {
                                 text: '<i class="mdi mdi-file-pdf-box me-1"></i>Pdf',
                                 className: "dropdown-item",
                                 exportOptions: {
-                                    columns: [1, 2, 3, 4, 5],
+                                    columns: [2, 3, 4, 5, 6],
                                     format: {
                                         body: function (e, t, a) {
                                             var n;
@@ -324,7 +336,7 @@ $(function () {
                                 text: '<i class="mdi mdi-content-copy me-1"></i>Copy',
                                 className: "dropdown-item",
                                 exportOptions: {
-                                    columns: [1, 2, 3, 4, 5],
+                                    columns: [2, 3, 4, 5, 6],
                                     format: {
                                         body: function (e, t, a) {
                                             var n;
@@ -359,7 +371,7 @@ $(function () {
                             "add-new btn btn-primary waves-effect waves-light",
                         attr: {
                             "data-bs-toggle": "offcanvas",
-                            "data-bs-target": "#offcanvasAddUser",
+                            "data-bs-target": "#offcanvasUser",
                         },
                     },
                 ],
@@ -489,10 +501,7 @@ $(function () {
                                     });
                             });
                 },
-            })),
-        $(".datatables-users tbody").on("click", ".delete-record", function () {
-            e.row($(this).parents("tr")).remove().draw();
-        }),
+            }),
         setTimeout(() => {
             $(".dataTables_filter .form-control").removeClass(
                 "form-control-sm"
@@ -502,6 +511,10 @@ $(function () {
                 );
         }, 300);
     $(".add-new").on("click", function () {
+        clearForm();
+        $("#user-role").empty();
+        $("#user-office").val("0").trigger("change");
+        $("#user-role").append('<option value="">Seleccionar Rol</option>');
         $(".offcanvas-title")
             .attr("data-i18n", "Add User")
             .text("Agregar Usuario");
@@ -509,31 +522,35 @@ $(function () {
     });
     $("#user-office").on("change", function () {
         var officeId = $(this).val();
-        if (officeId) {
-            $.ajax({
-                url: "Usuarios/roles",
-                data: { id: officeId, _token: csrfToken },
-                type: "POST",
-                dataType: "json",
-            }).done((data) => {
-                $("#user-role").empty();
-                $("#user-role").append(
-                    '<option value="">Seleccionar Subcategoria</option>'
-                );
-                $.each(data, function (key, value) {
-                    $("#user-role").append(
-                        '<option value="' +
-                            value.id_rol +
-                            '">' +
-                            value.name_rol +
-                            "</option>"
-                    );
-                });
-            });
-        } else {
-            $("#user-role").empty();
-            $("#user-role").append('<option value="">Seleccionar Rol</option>');
-        }
+        getOffice(officeId);
+    });
+
+    s.on("click", ".btn-edit", function () {
+        clearForm();
+        $(".offcanvas-title")
+            .attr("data-i18n", "Edit User")
+            .text("Editar Usuario");
+        $(".data-submit").text("EDITAR");
+
+        let row = $(this).closest("tr"),
+            rowData = $(this).closest("table").DataTable().row(row).data();
+
+        console.log(rowData);
+        $("#userID").val(rowData.id);
+        $("#add-user-lastname").val(rowData.lastname);
+        $("#add-user-fullname").val(rowData.firstname);
+        $("#add-user-dni").val(rowData.dni);
+        $("#add-user-contact").val(rowData.phone);
+        $("#add-user-email").val(rowData.email);
+
+        getOffice(rowData.office_id);
+
+        $("#user-office").val(rowData.office_id).trigger("change");
+        $("#user-role").val(rowData.rol_id).trigger("change");
+
+        $("#user-plan").val(rowData.status).trigger("change");
+
+        $("#offcanvasUser").offcanvas("show");
     });
 
     var e = document.querySelectorAll(".phone-mask"),
@@ -546,10 +563,59 @@ $(function () {
         }),
         (fv = FormValidation.formValidation(f, {
             fields: {
-                userFullname: {
+                userLastname: {
                     validators: {
                         notEmpty: {
-                            message: "Porfavor ingresar nombre de usuario ",
+                            message: "Porfavor ingresar Apellidos de usuario ",
+                        },
+                    },
+                },
+                userFirstname: {
+                    validators: {
+                        notEmpty: {
+                            message: "Porfavor ingresar Nombres de usuario ",
+                        },
+                    },
+                },
+                userDNI: {
+                    validators: {
+                        notEmpty: {
+                            message: "Porfavor ingresar DNI de usuario ",
+                        },
+                    },
+                },
+                userContact: {
+                    validators: {
+                        notEmpty: {
+                            message:
+                                "Porfavor ingresar Número celular de usuario ",
+                        },
+                    },
+                },
+                userEmail: {
+                    validators: {
+                        notEmpty: {
+                            message: "Por favor ingresa tu correo electrónico",
+                        },
+                        emailAddress: {
+                            message: "El correo electrónico no es válido",
+                        },
+                    },
+                },
+                userOffice: {
+                    validators: {
+                        callback: {
+                            message: "Por favor selecciona una oficina",
+                            callback: function (input) {
+                                return input.value != 0;
+                            },
+                        },
+                    },
+                },
+                userRol: {
+                    validators: {
+                        notEmpty: {
+                            message: "Por favor selecciona un rol",
                         },
                     },
                 },
@@ -558,8 +624,8 @@ $(function () {
                 trigger: new FormValidation.plugins.Trigger(),
                 bootstrap5: new FormValidation.plugins.Bootstrap5({
                     eleValidClass: "",
-                    rowSelector: function (e, t) {
-                        return ".mb-4";
+                    rowSelector: function (field, ele) {
+                        return ".form-floating-outline";
                     },
                 }),
                 submitButton: new FormValidation.plugins.SubmitButton(),
@@ -577,11 +643,17 @@ $(function () {
     });
 
     function sendDataServe() {
+        $.blockUI({
+            message:
+                '<div class="sk-wave mx-auto"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div>',
+            timeout: 1e3,
+            css: { backgroundColor: "transparent", border: "0" },
+            overlayCSS: { opacity: 0.5 },
+        });
+
         const submitBtn = document.querySelector(".data-submit");
         const resetBtn = setLoadingState(submitBtn);
-
         const formData = new FormData(f);
-
         formData.append("_token", $('meta[name="csrf-token"]').attr("content"));
 
         fetch("newUser", {
@@ -597,22 +669,72 @@ $(function () {
                 return response.json();
             })
             .then((data) => {
-                clearForm();
                 s.DataTable().ajax.reload();
+                $("#offcanvasUser").offcanvas("hide");
                 Toast.fire({
                     icon: "success",
                     title: data.message,
                 });
-                $("#offcanvasAddUserLabel").offcanvas("hide");
             })
             .catch((error) => {
                 console.error("Error:", error.message);
             })
             .finally(() => {
+                $.unblockUI();
+                clearForm();
                 resetBtn();
             });
     }
-    // Función para cambiar el estilo del botón durante la carga y deshabilitarlo
+
+    function updateDataServe() {
+        $.blockUI({
+            message:
+                '<div class="sk-wave mx-auto"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div>',
+            timeout: 1e3,
+            css: { backgroundColor: "transparent", border: "0" },
+            overlayCSS: { opacity: 0.5 },
+        });
+
+        const submitBtn = document.querySelector(".data-submit");
+        const resetBtn = setLoadingState(submitBtn);
+        const formData = new FormData(f);
+        formData.append("_token", $('meta[name="csrf-token"]').attr("content"));
+
+        fetch("updateUser", {
+            method: "POST",
+            body: formData,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(
+                        "Hubo un problema al procesar el formulario."
+                    );
+                }
+                return response.json();
+            })
+            .then((data) => {
+                s.DataTable().ajax.reload();
+                $("#offcanvasUser").offcanvas("hide");
+                Toast.fire({
+                    icon: "success",
+                    title: data.message,
+                });
+            })
+            .catch((error) => {
+                console.error("Error:", error.message);
+            })
+            .finally(() => {
+                $.unblockUI();
+                clearForm();
+                resetBtn();
+            });
+    }
+
+    function clearForm() {
+        f.reset();
+        fv.resetForm();
+    }
+
     function setLoadingState(btnElement) {
         // Guardar el estado original del botón
         const originalContent = btnElement.innerHTML;
@@ -629,14 +751,36 @@ $(function () {
             btnElement.disabled = originalDisabled;
         };
     }
-    function clearForm() {
-        f.reset();
-        $(".select2").val(0).trigger("change");
-        document
-            .getElementById("ecommerce-category-title")
-            .classList.remove("is-valid");
-        clearEditorContent();
+
+    function getOffice(officeID) {
+        if (officeID) {
+            $.ajax({
+                url: "Usuarios/roles",
+                data: { id: officeID, _token: csrfToken },
+                type: "POST",
+                dataType: "json",
+                async: false,
+            }).done((data) => {
+                $("#user-role").empty();
+                $("#user-role").append(
+                    '<option value="">Seleccionar Rol</option>'
+                );
+                $.each(data, function (key, value) {
+                    $("#user-role").append(
+                        '<option value="' +
+                            value.id_rol +
+                            '">' +
+                            value.name_rol +
+                            "</option>"
+                    );
+                });
+            });
+        } else {
+            $("#user-role").empty();
+            $("#user-role").append('<option value="">Seleccionar Rol</option>');
+        }
     }
+
     const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -648,5 +792,4 @@ $(function () {
             toast.onmouseleave = Swal.resumeTimer;
         },
     });
-}),
-    (function () {})();
+});
