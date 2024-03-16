@@ -646,7 +646,6 @@ $(function () {
         $.blockUI({
             message:
                 '<div class="sk-wave mx-auto"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div>',
-            timeout: 1e3,
             css: { backgroundColor: "transparent", border: "0" },
             overlayCSS: { opacity: 0.5 },
         });

@@ -84,7 +84,6 @@ class SupplierController extends Controller
             $supplier->observation = $request->input("observation");
             $supplier->save();
             return response()->json(['type' => 'success', 'message' => 'RUC Validado']);
-            
         } else {
             $supplier->verify_ruc = 0;
             $supplier->status_supplier = 0;
@@ -113,6 +112,9 @@ class SupplierController extends Controller
             if ($ruc) {
                 $supplier->status_supplier = 1;
                 $supplier->expiry_validate = $this->hoy->copy()->addMonths(3);
+            } else {
+                $supplier->status_supplier = 0;
+                $supplier->expiry_validate = NULL;
             }
             $supplier->save();
             return response()->json(['type' => 'success', 'message' => 'Registro Guardado']);

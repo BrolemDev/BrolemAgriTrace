@@ -198,7 +198,7 @@
                                         </a>
                                     </li>
                                     <li class="menu-item">
-                                        <a href="app-ecommerce-category-list.html" class="menu-link">
+                                        <a href="{{Route('Categorias')}}" class="menu-link">
                                             <div data-i18n="Category List">Category List</div>
                                         </a>
                                     </li>

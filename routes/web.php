@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\OfficesController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,4 +54,11 @@ Route::controller(SupplierController::class)->group(function ($route) {
     Route::get('/getSuppliers', 'show');
     Route::post('/verifySupplier', 'verifyRUC');
     Route::post('/verifySanitary', 'fileSanitary');
+});
+
+Route::controller(CategoryController::class)->group(function ($route) {
+
+    Route::get('/Categorias', 'index')->name('Categorias');
+    Route::get('/getCategories', 'show');
+    Route::post('/statusCategory','status');
 });
