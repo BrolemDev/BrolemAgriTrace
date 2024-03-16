@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OfficesController;
 use App\Http\Controllers\RolesController;
+use App\Http\Controllers\SupplierController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,4 +43,14 @@ Route::controller(RolesController::class)->group(function ($route) {
     Route::post('/insertRol', 'insert');
     Route::post('/statusRol', 'updateStatus');
     Route::post('/updateRol', 'update');
+});
+
+Route::controller(SupplierController::class)->group(function ($route) {
+
+    Route::get('/Proveedores', 'index')->name('Proveedores');
+    Route::post('getRUC', 'searchRUC');
+    Route::post('insertSupplier', 'new');
+    Route::get('/getSuppliers', 'show');
+    Route::post('/verifySupplier', 'verifyRUC');
+    Route::post('/verifySanitary', 'fileSanitary');
 });

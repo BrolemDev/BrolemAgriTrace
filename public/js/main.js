@@ -354,6 +354,7 @@ document.getElementById("layout-menu") &&
                         !1
                     );
             } catch (e) {}
+            
     })(),
     "undefined" != typeof $ &&
         $(function () {
