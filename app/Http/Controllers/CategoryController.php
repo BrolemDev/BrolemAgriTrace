@@ -33,4 +33,28 @@ class CategoryController extends Controller
             return response()->json(['type' => 'error', 'message' => 'No se pudo Actualizar la categoria.'], 404);
         }
     }
+
+    public function insert(Request $request)
+    {
+        $category = new Category();
+        $category->code_category = $request->input('codeCategory');
+        $category->name_category = $request->input('nameCategory');
+        $category->sale_category = $request->input('saleCategory');
+        $category->purchasing_category = $request->input('purchaseCategory');
+        if ($request->hasFile('imgCategory')) {
+            $file = $request->file('imgCategory');
+            $uniqueFileName = uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('public/category', $uniqueFileName);
+            $category->img_category = $uniqueFileName;
+        }
+        $category->save();
+
+        return response()->json([
+            'message' => 'Categoria Agregado'
+        ]);
+    }
+
+    public function update(){
+        
+    }
 }

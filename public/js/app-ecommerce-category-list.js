@@ -91,7 +91,7 @@ $(function () {
                         searchable: !1,
                         orderable: !1,
                         render: function (t, e, n, s) {
-                            return '<div class="d-flex align-items-sm-center justify-content-sm-center"><button class="btn btn-sm btn-icon"><i class="mdi mdi-pencil-outline"></i></button><button class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="mdi mdi-dots-vertical me-2"></i></button><div class="dropdown-menu dropdown-menu-end m-0"><a href="javascript:0;" class="dropdown-item">View</a><a href="javascript:0;" class="dropdown-item">Suspend</a></div></div>';
+                            return '<div class="d-flex align-items-sm-center justify-content-sm-center"><button class="btn btn-sm btn-icon btn-edit"><i class="mdi mdi-pencil-outline"></i></button><button class="btn btn-sm btn-icon btn-delete"><i class="mdi mdi-trash-can-outline"></i></button></div>';
                         },
                     },
                 ],
@@ -342,6 +342,7 @@ $(function () {
             css: { backgroundColor: "transparent", border: "0" },
             overlayCSS: { opacity: 0.5 },
         });
+
         let row = $(this).closest("tr");
         let rowData = $(this).closest("table").DataTable().row(row).data(),
             isChecked = $(this).prop("checked");
@@ -375,6 +376,24 @@ $(function () {
                 $.unblockUI();
             });
     });
+
+    t.on("click", ".btn-edit", function () {
+        let row = $(this).closest("tr");
+        let rowData = $(this).closest("table").DataTable().row(row).data();
+        $("#codeCategory").val(rowData.code);
+        $("#nameCategory").val(rowData.name);
+        $("#saleCategory").val(rowData.sale);
+        $("#purchaseCategory").val(rowData.purchasing);
+
+        $(".offcanvas-title")
+            .attr("data-i18n", "Edit Category")
+            .text("Editar Categoria");
+        $(".data-submit").text("Editar");
+        $("#category").val(rowData.id);
+
+        $("#offcanvasEcommerceCategoryList").offcanvas("show");
+    });
+    t.on("click", ".btn-delete", function () {});
     $(".add-new").on("click", function () {
         clearForm();
         $(".offcanvas-title")
@@ -382,16 +401,23 @@ $(function () {
             .text("Agregar Categoria");
         $(".data-submit").text("AGREGAR");
     });
-    var f = document.getElementById("eCommerceCategoryListForm");
-    FormValidation.formValidation(f, {
+    const f = document.getElementById("eCommerceCategoryListForm");
+    const fv = FormValidation.formValidation(f, {
         fields: {
-            categoryTitle: {
+            codeCategory: {
                 validators: {
-                    notEmpty: { message: "Please enter category title" },
+                    notEmpty: {
+                        message: "Obligatorio ingresar un Còdigo de Categoria",
+                    },
                 },
             },
-            slug: {
-                validators: { notEmpty: { message: "Please enter slug" } },
+            nameCategory: {
+                validators: {
+                    notEmpty: {
+                        message:
+                            "Obligatorio ingresar un nombre a la categoria",
+                    },
+                },
             },
         },
         plugins: {
@@ -407,13 +433,111 @@ $(function () {
         },
     });
 
-    function clearForm(){
+    fv.on("core.form.valid", function () {
+        const method = $("#offcanvasEcommerceCategoryListLabel").attr(
+            "data-i18n"
+        );
+        if (method == "Edit Category") {
+            updateDataServe();
+        } else {
+            sendDataServe();
+        }
+    });
+
+    function sendDataServe() {
+        const submitBtn = document.querySelector(".data-submit");
+
+        const resetBtn = setLoadingState(submitBtn);
+
+        const formData = new FormData(f);
+        formData.append("_token", $('meta[name="csrf-token"]').attr("content"));
+
+        fetch("insertCategory", {
+            method: "POST",
+            body: formData,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(
+                        "Hubo un problema al procesar el formulario."
+                    );
+                }
+                return response.json();
+            })
+            .then((data) => {
+                f.reset();
+                t.DataTable().ajax.reload();
+                Toast.fire({
+                    icon: "success",
+                    title: data.message,
+                });
+            })
+            .catch((error) => {
+                console.error("Error:", error.message);
+            })
+            .finally(() => {
+                resetBtn();
+                $("#offcanvasEcommerceCategoryList").offcanvas("hide");
+            });
+    }
+
+    function updateDataServe() {
+        const submitBtn = document.querySelector(".data-submit");
+
+        const resetBtn = setLoadingState(submitBtn);
+
+        const formData = new FormData(f);
+        formData.append("_token", $('meta[name="csrf-token"]').attr("content"));
+
+        fetch("editCategory", {
+            method: "POST",
+            body: formData,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(
+                        "Hubo un problema al procesar el formulario."
+                    );
+                }
+                return response.json();
+            })
+            .then((data) => {
+                f.reset();
+                t.DataTable().ajax.reload();
+                Toast.fire({
+                    icon: "success",
+                    title: data.message,
+                });
+            })
+            .catch((error) => {
+                console.error("Error:", error.message);
+            })
+            .finally(() => {
+                resetBtn();
+                $("#offcanvasEcommerceCategoryList").offcanvas("hide");
+            });
+    }
+
+    function clearForm() {
         f.reset();
     }
 
+    function setLoadingState(btnElement) {
+        const originalContent = btnElement.innerHTML;
+        const originalDisabled = btnElement.disabled;
+
+        btnElement.innerHTML =
+            '<span class="spinner-border me-1" role="status" aria-hidden="true"></span>Cargando...';
+        btnElement.disabled = true;
+
+        return function resetBtn() {
+            btnElement.innerHTML = originalContent;
+            btnElement.disabled = originalDisabled;
+        };
+    }
     const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: "top",
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
@@ -423,6 +547,4 @@ $(function () {
         },
     });
 }),
-    (function () {
-
-    })();
+    (function () {})();

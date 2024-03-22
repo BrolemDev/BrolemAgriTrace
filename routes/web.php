@@ -63,4 +63,6 @@ Route::controller(CategoryController::class)->group(function ($route) {
     Route::get('/Categorias', 'index')->name('Categorias');
     Route::get('/getCategories', 'show');
     Route::post('/statusCategory','status');
+    Route::post('/insertCategory','insert');
+    Route::post('/editCategory','update');
 });

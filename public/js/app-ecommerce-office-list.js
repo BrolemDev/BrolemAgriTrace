@@ -379,6 +379,12 @@ commentEditor &&
             $(".data-submit").text("AGREGAR");
         });
         t.on("click", ".btn-status", function () {
+            $.blockUI({
+                message:
+                    '<div class="sk-wave mx-auto"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div>',
+                css: { backgroundColor: "transparent", border: "0" },
+                overlayCSS: { opacity: 0.5 },
+            });
             let row = $(this).closest("tr");
             let rowData = $(this).closest("table").DataTable().row(row).data(),
                 isChecked = $(this).prop("checked");
@@ -401,7 +407,10 @@ commentEditor &&
             })
                 .done(function (response) {
                     if (response.success) {
-                        console.log("La categoría se actualizó correctamente.");
+                        Toast.fire({
+                            icon: "success",
+                            title: "Estado de Oficina actualizada correctamente",
+                        });
                     } else {
                         console.error(
                             "Hubo un error al actualizar la categoría:",
@@ -411,6 +420,9 @@ commentEditor &&
                 })
                 .fail(function (xhr, status, error) {
                     console.error("Hubo un error en la solicitud AJAX:", error);
+                })
+                .always(function () {
+                    $.unblockUI();
                 });
         });
         t.on("click", ".btn-edit", function () {
@@ -465,7 +477,6 @@ commentEditor &&
         });
 
         function sendDataServe() {
-            
             const submitBtn = document.querySelector(".data-submit");
 
             const resetBtn = setLoadingState(submitBtn);
@@ -590,7 +601,7 @@ commentEditor &&
         }
         const Toast = Swal.mixin({
             toast: true,
-            position: "top-end",
+            position: "top",
             showConfirmButton: false,
             timer: 3000,
             timerProgressBar: true,

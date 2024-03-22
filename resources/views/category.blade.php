@@ -41,27 +41,27 @@
                 <div class="offcanvas-body border-top">
                     <form class="pt-0" id="eCommerceCategoryListForm" onsubmit="return false">
                         <!-- Title -->
-
+                        <input type="hidden" name="category" id="category">
                         <div class="form-floating form-floating-outline mb-4">
-                            <input type="text" class="form-control" id="ecommerce-category-title"
+                            <input type="text" class="form-control" id="codeCategory"
                                 placeholder="140" name="codeCategory" aria-label="category title">
                             <label for="ecommerce-category-title">Código</label>
                         </div>
 
                         <!-- Slug -->
                         <div class="form-floating form-floating-outline mb-4">
-                            <input type="text" id="ecommerce-category-slug" class="form-control" placeholder="Frijoles"
+                            <input type="text" id="nameCategory" class="form-control" placeholder="Frijoles"
                                 aria-label="slug" name="nameCategory">
                             <label for="ecommerce-category-slug">Nombre</label>
                         </div>
                         <div class="form-floating form-floating-outline mb-4">
-                            <input type="text" id="ecommerce-category-slug" class="form-control" placeholder="701301"
-                                aria-label="slug" name="saleCategory">
+                            <input type="text" id="saleCategory" class="form-control" placeholder="701301"
+                             name="saleCategory">
                             <label for="ecommerce-category-slug">Cuenta Ventas</label>
                         </div>
                         <div class="form-floating form-floating-outline mb-4">
-                            <input type="text" id="ecommerce-category-slug" class="form-control" placeholder="602310"
-                                aria-label="slug" name="purchaseCategory">
+                            <input type="text" id="purchaseCategory" class="form-control" placeholder="602310"
+                               name="purchaseCategory">
                             <label for="ecommerce-category-slug">Cuenta Compras</label>
                         </div>
                         <!-- Image -->
