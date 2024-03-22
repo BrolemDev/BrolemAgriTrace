@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('file_sanitary')->nullable();
             $table->boolean('verify_sanitary')->default(0);
             $table->date('expiry_validate')->nullable();
+            $table->date('expiry_sanitary')->nullable();
             $table->boolean('status_supplier')->default(0);
             $table->timestamps();
         });

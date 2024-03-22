@@ -26,7 +26,6 @@
                             <th>RUC</th>
                             <th>Validacion RUC</th>
                             <th>Registro Sanitario</th>
-                            <th>Fecha Expiracion</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -47,6 +46,7 @@
                             <h3 class="mb-2" id="title-form" data-i18n=""></h3>
                         </div>
                         <form id="supplierForm" class="row g-4" onsubmit="return false">
+                            <input type="hidden" id="id" name="id">
                             <div class="col-12 col-md-4">
                                 <div class="form-floating form-floating-outline">
                                     <input type="text" id="ruc" name="ruc" class="form-control"
@@ -93,7 +93,7 @@
                             <div class="col-12 text-center">
                                 <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Guardar</button>
                                 <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal"
-                                    aria-label="Close" onclick="closeForm()">Cancelar</button>
+                                    aria-label="Close" >Cancelar</button>
                             </div>
                         </form>
                     </div>
@@ -122,7 +122,7 @@
                                             <span class="custom-option-body">
                                                 <i class="mdi mdi-domain"></i>
                                                 <span class="custom-option-title"> Instalaciones </span>
-                                                <small> Esta opción indica que el negocio opera desde un local físico o
+                                                <small> Indica que el negocio opera desde un local físico o
                                                     instalación similar. </small>
                                             </span>
                                             <input class="form-check-input" type="checkbox" value=""
@@ -141,6 +141,20 @@
                                             </span>
                                             <input class="form-check-input" type="checkbox" value=""
                                                 id="customCheckboxIcon2" name="personal">
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md mb-md-0 mb-2">
+                                    <div class="form-check custom-option custom-option-icon">
+                                        <label class="form-check-label custom-option-content" for="customCheckboxIcon3">
+                                            <span class="custom-option-body">
+                                                <i class="mdi mdi-currency-usd-off"></i>
+                                                <span class="custom-option-title"> Deudas o Sanciones </span>
+                                                <small> Manejo de sus obligaciones financieras y legales de manera efectiva.
+                                                </small>
+                                            </span>
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                id="customCheckboxIcon3" name="debts">
                                         </label>
                                     </div>
                                 </div>

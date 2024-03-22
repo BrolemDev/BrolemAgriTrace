@@ -13,7 +13,7 @@ class Supplier extends Model
     protected $primaryKey = 'id_supplier';
     protected $fillable = [
         'ruc_supplier', 'name_supplier', 'phone_supplier', 'address_supplier', 'ubigeo', 'verify_ruc', 'file_sanitary',
-        'verify_sanitary', 'expiry_validate', 'status_supplier'
+        'verify_sanitary', 'expiry_validate', 'expiry_sanitary', 'status_supplier'
     ];
 
     public static function  getSuppliers()
@@ -33,6 +33,7 @@ class Supplier extends Model
                 'verify' => $row->verify_ruc,
                 'file' => $row->file_sanitary,
                 'sanitary' => $row->verify_sanitary,
+                'expiry_sanitary' => $row->expiry_sanitary,
                 'expiry' => $row->expiry_validate,
                 'observation' => $row->observation,
                 'status' => $row->status_supplier,

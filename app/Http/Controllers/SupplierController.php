@@ -52,7 +52,6 @@ class SupplierController extends Controller
     {
         try {
             $supplier = new Supplier();
-            $supplier = new Supplier();
             $supplier->ruc_supplier  = $request->input("ruc");
             $supplier->name_supplier  = $request->input("business_name");
             $supplier->phone_supplier  = $request->input("phone");
@@ -73,6 +72,57 @@ class SupplierController extends Controller
         }
     }
 
+    public function update(Request $request)
+    {
+        try {
+            $id = $request->input('id');
+
+            $supplier = Supplier::findOrFail($id);
+            $supplier->name_supplier  = $request->input("business_name");
+            $supplier->phone_supplier  = $request->input("phone");
+            $supplier->address_supplier  = $request->input("address");
+            $supplier->email_supplier  = $request->input("mail");
+            $supplier->ubigeo  = $request->input("ubigeo");
+            $supplier->status_supplier = 1;
+            $supplier->save();
+
+            return response()->json(['message' => 'Proveedor Actualizado Correctamente', 'status' => 200]);
+        } catch (QueryException $e) {
+            $errorCode = $e->errorInfo[1];
+            if ($errorCode == 1062) { // El código 1062 representa un error de duplicado de clave única
+                return response()->json(['message' => 'Contactar con administrador', 'status' => 409]); // 409: Conflict
+            } else {
+                return response()->json(['message' => 'Error al agregar el proveedor', 'status' =>  500]);
+            }
+        }
+    }
+
+    public function delete(Request $request)
+    {
+        $id = $request->input('id');
+        // Obtén el registro que deseas eliminar
+        $record = Supplier::find($id);
+        if (!$record) {
+            return response()->json(['success' => false, 'message' => 'Registro no encontrado']);
+        }
+
+        // Elimina el archivo asociado si existe
+        if (!empty($record->file_sanitary)) {
+            $filePath = 'public/supplier/' . $record->file_sanitary;
+
+            // Verifica si el archivo existe en el almacenamiento
+            if (Storage::exists($filePath)) {
+                Storage::delete($filePath); // Elimina el archivo del almacenamiento
+            } else {
+                // El archivo no existe
+                return response()->json(['success' => false, 'message' => 'El archivo no existe']);
+            }
+        }
+        $record->delete();
+
+        return response()->json(['success' => true, 'message' => 'Proveedor eliminado correctamente']);
+    }
+
     public function verifyRUC(Request $request)
     {
         $id = $request->input('id');
@@ -82,11 +132,13 @@ class SupplierController extends Controller
 
             $supplier->verify_ruc = 1;
             $supplier->observation = $request->input("observation");
+            $supplier->expiry_validate = $this->hoy->copy()->addMonths(3);
             $supplier->save();
             return response()->json(['type' => 'success', 'message' => 'RUC Validado']);
         } else {
             $supplier->verify_ruc = 0;
             $supplier->status_supplier = 0;
+            $supplier->expiry_validate = null;
             $supplier->observation = "";
             $supplier->save();
             return response()->json(['type' => 'warning', 'message' => 'RUC Invalidado']);
@@ -109,18 +161,14 @@ class SupplierController extends Controller
                 return response()->json(['type' => 'error', 'message' => 'Requerido Documento']);
             }
             $supplier->verify_sanitary = 1;
-            if ($ruc) {
-                $supplier->status_supplier = 1;
-                $supplier->expiry_validate = $this->hoy->copy()->addMonths(3);
-            } else {
-                $supplier->status_supplier = 0;
-                $supplier->expiry_validate = NULL;
-            }
+            $supplier->expiry_sanitary = $this->hoy->copy()->addMonths(12);
+
             $supplier->save();
             return response()->json(['type' => 'success', 'message' => 'Registro Guardado']);
         } else {
             Storage::disk('public')->delete('supplier/' . $request->input('file_name'));
             $supplier->file_sanitary = "";
+            $supplier->expiry_sanitary = Null;
             $supplier->verify_sanitary = 0;
             $supplier->status_supplier = 0;
             $supplier->save();

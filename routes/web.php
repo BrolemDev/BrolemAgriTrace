@@ -51,9 +51,11 @@ Route::controller(SupplierController::class)->group(function ($route) {
     Route::get('/Proveedores', 'index')->name('Proveedores');
     Route::post('getRUC', 'searchRUC');
     Route::post('insertSupplier', 'new');
+    Route::post('updateSupplier', 'update');
     Route::get('/getSuppliers', 'show');
     Route::post('/verifySupplier', 'verifyRUC');
     Route::post('/verifySanitary', 'fileSanitary');
+    Route::post('/deleteSupplier', 'delete');
 });
 
 Route::controller(CategoryController::class)->group(function ($route) {

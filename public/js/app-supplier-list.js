@@ -14,7 +14,6 @@ $(function () {
                 { data: "ruc" },
                 { data: "verify" },
                 { data: "sanitary" },
-                { data: "expiry" },
                 { data: "" },
             ],
             columnDefs: [
@@ -73,21 +72,14 @@ $(function () {
                         return '<button type="button" class="btn btn-icon btn-danger btn-fab demo add_file"><span class="tf-icons mdi mdi-layers-plus mdi-24px"></span></button>';
                     },
                 },
-                {
-                    targets: 6,
-                    className: "text-center",
-                    orderable: !1,
-                    render: function (e, t, a, n) {
-                        return e != "" ? e : "-----------";
-                    },
-                },
+
                 {
                     targets: -1,
                     searchable: !1,
                     title: "Actions",
                     orderable: !1,
                     render: function (e, t, a, n) {
-                        return '<span class="text-nowrap"><button class="btn btn-sm btn-icon btn-text-secondary rounded-pill btn-icon me-2" data-bs-target="#editPermissionModal" data-bs-toggle="modal" data-bs-dismiss="modal"><i class="mdi mdi-pencil-outline mdi-20px"></i></button><button class="btn btn-sm btn-icon btn-text-secondary rounded-pill btn-icon delete-record"><i class="mdi mdi-delete-outline mdi-20px"></i></button></span>';
+                        return '<span class="text-nowrap"><button class="btn btn-sm btn-icon btn-text-secondary rounded-pill btn-icon me-2 btn-edit"><i class="mdi mdi-pencil-outline mdi-20px"></i></button><button class="btn btn-sm btn-icon btn-text-secondary rounded-pill btn-icon delete-record"><i class="mdi mdi-delete-outline mdi-20px"></i></button></span>';
                     },
                 },
             ],
@@ -141,20 +133,60 @@ $(function () {
                     },
                 },
             },
-        },
-        )),
-        
+        })),
         $(".datatables-permissions tbody").on(
             "click",
             ".delete-record",
             function () {
+                let row = $(this).closest("tr");
+                let rowData = $(this)
+                    .closest("table")
+                    .DataTable()
+                    .row(row)
+                    .data();
                 e.row($(this).parents("tr")).remove().draw();
+                $.ajax({
+                    url: "deleteSupplier",
+                    type: "POST",
+                    data: {
+                        id: rowData.id,
+                        file: rowData.file,
+                        _token: csrfToken,
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            Toast.fire({
+                                icon: "success",
+                                title: data.message,
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    },
+                });
             }
         );
     $(".btn-add").on("click", function () {
         closeForm();
         $("#title-form").text("Agregar Proveedor");
         $("#title-form").attr("data-i18n", "Add Supplier");
+    });
+
+    e.on("click", ".btn-edit", function () {
+        closeForm();
+        let row = $(this).closest("tr");
+        let rowData = $(this).closest("table").DataTable().row(row).data();
+        $("#id").val(rowData.id);
+        $("#ruc").val(rowData.ruc);
+        $("#business_name").val(rowData.name);
+        $("#mail").val(rowData.email);
+        $("#phone").val(rowData.phone);
+        $("#address").val(rowData.address);
+        $("#ubigeo").val(rowData.ubigeo);
+        $("#title-form").text("Editar Proveedor");
+        $("#title-form").attr("data-i18n", "Edit Supplier");
+        $("#addPermissionModal").modal("show");
     });
 
     e.on("click", ".verify-ruc", function () {
@@ -176,10 +208,11 @@ $(function () {
         let rowData = $(this).closest("table").DataTable().row(row).data();
 
         $("#id_validate").val(rowData.id);
-        $("#title-ruc-validate").text(rowData.name);
+        $("#title-ruc-validate").text(`${rowData.name} (${rowData.expiry})`);
         $(".custom-option-icon").addClass("checked");
         $("#customCheckboxIcon1").prop("checked", true);
         $("#customCheckboxIcon2").prop("checked", true);
+        $("#customCheckboxIcon3").prop("checked", true);
         $("#obse").val(rowData.observation);
         $(".btn_validity").text("Invalidar");
         $("#verifyRUC").modal("show");
@@ -203,7 +236,9 @@ $(function () {
         let row = $(this).closest("tr");
         let rowData = $(this).closest("table").DataTable().row(row).data();
         $("#id_file_supplier").val(rowData.id);
-        $("#title-file-sanitary").text(rowData.name);
+        $("#title-file-sanitary").text(
+            `${rowData.name} (${rowData.expiry_sanitary})`
+        );
         $("#action").val(2);
         $(".btn_file").text("Invalidar");
         $("#file_name").val(rowData.file);
@@ -290,8 +325,9 @@ $(function () {
     $("#validity-ruc").on("submit", function () {
         var isChecked1 = $("#customCheckboxIcon1").prop("checked");
         var isChecked2 = $("#customCheckboxIcon2").prop("checked");
+        var isChecked3 = $("#customCheckboxIcon3").prop("checked");
         var action = $(".btn_validity").text() == "validar" ? "1" : "0";
-        if (isChecked1 && isChecked2) {
+        if (isChecked1 && isChecked2 && isChecked3) {
             $.ajax({
                 url: "verifySupplier",
                 type: "POST",
@@ -386,7 +422,7 @@ $(function () {
 
     fv.on("core.form.valid", function () {
         const method = $("#title-form").attr("data-i18n");
-        if (method == "Edit Office") {
+        if (method == "Edit Supplier") {
             updateDataServe();
         } else {
             sendDataServe();
@@ -416,7 +452,52 @@ $(function () {
             })
             .then((data) => {
                 if (data.status === 200) {
-                    e.DataTable().ajax.reload();
+                    e.ajax.reload();
+                    Toast.fire({
+                        icon: "success",
+                        title: data.message,
+                    });
+                    closeForm();
+                    $("#addPermissionModal").modal("hide");
+                } else {
+                    Toast.fire({
+                        icon: "error",
+                        title: data.message,
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error.message);
+            })
+            .finally(() => {
+                resetBtn();
+            });
+    }
+
+    function updateDataServe() {
+        const submitBtn = document.querySelector(".data-submit");
+
+        const resetBtn = setLoadingState(submitBtn);
+
+        const formData = new FormData(f);
+
+        formData.append("_token", $('meta[name="csrf-token"]').attr("content"));
+
+        fetch("updateSupplier", {
+            method: "POST",
+            body: formData,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(
+                        "Hubo un problema al procesar el formulario."
+                    );
+                }
+                return response.json();
+            })
+            .then((data) => {
+                if (data.status === 200) {
+                    e.ajax.reload();
                     Toast.fire({
                         icon: "success",
                         title: data.message,
