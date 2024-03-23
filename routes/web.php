@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BranchController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OfficesController;
@@ -66,4 +67,14 @@ Route::controller(CategoryController::class)->group(function ($route) {
     Route::post('/insertCategory','insert');
     Route::post('/editCategory','update');
     Route::post('/deleteCategory', 'delete');
+});
+
+Route::controller(BranchController::class)->group(function ($route) {
+
+    Route::get('/Sucursales', 'index')->name('Sucursales');
+    Route::get('/getBranchs', 'show');
+    Route::post('/insertBranch', 'new');
+    Route::post('/updateBranch', 'update');
+    Route::post('/statusBranch','status');
+    Route::post('/deleteBranch', 'delete');
 });
