@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Category;
 
 class CategoryController extends Controller
@@ -54,7 +55,47 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function update(){
-        
+    public function update(Request $request)
+    {
+        $id = $request->input('category');
+        $category = Category::findOrFail($id);
+
+        $category->code_category = $request->input('codeCategory');
+        $category->name_category = $request->input('nameCategory');
+        $category->sale_category = $request->input('saleCategory');
+        $category->purchasing_category = $request->input('purchaseCategory');
+        if ($request->hasFile('imgCategory')) {
+            $file = $request->file('imgCategory');
+            $uniqueFileName = uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('public/category', $uniqueFileName);
+            $category->img_category = $uniqueFileName;
+        }
+        $category->save();
+
+        return response()->json([
+            'message' => 'Categoria Modificado'
+        ]);
+    }
+
+    public function delete(Request $request)
+    {
+        $id = $request->input('id');
+        $record = Category::find($id);
+        if (!$record) {
+            return response()->json(['success' => false, 'message' => 'Registro no encontrado']);
+        }
+
+        if (!empty($record->file_sanitary)) {
+            $filePath = 'public/category/' . $record->img_category;
+
+            if (Storage::exists($filePath)) {
+                Storage::delete($filePath); 
+            } else {
+                return response()->json(['success' => false, 'message' => 'El archivo no existe']);
+            }
+        }
+        $record->delete();
+
+        return response()->json(['success' => true, 'message' => 'Categoria eliminado correctamente']);
     }
 }

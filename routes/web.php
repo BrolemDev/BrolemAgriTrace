@@ -65,4 +65,5 @@ Route::controller(CategoryController::class)->group(function ($route) {
     Route::post('/statusCategory','status');
     Route::post('/insertCategory','insert');
     Route::post('/editCategory','update');
+    Route::post('/deleteCategory', 'delete');
 });

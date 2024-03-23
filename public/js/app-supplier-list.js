@@ -88,7 +88,7 @@ $(function () {
             language: {
                 sLengthMenu: "Mostrar _MENU_",
                 search: "Buscar",
-                searchPlaceholder: "Buscar..",
+                searchPlaceholder: "Buscar Proveedor..",
             },
             buttons: [
                 {

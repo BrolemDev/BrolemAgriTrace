@@ -1,5 +1,6 @@
 "use strict";
 $(function () {
+    let csrfToken = $('meta[name="csrf-token"]').attr("content");
     let e, n, s;
     s = (
         isDarkStyle
@@ -22,7 +23,7 @@ $(function () {
                 });
         }),
         t.length &&
-            (t.DataTable({
+            (e = t.DataTable({
                 ajax: "getCategories",
                 columns: [
                     { data: "" },
@@ -91,7 +92,7 @@ $(function () {
                         searchable: !1,
                         orderable: !1,
                         render: function (t, e, n, s) {
-                            return '<div class="d-flex align-items-sm-center justify-content-sm-center"><button class="btn btn-sm btn-icon btn-edit"><i class="mdi mdi-pencil-outline"></i></button><button class="btn btn-sm btn-icon btn-delete"><i class="mdi mdi-trash-can-outline"></i></button></div>';
+                            return '<div class="d-flex align-items-sm-center justify-content-sm-center"><button class="btn btn-sm btn-icon btn-edit"><i class="mdi mdi-pencil-outline"></i></button><button class="btn btn-sm btn-icon delete-record"><i class="mdi mdi-trash-can-outline"></i></button></div>';
                         },
                     },
                 ],
@@ -115,7 +116,7 @@ $(function () {
                                 text: '<i class="mdi mdi-printer-outline me-1" ></i>Print',
                                 className: "dropdown-item",
                                 exportOptions: {
-                                    columns: [1, 2, 3, 4, 5],
+                                    columns: [1, 2, 3, 4],
                                     format: {
                                         body: function (t, e, n) {
                                             var s;
@@ -159,7 +160,7 @@ $(function () {
                                 text: '<i class="mdi mdi-file-document-outline me-1" ></i>Csv',
                                 className: "dropdown-item",
                                 exportOptions: {
-                                    columns: [1, 2, 3, 4, 5],
+                                    columns: [1, 2, 3, 4],
                                     format: {
                                         body: function (t, e, n) {
                                             var s;
@@ -191,7 +192,7 @@ $(function () {
                                 text: '<i class="mdi mdi-file-excel-outline me-1"></i>Excel',
                                 className: "dropdown-item",
                                 exportOptions: {
-                                    columns: [1, 2, 3, 4, 5],
+                                    columns: [1, 2, 3, 4],
                                     format: {
                                         body: function (t, e, n) {
                                             var s;
@@ -223,7 +224,7 @@ $(function () {
                                 text: '<i class="mdi mdi-file-pdf-box me-1"></i>Pdf',
                                 className: "dropdown-item",
                                 exportOptions: {
-                                    columns: [1, 2, 3, 4, 5],
+                                    columns: [1, 2, 3, 4],
                                     format: {
                                         body: function (t, e, n) {
                                             var s;
@@ -255,7 +256,7 @@ $(function () {
                                 text: '<i class="mdi mdi-content-copy me-1"></i>Copy',
                                 className: "dropdown-item",
                                 exportOptions: {
-                                    columns: [1, 2, 3, 4, 5],
+                                    columns: [1, 2, 3, 4],
                                     format: {
                                         body: function (t, e, n) {
                                             var s;
@@ -324,6 +325,39 @@ $(function () {
                     },
                 },
             }),
+            $(".datatables-category-list tbody").on(
+                "click",
+                ".delete-record",
+                function () {
+                    let row = $(this).closest("tr");
+                    let rowData = $(this)
+                        .closest("table")
+                        .DataTable()
+                        .row(row)
+                        .data();
+                    e.row($(this).parents("tr")).remove().draw();
+                    $.ajax({
+                        url: "deleteCategory",
+                        type: "POST",
+                        data: {
+                            id: rowData.id,
+                            file: rowData.image,
+                            _token: csrfToken,
+                        },
+                        success: function (data) {
+                            if (data.success) {
+                                Toast.fire({
+                                    icon: "success",
+                                    title: data.message,
+                                });
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(xhr.responseText);
+                        },
+                    });
+                }
+            ),
             $(".dataTables_length").addClass("mt-0 mt-md-3"),
             $(".dt-action-buttons").addClass("pt-0")),
         setTimeout(() => {
@@ -393,7 +427,7 @@ $(function () {
 
         $("#offcanvasEcommerceCategoryList").offcanvas("show");
     });
-    t.on("click", ".btn-delete", function () {});
+
     $(".add-new").on("click", function () {
         clearForm();
         $(".offcanvas-title")
@@ -466,6 +500,7 @@ $(function () {
             })
             .then((data) => {
                 f.reset();
+                fv.resetForm();
                 t.DataTable().ajax.reload();
                 Toast.fire({
                     icon: "success",
@@ -503,6 +538,7 @@ $(function () {
             })
             .then((data) => {
                 f.reset();
+                fv.resetForm();
                 t.DataTable().ajax.reload();
                 Toast.fire({
                     icon: "success",
