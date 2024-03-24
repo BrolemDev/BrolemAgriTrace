@@ -206,8 +206,8 @@
 
                         <ul class="menu-sub">
                             <li class="menu-item">
-                                <a href="" class="menu-link">
-                                    <div data-i18n="Product List">Lista Productos</div>
+                                <a href="{{route('Inventario')}}" class="menu-link">
+                                    <div data-i18n="Produtcs/Services">Productos/Servicios</div>
                                 </a>
                             </li>
                             <li class="menu-item">
@@ -727,23 +727,8 @@
                                         document.write(new Date().getFullYear())
                                     </script>, made with <span class="text-danger"><i
                                             class="tf-icons mdi mdi-heart"></i></span> by <a
-                                        href="https://pixinvent.com" target="_blank"
-                                        class="footer-link fw-medium">Pixinvent</a>
-                                </div>
-                                <div class="d-none d-lg-inline-block">
-
-                                    <a href="https://themeforest.net/licenses/standard" class="footer-link me-4"
-                                        target="_blank">License</a>
-                                    <a href="https://1.envato.market/pixinvent_portfolio" target="_blank"
-                                        class="footer-link me-4">More Themes</a>
-
-                                    <a href="https://demos.pixinvent.com/materialize-html-admin-template/documentation/"
-                                        target="_blank" class="footer-link me-4">Documentation</a>
-
-
-                                    <a href="https://pixinvent.ticksy.com/" target="_blank"
-                                        class="footer-link d-none d-sm-inline-block">Support</a>
-
+                                        href="" target="_blank"
+                                        class="footer-link fw-medium"></a>
                                 </div>
                             </div>
                         </div>

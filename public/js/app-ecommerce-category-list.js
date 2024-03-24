@@ -392,7 +392,7 @@ $(function () {
         };
 
         $.ajax({
-            url: "statusCategory",
+            url: "/statusCategory",
             method: "POST",
             data: formData,
             dataType: "json",
@@ -403,8 +403,8 @@ $(function () {
                     title: response.message,
                 });
             })
-            .fail(function (xhr, status, error) {
-                console.error("Hubo un error en la solicitud AJAX:", error);
+            .fail(function (error) {
+                console.error("Hubo un error en la solicitud AJAX:", error.responseText);
             })
             .always(function () {
                 $.unblockUI();

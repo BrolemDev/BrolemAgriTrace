@@ -7,6 +7,7 @@ use App\Http\Controllers\OfficesController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\InventoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,4 +78,9 @@ Route::controller(BranchController::class)->group(function ($route) {
     Route::post('/updateBranch', 'update');
     Route::post('/statusBranch','status');
     Route::post('/deleteBranch', 'delete');
+});
+
+Route::controller(InventoryController::class)->group(function ($route) {
+
+    Route::get('/Inventario', 'index')->name('Inventario');
 });

@@ -26,12 +26,12 @@ class CategoryController extends Controller
             $status = $request->input('status');
 
             $offer = Category::findOrFail($id);
-            $offer->status_branch = $status;
+            $offer->status_category = $status;
             $offer->save();
 
             return response()->json(['type' => 'success', 'message' => 'Estado actualizado correctamente']);
         } catch (\Exception $e) {
-            return response()->json(['type' => 'error', 'message' => 'No se pudo Actualizar la sucursal.'], 404);
+            return response()->json(['type' => 'error', 'message' => 'No se pudo Actualizar la categoria.'], 404);
         }
     }
 

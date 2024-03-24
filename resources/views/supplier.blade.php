@@ -149,7 +149,7 @@
                                         <label class="form-check-label custom-option-content" for="customCheckboxIcon3">
                                             <span class="custom-option-body">
                                                 <i class="mdi mdi-currency-usd-off"></i>
-                                                <span class="custom-option-title"> Deudas o Sanciones </span>
+                                                <span class="custom-option-title"> No Adeudo o Sanciones </span>
                                                 <small> Manejo de sus obligaciones financieras y legales de manera efectiva.
                                                 </small>
                                             </span>

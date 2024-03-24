@@ -161,7 +161,7 @@ class SupplierController extends Controller
                 return response()->json(['type' => 'error', 'message' => 'Requerido Documento']);
             }
             $supplier->verify_sanitary = 1;
-            $supplier->expiry_sanitary = $this->hoy->copy()->addMonths(12);
+            $supplier->expiry_sanitary = $this->hoy->copy()->addMonths(6);
 
             $supplier->save();
             return response()->json(['type' => 'success', 'message' => 'Registro Guardado']);

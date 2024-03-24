@@ -325,9 +325,8 @@ $(function () {
     $("#validity-ruc").on("submit", function () {
         var isChecked1 = $("#customCheckboxIcon1").prop("checked");
         var isChecked2 = $("#customCheckboxIcon2").prop("checked");
-        var isChecked3 = $("#customCheckboxIcon3").prop("checked");
         var action = $(".btn_validity").text() == "validar" ? "1" : "0";
-        if (isChecked1 && isChecked2 && isChecked3) {
+        if (isChecked1 && isChecked2) {
             $.ajax({
                 url: "verifySupplier",
                 type: "POST",
