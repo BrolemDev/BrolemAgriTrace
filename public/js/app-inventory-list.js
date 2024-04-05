@@ -1,7 +1,7 @@
 "use strict";
 $(function () {
     const csrfToken = $('meta[name="csrf-token"]').attr("content");
-
+    $("#addProductModal").modal("show");
     let t, a, n;
     n = (
         isDarkStyle

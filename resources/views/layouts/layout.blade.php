@@ -206,18 +206,13 @@
 
                         <ul class="menu-sub">
                             <li class="menu-item">
-                                <a href="{{route('Inventario')}}" class="menu-link">
-                                    <div data-i18n="Produtcs/Services">Productos/Servicios</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="app-ecommerce-product-add.html" class="menu-link">
-                                    <div data-i18n="Add Product">Add Product</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
                                 <a href="{{ Route('Categorias') }}" class="menu-link">
                                     <div data-i18n="Category List">Category List</div>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="{{route('Inventario')}}" class="menu-link">
+                                    <div data-i18n="Produtcs/Services">Productos/Servicios</div>
                                 </a>
                             </li>
                         </ul>

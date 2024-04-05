@@ -5,7 +5,7 @@
 
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="py-3 mb-4">
-            <span class="text-muted fw-light">eCommerce /</span> Productos/Servicios
+            <span class="text-muted fw-light">Inventario /</span> Productos/Servicios
         </h4>
         <!-- Users List Table -->
         <div class="card">
@@ -40,24 +40,32 @@
                 <div class="modal-content p-3 p-md-5">
                     <div class="modal-body py-3 py-md-0">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                            onclick=" closeForm()"></button>
+                            onclick="closeForm()"></button>
                         <div class="text-center mb-4">
                             <h3 class="mb-2" id="title-form" data-i18n=""></h3>
                         </div>
                         <form id="productForm" class="row g-4" onsubmit="return false">
-                            <input type="hidden" id="branch" name="branch">
-                            <div class="col-12 col-md-4">
-                                <div class="form-floating form-floating-outline">
-                                    <input type="text" id="code_product" name="code_product" class="form-control"
-                                        placeholder="0001">
-                                    <label for="code_product">Código</label>
+
+                            <div class="col-12 col-md-3">
+                                <div class="input-group input-group-merge">
+                                    <div class="form-floating form-floating-outline">
+                                        <input type="text" class="form-control" id="code_product" placeholder="Código">
+                                        <label for="basic-default-password12">Código </label>
+                                    </div>
+                                    <span class="input-group-text cursor-pointer">
+                                        <i class="mdi mdi-restore"></i>
+                                    </span>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-8">
-                                <div class="form-floating form-floating-outline">
-                                    <input type="text" id="name" name="name" class="form-control"
-                                        placeholder="Sucursal/Almacen San Miguel 140">
-                                    <label for="name">Nombre de Producto/Servicio</label>
+
+                            <div class="col-12 col-md-9">
+                                <div class="input-group input-group-merge">
+                                    <span class="input-group-text">@</span>
+                                    <div class="form-floating form-floating-outline">
+                                        <input type="text" class="form-control" id="name"
+                                            placeholder="Nombre de bien o servicio">
+                                        <label for="name">Nombre de Producto/Servicio</label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
@@ -98,7 +106,7 @@
                             <div class="col-12 text-center">
                                 <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Guardar</button>
                                 <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal"
-                                    aria-label="Close" >Cancelar</button>
+                                    aria-label="Close">Cancelar</button>
                             </div>
                         </form>
                     </div>
@@ -120,5 +128,4 @@
     <script src="{{ asset('vendor/libs/cleavejs/cleave-phone.js') }}"></script>
     <script src="{{ asset('vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
     <script src="{{ asset('js/app-inventory-list.js') }}"></script>
-
 @endsection
