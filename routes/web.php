@@ -64,9 +64,9 @@ Route::controller(CategoryController::class)->group(function ($route) {
 
     Route::get('/Categorias', 'index')->name('Categorias');
     Route::get('/getCategories', 'show');
-    Route::post('/statusCategory','status');
-    Route::post('/insertCategory','insert');
-    Route::post('/editCategory','update');
+    Route::post('/statusCategory', 'status');
+    Route::post('/insertCategory', 'insert');
+    Route::post('/editCategory', 'update');
     Route::post('/deleteCategory', 'delete');
 });
 
@@ -76,11 +76,13 @@ Route::controller(BranchController::class)->group(function ($route) {
     Route::get('/getBranchs', 'show');
     Route::post('/insertBranch', 'new');
     Route::post('/updateBranch', 'update');
-    Route::post('/statusBranch','status');
+    Route::post('/statusBranch', 'status');
     Route::post('/deleteBranch', 'delete');
 });
 
 Route::controller(InventoryController::class)->group(function ($route) {
 
     Route::get('/Inventario', 'index')->name('Inventario');
+    Route::post('/newProduct', 'new');
+    Route::get('/generateCode', 'newCode');
 });

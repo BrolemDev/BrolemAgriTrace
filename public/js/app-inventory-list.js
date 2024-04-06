@@ -1,7 +1,7 @@
 "use strict";
 $(function () {
     const csrfToken = $('meta[name="csrf-token"]').attr("content");
-    $("#addProductModal").modal("show");
+    var size = document.querySelector("#autosize-demo");
     let t, a, n;
     n = (
         isDarkStyle
@@ -21,16 +21,16 @@ $(function () {
             2: { title: "Inactivo", class: "bg-label-secondary" },
             3: { title: "Pendiente", class: "bg-label-warning" },
         };
-    i.length &&
+    size && autosize(size),
         i.length &&
-        i.each(function () {
-            var i = $(this);
-            select2Focus(i),
-                i.wrap('<div class="position-relative"></div>').select2({
-                    dropdownParent: i.parent(),
-                    placeholder: i.data("placeholder"),
-                });
-        }),
+            i.each(function () {
+                var i = $(this);
+                select2Focus(i),
+                    i.wrap('<div class="position-relative"></div>').select2({
+                        dropdownParent: i.parent(),
+                        placeholder: i.data("placeholder"),
+                    });
+            }),
         m.length &&
             m.each(function () {
                 $(this).maxlength({
@@ -369,10 +369,6 @@ $(function () {
                         text: '<i class="mdi mdi-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Agregar</span>',
                         className:
                             "add-new btn btn-primary waves-effect waves-light",
-                        attr: {
-                            "data-bs-toggle": "modal",
-                            "data-bs-target": "#addProductModal",
-                        },
                     },
                 ],
                 responsive: {
@@ -410,7 +406,7 @@ $(function () {
                         .every(function () {
                             var t = this,
                                 a = $(
-                                    '<select id="UserRole" class="select2 form-select text-capitalize"><option value=""> Mostrar Productos/Servicios en Todos los Almacenes</option></select>'
+                                    '<select id="branchID" class="select2 form-select text-capitalize"><option value=""> Mostrar Productos/Servicios en Todos los Almacenes</option></select>'
                                 )
                                     .appendTo(".branch_product")
                                     .on("change", function () {
@@ -451,44 +447,99 @@ $(function () {
                 );
         }, 300);
     $(".add-new").on("click", function () {
+        $("#title-form").attr("data-i18n", "Add Product");
         $(".data-submit").text("GUARDAR");
+        if ($("#branchID").val() == "") {
+            Toast.fire({
+                icon: "warning",
+                title: "Selecciona una Sucursal",
+            });
+        } else {
+            $("#addProductModal").modal("show");
+        }
     });
-    $("#user-office").on("change", function () {
-        var officeId = $(this).val();
-        getOffice(officeId);
+    $("#generateCode").click(function () {
+        $.ajax({
+            url: "generateCode",
+            method: "GET",
+            data: { _token: csrfToken },
+        })
+            .done((response) => {
+                $("#code_product").val(response.code);
+            })
+            .fail((error) => {
+                console.log(error.responseText);
+            });
     });
-
+    $(".btn-detraction").click(function () {
+        const isChecked = $(this).prop("checked");
+        if (isChecked) {
+            $(".detraction").removeAttr("style");
+            $("#detraction").removeAttr("disabled");
+        } else {
+            $(".detraction").attr("style", "display:none");
+            $("#detraction").attr("disabled", true);
+        }
+    });
 
     var e = document.querySelectorAll(".phone-mask"),
         fv,
-        f = document.getElementById("productForm    ");
+        f = document.getElementById("productForm");
 
-
-        (fv = FormValidation.formValidation(f, {
-            fields: {
-                mail: {
-                    validators: {
-                        notEmpty: {
-                            message: "Porfavor ingresar Apellidos de usuario ",
-                        },
-                    },
+    fv = FormValidation.formValidation(f, {
+        fields: {
+            code: {
+                validators: {
+                    notEmpty: { message: "Genera un código" },
                 },
             },
-            plugins: {
-                trigger: new FormValidation.plugins.Trigger(),
-                bootstrap5: new FormValidation.plugins.Bootstrap5({
-                    eleValidClass: "",
-                    rowSelector: function (field, ele) {
-                        return ".form-floating-outline";
-                    },
-                }),
-                submitButton: new FormValidation.plugins.SubmitButton(),
-                autoFocus: new FormValidation.plugins.AutoFocus(),
+            name: {
+                validators: {
+                    notEmpty: { message: "Ingresa nombre de producto" },
+                },
             },
-        }));
+            igv: {
+                validators: {
+                    notEmpty: { message: "Seleccion Tipo de IGV" },
+                },
+            },
+        },
+        plugins: {
+            trigger: new FormValidation.plugins.Trigger(),
+            bootstrap5: new FormValidation.plugins.Bootstrap5({
+                eleValidClass: "",
+                rowSelector: function (e, a) {
+                    switch (e) {
+                        case "code_product":
+                        case "nameP":
+                        case "igvId":
+                        case "formValidationConfirmPass":
+                        case "formValidationFile":
+                        case "formValidationDob":
+                        case "formValidationSelect2":
+                        case "formValidationLang":
+                        case "formValidationTech":
+                        case "formValidationHobbies":
+                        case "formValidationBio":
+                        case "formValidationGender":
+                            return ".col-md-6";
+                        case "formValidationPlan":
+                            return ".col-xl-3";
+                        case "formValidationSwitch":
+                        case "formValidationCheckbox":
+                            return ".col-12";
+                        default:
+                            return ".row";
+                    }
+                },
+            }),
+            submitButton: new FormValidation.plugins.SubmitButton(),
+            autoFocus: new FormValidation.plugins.AutoFocus(),
+        },
+    });
 
     fv.on("core.form.valid", function () {
-        const method = $("#offcanvasAddUserLabel").attr("data-i18n");
+        const method = $("#title-form").attr("data-i18n");
         if (method == "Edit User") {
             updateDataServe();
         } else {
@@ -503,13 +554,16 @@ $(function () {
             css: { backgroundColor: "transparent", border: "0" },
             overlayCSS: { opacity: 0.5 },
         });
-
+        const isChecked = $(".btn-detraction").prop("checked"),
+            status = isChecked ? 1 : 0;
         const submitBtn = document.querySelector(".data-submit");
         const resetBtn = setLoadingState(submitBtn);
         const formData = new FormData(f);
-        formData.append("_token", $('meta[name="csrf-token"]').attr("content"));
+        formData.append("_token", csrfToken);
+        formData.append("branch", $("#branchID").val());
+        formData.append("detract", status);
 
-        fetch("newUser", {
+        fetch("newProduct", {
             method: "POST",
             body: formData,
         })
@@ -522,19 +576,17 @@ $(function () {
                 return response.json();
             })
             .then((data) => {
-                s.DataTable().ajax.reload();
-                $("#addProductModal").offcanvas("hide");
                 Toast.fire({
                     icon: "success",
                     title: data.message,
                 });
+                console.log(data.message);
             })
             .catch((error) => {
                 console.error("Error:", error.message);
             })
             .finally(() => {
                 $.unblockUI();
-                clearForm();
                 resetBtn();
             });
     }
