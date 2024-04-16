@@ -21,11 +21,12 @@
                         <tr>
                             <th></th>
                             <th></th>
-                            <th>Usuario</th>
-                            <th>Oficina</th>
-                            <th>Rol</th>
-                            <th>Telefono</th>
-                            <th>Estado</th>
+                            <th>Codigo</th>
+                            <th>Nombre</th>
+                            <th>Unidad Medida</th>
+                            <th>Sucursal</th>
+                            <th>Categoria</th>
+                            <th>Stock</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -49,7 +50,8 @@
                             <div class="col-12 col-md-3">
                                 <div class="input-group input-group-merge">
                                     <div class="form-floating form-floating-outline">
-                                        <input type="text" class="form-control" id="code_product" placeholder="Código" name="code">
+                                        <input type="text" class="form-control" id="code_product" placeholder="Código"
+                                            name="code">
                                         <label for="basic-default-password12">Código </label>
                                     </div>
                                     <span class="input-group-text cursor-pointer" id="generateCode">
@@ -180,7 +182,8 @@
                             </div>
                             <div class="col-12 col-md-12 detraction" style="display: none">
                                 <div class="form-floating form-floating-outline">
-                                    <select id="detraction" name="detraction" class="select2 form-select form-select-lg" data-allow-clear="true" data-placeholder="Seleccionar Categoria" disabled>
+                                    <select id="detraction" name="detraction" class="select2 form-select form-select-lg"
+                                        data-allow-clear="true" data-placeholder="Seleccionar Categoria" disabled>
                                         @foreach ($detractions as $row)
                                             <option value="{{ $row->id_detraction }}">
                                                 {{ $row->decription_detraction . ' ( ' . $row->percentage_detraction . ')' }}

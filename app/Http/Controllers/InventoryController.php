@@ -26,6 +26,12 @@ class InventoryController extends Controller
         return view('inventory', compact('sunat', 'extents', 'detractions', 'categories', 'title'));
     }
 
+    public function show()
+    {
+        $data = Product::getInventory();
+        return response()->json(['data' => $data]);
+    }
+
     public function newCode()
     {
         $unique = false;

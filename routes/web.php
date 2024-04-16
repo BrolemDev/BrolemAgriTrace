@@ -83,6 +83,7 @@ Route::controller(BranchController::class)->group(function ($route) {
 Route::controller(InventoryController::class)->group(function ($route) {
 
     Route::get('/Inventario', 'index')->name('Inventario');
+    Route::get('/Products', 'show');
     Route::post('/newProduct', 'new');
     Route::get('/generateCode', 'newCode');
 });

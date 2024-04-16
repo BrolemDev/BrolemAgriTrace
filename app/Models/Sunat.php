@@ -12,20 +12,5 @@ class Sunat extends Model
     protected $primaryKey = 'id_igv';
 }
 
-class Extent extends Model
-{
 
-    use HasFactory;
-    protected $table = 'sunat_extent';
-    protected $primaryKey = 'id_extent';
 
-}
-
-class Detraction extends Model
-{
-
-    use HasFactory;
-    protected $table = 'sunat_detraction';
-    protected $primaryKey = 'id_detraction';
-    
-}

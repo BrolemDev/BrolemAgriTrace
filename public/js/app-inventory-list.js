@@ -45,15 +45,16 @@ $(function () {
             }),
         s.length &&
             s.DataTable({
-                ajax: "Users",
+                ajax: "Products",
                 columns: [
                     { data: "" },
                     { data: "id" },
-                    { data: "firstname" },
-                    { data: "office" },
-                    { data: "rol" },
-                    { data: "phone" },
-                    { data: "status" },
+                    { data: "code" },
+                    { data: "name" },
+                    { data: "extent" },
+                    { data: "branch" },
+                    { data: "category" },
+                    { data: "stock" },
                     { data: "action" },
                 ],
                 columnDefs: [
@@ -70,110 +71,51 @@ $(function () {
                     {
                         targets: 1,
                         orderable: !1,
-                        render: function () {
-                            return "";
-                        },
-                        checkboxes: {
-                            selectAllRender: "",
-                        },
+                        visible: !1,
                     },
                     {
                         targets: 2,
                         responsivePriority: 4,
                         render: function (e, t, a, n) {
-                            var s = a.firstname + " " + a.lastname,
-                                i = a.email,
-                                o = a.avatar;
-                            return (
-                                '<div class="d-flex justify-content-start align-items-center user-name"><div class="avatar-wrapper"><div class="avatar avatar-sm me-3">' +
-                                (o
-                                    ? '<img src="' +
-                                      assetsPath +
-                                      "img/avatars/" +
-                                      o +
-                                      '" alt="Avatar" class="rounded-circle">'
-                                    : '<span class="avatar-initial rounded-circle bg-label-' +
-                                      [
-                                          "success",
-                                          "danger",
-                                          "warning",
-                                          "info",
-                                          "dark",
-                                          "primary",
-                                          "secondary",
-                                      ][Math.floor(6 * Math.random())] +
-                                      '">' +
-                                      (o = (
-                                          ((o =
-                                              (s =
-                                                  a.firstname +
-                                                  " " +
-                                                  a.lastname).match(/\b\w/g) ||
-                                              []).shift() || "") +
-                                          (o.pop() || "")
-                                      ).toUpperCase()) +
-                                      "</span>") +
-                                '</div></div><div class="d-flex flex-column"><a href="' +
-                                l +
-                                '" class="text-truncate"><span class="fw-medium text-heading">' +
-                                s +
-                                "</span></a><small>" +
-                                i +
-                                "</small></div></div>"
-                            );
+                            return `<a href="javascript:void(0)"><span>#${e}</span></a>`;
                         },
                     },
                     {
                         targets: 3,
                         render: function (e, t, a, n) {
-                            a = a.office;
-                            return a;
+                            return (
+                                '<span class="text-heading">' + e + "</span>"
+                            );
                         },
                     },
                     {
                         targets: 4,
                         render: function (e, t, a, n) {
-                            return (
-                                '<span class="text-heading">' +
-                                a.rol +
-                                "</span>"
-                            );
+                            return e;
+                            
                         },
                     },
                     {
                         targets: 5,
                         render: function (e, t, a, n) {
                             return (
-                                '<span class="text-heading">' +
-                                a.phone +
-                                "</span>"
+                                '<span class="text-heading">' + e + "</span>"
                             );
                         },
                     },
                     {
                         targets: 6,
                         render: function (e, t, a, n) {
-                            a = a.status;
-                            return (
-                                '<span class="badge rounded-pill ' +
-                                o[a].class +
-                                '" text-capitalized>' +
-                                o[a].title +
-                                "</span>"
-                            );
+                            return e;
                         },
                     },
                     {
                         targets: -1,
-                        title: "Actions",
+                        title: "Acción",
                         searchable: !1,
                         orderable: !1,
                         render: function (e, t, a, n) {
-                            return (
-                                '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="mdi mdi-dots-vertical mdi-20px"></i></button><div class="dropdown-menu dropdown-menu-end m-0"><a href="' +
-                                l +
-                                '" class="dropdown-item"><i class="mdi mdi-eye-outline me-2"></i><span>Ver</span></a><a href="javascript:void(0);" class="dropdown-item btn-edit"><i class="mdi mdi-pencil-outline me-2"></i><span>Editar</span></a></div></div>'
-                            );
+                            return '<div class="d-flex align-items-center"><a href="javascript:;" data-bs-toggle="tooltip" class="text-body delete-record" data-bs-placement="top" title="Delete Invoice"><i class="mdi mdi-delete-outline mdi-20px mx-1"></i></a><a href="app-invoice-preview.html" data-bs-toggle="tooltip" class="text-body" data-bs-placement="top" title="Preview Invoice"><i class="mdi mdi-eye-outline mdi-20px mx-1"></i></a><div class="dropdown"><a href="javascript:;" class="btn dropdown-toggle hide-arrow text-body p-0" data-bs-toggle="dropdown"><i class="mdi mdi-dots-vertical mdi-20px"></i></a><div class="dropdown-menu dropdown-menu-end"><a href="javascript:;" class="dropdown-item">Download</a><a href="app-invoice-edit.html" class="dropdown-item">Edit</a><a href="javascript:;" class="dropdown-item">Duplicate</a></div></div></div>';
                         },
                     },
                 ],
@@ -402,7 +344,7 @@ $(function () {
                 },
                 initComplete: function () {
                     this.api()
-                        .columns(3)
+                        .columns(4)
                         .every(function () {
                             var t = this,
                                 a = $(
