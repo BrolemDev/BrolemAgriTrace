@@ -188,7 +188,7 @@
                     <li class="menu-item">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class='menu-icon tf-icons mdi mdi-truck-delivery-outline'></i>
-                            <div data-i18n="Suppliers">Proovedores</div>
+                            <div data-i18n="Suppliers">Proveedores</div>
                         </a>
                         <ul class="menu-sub">
                             <li class="menu-item">
@@ -206,6 +206,11 @@
 
                         <ul class="menu-sub">
                             <li class="menu-item">
+                                <a href="{{ Route('Kardex') }}" class="menu-link">
+                                    <div data-i18n="Kardex">Kardex Valorizado</div>
+                                </a>
+                            </li>
+                            <li class="menu-item">
                                 <a href="{{ Route('Categorias') }}" class="menu-link">
                                     <div data-i18n="Category List">Category List</div>
                                 </a>
@@ -220,12 +225,12 @@
                     <li class="menu-item">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons mdi mdi-account-outline"></i>
-                            <div data-i18n="Users">Users</div>
+                            <div data-i18n="Users">Usuarios</div>
                         </a>
                         <ul class="menu-sub">
                             <li class="menu-item">
                                 <a href="{{ route('users') }}" class="menu-link">
-                                    <div data-i18n="List">List</div>
+                                    <div data-i18n="List">Lista</div>
                                 </a>
                             </li>
                         </ul>

@@ -8,6 +8,7 @@ use App\Http\Controllers\RolesController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\KardexController;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,4 +87,10 @@ Route::controller(InventoryController::class)->group(function ($route) {
     Route::get('/Products', 'show');
     Route::post('/newProduct', 'new');
     Route::get('/generateCode', 'newCode');
+});
+
+Route::controller(KardexController::class)->group(function ($route) {
+
+    Route::get('/Kardex_Valorizado', 'index')->name('Kardex');
+    Route::get('/search-products', 'search');
 });
