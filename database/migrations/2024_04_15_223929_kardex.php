@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreign('personal_id')->references('id_personal')->on('personal');
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id_product')->on('products');
-            $table->string('type_kardex', 30)->nullable()->comment('inventario_inicial, compra, ingreso_transa, salida_transa, venta');
+            $table->string('type_kardex', 40)->nullable()->comment('inventario_inicial, compra, ingreso_transa, salida_transa, venta');
             $table->tinyInteger('status_kardex')->default(1);
             $table->integer('input_quantity')->default(0);
             $table->integer('output_quantity')->default(0);

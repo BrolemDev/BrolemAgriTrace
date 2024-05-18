@@ -12,6 +12,16 @@ class Branch extends Model
     protected $primaryKey = 'id_branch';
     protected $fillable = ['anexo_branch', 'name_branch', 'address_branch', 'urbanzation_branch', 'ubigeo_branch', 'phone_branch', 'email_branch', 'status_branch'];
 
+    public static function getID($name)
+    {
+        $branch = self::where('name_branch', $name)->first();
+        if ($branch) {
+            return $branch->id_branch;
+        }
+        // Si no se encuentra, devolver null o manejar el error según sea necesario
+        return null;
+    }
+
     public static function getBranchs()
     {
         $branchs = self::all();
@@ -21,7 +31,7 @@ class Branch extends Model
             $data[] = [
                 'id' => $row->id_branch,
                 'anexo' => $row->anexo_branch,
-                'name' => $row->name_branch ,
+                'name' => $row->name_branch,
                 'address' => $row->address_branch,
                 'urbanization' => $row->urbanzation_branch,
                 'ubigeo' => $row->ubigeo_branch,

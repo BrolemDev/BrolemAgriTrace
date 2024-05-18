@@ -1,6 +1,6 @@
 "use strict";
 $(function () {
-    const csrfToken = $('meta[name="csrf-token"]').attr("content");
+        const csrfToken = $('meta[name="csrf-token"]').attr("content");
     var size = document.querySelector("#autosize-demo");
     let t, a, n;
     n = (
@@ -344,11 +344,11 @@ $(function () {
                 },
                 initComplete: function () {
                     this.api()
-                        .columns(4)
+                        .columns(5)
                         .every(function () {
                             var t = this,
                                 a = $(
-                                    '<select id="branchID" class="select2 form-select text-capitalize"><option value=""> Mostrar Productos/Servicios en Todos los Almacenes</option></select>'
+                                    '<select id="branchID" class="select2 form-select text-capitalize" name="branchId"><option value=""> Mostrar Productos/Servicios en Todos los Almacenes</option></select>'
                                 )
                                     .appendTo(".branch_product")
                                     .on("change", function () {

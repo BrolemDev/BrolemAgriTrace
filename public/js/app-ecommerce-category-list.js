@@ -23,7 +23,7 @@ $(function () {
                 });
         }),
         t.length &&
-            (e = t.DataTable({
+            ((e = t.DataTable({
                 ajax: "getCategories",
                 columns: [
                     { data: "" },
@@ -324,7 +324,7 @@ $(function () {
                         },
                     },
                 },
-            }),
+            })),
             $(".datatables-category-list tbody").on(
                 "click",
                 ".delete-record",
@@ -404,7 +404,10 @@ $(function () {
                 });
             })
             .fail(function (error) {
-                console.error("Hubo un error en la solicitud AJAX:", error.responseText);
+                console.error(
+                    "Hubo un error en la solicitud AJAX:",
+                    error.responseText
+                );
             })
             .always(function () {
                 $.unblockUI();

@@ -93,4 +93,5 @@ Route::controller(KardexController::class)->group(function ($route) {
 
     Route::get('/Kardex_Valorizado', 'index')->name('Kardex');
     Route::get('/search-products', 'search');
+    Route::post('/table-kardex', 'tableKardex');
 });

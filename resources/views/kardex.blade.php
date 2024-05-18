@@ -21,13 +21,13 @@
                 </div>
             </div>
             <div class="collapse show">
-                <form>
+                <form id="form-kardex">
                     <div class="card-body">
-
+                        @csrf
                         <div class="row g-4">
                             <div class="col-md-8">
                                 <div class="form-floating form-floating-outline">
-                                    <select id="product" class="select2 form-select">
+                                    <select id="product" class="select2 form-select" name="product">
                                     </select>
                                 </div>
                             </div>
@@ -36,14 +36,15 @@
                                     <span id="basic-icon-default-fullname2" class="input-group-text"><i
                                             class="mdi mdi-barcode"></i></span>
                                     <div class="form-floating form-floating-outline">
-                                        <input type="text" class="form-control" id="codeP" placeholder="ABC123">
+                                        <input type="text" class="form-control" id="codeP" placeholder="ABC123"
+                                            name="product_code">
                                         <label for="codeP">Código</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating form-floating-outline">
-                                    <select id="branch" class="select2 form-select">
+                                    <select id="branch" class="select2 form-select" name="branch_id">
                                         @foreach ($branches as $row)
                                             <option value="{{ $row->id_branch }}">{{ $row->name_branch }}</option>
                                         @endforeach
@@ -53,25 +54,24 @@
                             <div class="col-md-4">
                                 <div class="form-floating form-floating-outline">
                                     <input type="text" id="multicol-birthdate" class="form-control dob-picker"
-                                        placeholder="YYYY-MM-DD">
+                                        placeholder="YYYY-MM-DD" name="start_date">
                                     <label for="multicol-birthdate">Fecha Inicio</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating form-floating-outline">
                                     <input type="text" id="multicol-birthdate" class="form-control dob-picker"
-                                        placeholder="YYYY-MM-DD">
+                                        placeholder="YYYY-MM-DD" name="end_date">
                                     <label for="multicol-birthdate">Fecha Final</label>
                                 </div>
                             </div>
 
                         </div>
-
                     </div>
                     <div class="card-footer text-end">
-                        <button class="btn btn-primary btn-next waves-effect waves-light">  <span
+                        <button type="submit" class="btn btn-primary btn-next waves-effect waves-light"> <span
                                 class="align-middle d-sm-inline-block d-none me-sm-1"><i
-                                class="mdi mdi-content-save-check"></i> Generar Kardex</span>
+                                    class="mdi mdi-content-save-check"></i> Generar Kardex</span>
                         </button>
                     </div>
                 </form>
@@ -81,7 +81,7 @@
         <div class="card">
             <h5 class="card-header"><i class="mdi mdi-format-list-bulleted-square"></i> REPORTE KARDEX</h5>
             <div class="card-datatable text-nowrap">
-                <table class="dt-complex-header table table-bordered">
+                <table class="dt-complex-header table table-bordered" id="dt-kardex">
                     <thead>
                         <tr>
                             <th rowspan="2">N°</th>
@@ -89,17 +89,17 @@
                             <th rowspan="2">Detalle</th>
                             <th colspan="3" class="text-center bg-success">Entradas</th>
                             <th colspan="3" class="text-center bg-info">Salidas</th>
-                            <th rowspan="2">Status</th>
-                            <th rowspan="2">Action</th>
+                            <th rowspan="2">Stock</th>
+                            <th rowspan="2">Tipo Kardex</th>
 
                         </tr>
                         <tr>
-                            <th>Cantidad</th>
-                            <th>C. Unit.</th>
-                            <th>C. Total.</th>
-                            <th>Cantidad</th>
-                            <th>C. Unit.</th>
-                            <th>C. Total.</th>
+                            <th class="text-center bg-success">Cantidad</th>
+                            <th class="text-center bg-success">C. Unit.</th>
+                            <th class="text-center bg-success">C. Total.</th>
+                            <th class="text-center bg-info">Cantidad</th>
+                            <th class="text-center bg-info">C. Unit.</th>
+                            <th class="text-center bg-info">C. Total.</th>
                         </tr>
                     </thead>
                 </table>
@@ -122,5 +122,5 @@
     <script src="{{ asset('vendor/libs/flatpickr/flatpickr.js') }}"></script>
 
     <!-- Page JS -->
-    <script src="{{ asset('js/tables-datatables-basic.js') }}"></script>
+    <script src="{{ asset('js/tables-datatables-kardex.js') }}"></script>
 @endsection

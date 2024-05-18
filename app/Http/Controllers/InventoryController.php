@@ -9,10 +9,12 @@ use Illuminate\Database\QueryException;
 // End of Libraries
 
 use App\Models\Product;
+use App\Models\Branch;
 use App\Models\Category;
 use App\Models\Sunat;
 use App\Models\Extent;
 use App\Models\Detraction;
+use App\Models\Kardex;
 
 class InventoryController extends Controller
 {
@@ -51,12 +53,12 @@ class InventoryController extends Controller
 
     public function new(Request $request)
     {
-
+        $branch = Branch::getID($request->input('branch'));
         try {
             $product = new Product();
             $product->code_product  = $request->input("code");
             $product->name_product  = $request->input("name");
-            $product->branch_id  = 1;
+            $product->branch_id  = $branch;
             $product->category_id  = $request->input("category");
             $product->extent_id  = $request->input("extent");
             $product->igv_id  = $request->input("igv");
@@ -71,6 +73,10 @@ class InventoryController extends Controller
             }
             $product->detail_product  = $request->input("detail");
             $product->save();
+            $totalCost = $product->stock * $product->price_pen_igv;
+
+            Kardex::SaveMovement($branch, $product->id_product, 'inventario_inicial', 1, $request->input("stock"), 0, $request->input("stock"), $request->input("pen_igv"), $totalCost, 'Registro de Producto', NULL, NULL);
+
 
             return response()->json(['message' => 'Producto Agregado Correctamente', 'status' => 200]);
         } catch (QueryException $e) {
