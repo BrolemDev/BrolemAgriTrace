@@ -224,24 +224,18 @@
                     </li>
                     <li class="menu-item">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class='menu-icon tf-icons mdi mdi-cart-outline'></i>
-                            <div data-i18n="Transfers">Traslados</div>
+                            <i class='menu-icon tf-icons mdi mdi-truck-cargo-container'></i>
+                            <div data-i18n="Reference guides">Guías de Remisión</div>
                         </a>
-
                         <ul class="menu-sub">
                             <li class="menu-item">
-                                <a href="{{ Route('Kardex') }}" class="menu-link">
-                                    <div data-i18n="Kardex">Generar Traslado</div>
+                                <a href="{{ Route('transfers.new') }}" class="menu-link">
+                                    <div data-i18n="Create Referral Guide">Crear Guía de Remisión</div>
                                 </a>
                             </li>
                             <li class="menu-item">
-                                <a href="{{ Route('Categorias') }}" class="menu-link">
-                                    <div data-i18n="Category List">Category List</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="{{ route('Inventario') }}" class="menu-link">
-                                    <div data-i18n="Produtcs/Services">Productos/Servicios</div>
+                                <a href="{{ route('transfers') }}" class="menu-link">
+                                    <div data-i18n="Referral Guide List">Lista de Guías de Remisión</div>
                                 </a>
                             </li>
                         </ul>

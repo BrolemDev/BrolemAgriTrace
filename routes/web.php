@@ -9,6 +9,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\KardexController;
+use App\Http\Controllers\TransfersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -95,3 +96,10 @@ Route::controller(KardexController::class)->group(function ($route) {
     Route::get('/search-products', 'search');
     Route::post('/table-kardex', 'tableKardex');
 });
+
+Route::controller(TransfersController::class)->group(function ($route) {
+
+    Route::get('/Guias_Remision', 'index')->name('transfers');
+    Route::get('/Generar_Guia_Remision', 'new')->name('transfers.new');
+});
+

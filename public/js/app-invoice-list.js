@@ -168,7 +168,7 @@ $(function () {
                     text: '<i class="mdi mdi-plus me-md-1"></i><span class="d-md-inline-block d-none">Create Invoice</span>',
                     className: "btn btn-primary waves-effect waves-light",
                     action: function (a, e, t, s) {
-                        window.location = "app-invoice-add.html";
+                        window.location = "Generar_Guia_Remision";
                     },
                 },
             ],

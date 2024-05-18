@@ -5,6 +5,7 @@ $(function () {
         l = "app-user-list.html";
     t.length &&
         (e = t.DataTable({
+            lengthChange: !1,
             ajax: assetsPath + "json/permissions-list.json",
             columns: [
                 { data: "" },
@@ -87,6 +88,7 @@ $(function () {
                 {
                     targets: -1,
                     searchable: !1,
+                    className: "text-center",
                     title: "Actions",
                     orderable: !1,
                     render: function (e, t, a, n) {
@@ -94,21 +96,15 @@ $(function () {
                     },
                 },
             ],
-            order: [[1, "asc"]],
             dom: '<"row mx-1"<"col-sm-12 col-md-3" l><"col-sm-12 col-md-9"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-md-end justify-content-center flex-wrap me-1"<"me-3"f>B>>>t<"row mx-2"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-            language: {
-                sLengthMenu: "Show _MENU_",
-                search: "Search",
-                searchPlaceholder: "Search..",
-            },
             buttons: [
                 {
-                    text: "Add Permission",
+                    text: "Agregar",
                     className:
                         "add-new btn btn-primary mb-3 mb-md-0 waves-effect waves-light",
                     attr: {
                         "data-bs-toggle": "modal",
-                        "data-bs-target": "#addPermissionModal",
+                        "data-bs-target": "#addModalProduct",
                     },
                     init: function (e, t, a) {
                         $(t).removeClass("btn-secondary");
@@ -144,39 +140,7 @@ $(function () {
                     },
                 },
             },
-            initComplete: function () {
-                this.api()
-                    .columns(3)
-                    .every(function () {
-                        var t = this,
-                            a = $(
-                                '<select id="UserRole" class="form-select text-capitalize"><option value=""> Select Role </option></select>'
-                            )
-                                .appendTo(".user_role")
-                                .on("change", function () {
-                                    var e = $.fn.dataTable.util.escapeRegex(
-                                        $(this).val()
-                                    );
-                                    t.search(
-                                        e ? "^" + e + "$" : "",
-                                        !0,
-                                        !1
-                                    ).draw();
-                                });
-                        t.data()
-                            .unique()
-                            .sort()
-                            .each(function (e, t) {
-                                a.append(
-                                    '<option value="' +
-                                        e +
-                                        '" class="text-capitalize">' +
-                                        e +
-                                        "</option>"
-                                );
-                            });
-                    });
-            },
+            initComplete: function () {},
         })),
         $(".datatables-permissions tbody").on(
             "click",
@@ -185,4 +149,40 @@ $(function () {
                 e.row($(this).parents("tr")).remove().draw();
             }
         );
+
+    $("#productApp").select2({
+        dropdownParent: $("#addModalProduct"),
+        ajax: {
+            url: "/search-products",
+            dataType: "json",
+            delay: 250,
+            data: function (params) {
+                return {
+                    query: params.term,
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (product) {
+                        return {
+                            id: product.id_product,
+                            text: product.name_product,
+                            data: { code: product.code_product },
+                        };
+                    }),
+                };
+            },
+            cache: true,
+        },
+        placeholder: "Buscar un producto",
+        minimumInputLength: 2,
+        language: {
+            searching: function () {
+                return "Buscando...";
+            },
+            noResults: function () {
+                return "No se encontraron resultados";
+            },
+        },
+    });
 });
