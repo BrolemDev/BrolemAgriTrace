@@ -9,7 +9,7 @@
             <div class="col-12">
                 <div class="card">
                     <div
-                        class="card-header sticky-element bg-label-secondary d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row">
+                        class="card-header bg-label-secondary d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row">
                         <h5 class="card-title mb-sm-0 me-2">Guía de Remisión del Remitente</h5>
                         <div class="action-btns">
                             <button class="btn btn-outline-primary me-3">
@@ -215,15 +215,19 @@
                                         <div class="tab-content p-0">
                                             <div class="tab-pane fade show active" id="navs-top-home" role="tabpanel">
                                                 <div class="card-datatable table-responsive">
-                                                    <table class="datatables-permissions table">
+                                                    <table class="table-products table">
                                                         <thead class="table-light">
                                                             <tr>
                                                                 <th></th>
                                                                 <th></th>
-                                                                <th>Name</th>
-                                                                <th>Assigned To</th>
-                                                                <th>Created Date</th>
-                                                                <th>Actions</th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th>Descripcion</th>
+                                                                <th>Und/Medidad</th>
+                                                                <th>Peso (KGM)</th>
+                                                                <th>Cantidad</th>
+                                                                <th></th>
                                                             </tr>
                                                         </thead>
                                                     </table>
@@ -239,16 +243,23 @@
             </div>
         </div>
         <!-- /Sticky Actions -->
-        <div class="modal fade" id="addModalProduct" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-simple modal-edit-user">
-                <div class="modal-content p-3 p-md-5">
-                    <div class="modal-body py-3 py-md-0">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        <div class="text-center mb-4">
-                            <h3 class="mb-2">Edit User Information</h3>
-                            <p class="pt-1">Updating user details will receive a privacy audit.</p>
+        <div class="modal fade" id="ModalProduct" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-simple modal-dialog-centered">
+                <div class="modal-content  p-3 p-md-4">
+                    <div class="modal-header mb-3">
+                        <div class="card-title header-elements">
+                            <h5 class="m-0 me-2">PRODUCTO</h5>
+                            <div class="card-header-elements ms-auto">
+                                <span class="text text-muted d-flex">
+                                    <a href="{{ route('Inventario') }}" target="_blank"
+                                        class="btn btn-primary waves-effect waves-light">Crear
+                                        Nuevo</a>
+                                </span>
+                            </div>
                         </div>
-                        <form id="editUserForm" class="row g-4" onsubmit="return false">
+                    </div>
+                    <div class="modal-body py-3 py-md-0">
+                        <form id="modalFormProduct" class="row g-4">
                             <div class="col-12">
                                 <div class="form-floating form-floating-outline">
                                     <select id="productApp" name="productApp" class="form-select"
@@ -260,43 +271,46 @@
                             </div>
                             <div class="col-12 col-md-12">
                                 <div class="form-floating form-floating-outline">
-                                    <input type="text" name="modalEditUserEmail" class="form-control" placeholder="">
-                                    <label for="modalEditUserEmail">Descripción</label>
+                                    <input type="text" name="descrApp" id="descrApp" class="form-control"
+                                        placeholder="">
+                                    <label for="descrApp">Descripción</label>
                                 </div>
                             </div>
                             <div class="col-12 col-md-4">
                                 <div class="form-floating form-floating-outline">
-                                    <input type="text" name="modalEditUserEmail" class="form-control" placeholder="">
-                                    <label for="modalEditUserEmail">Código</label>
+                                    <input type="text" name="codeApp" id="codeApp" class="form-control" disabled>
+                                    <label for="codeApp">Código</label>
                                 </div>
                             </div>
                             <div class="col-12 col-md-4">
                                 <div class="form-floating form-floating-outline">
-                                    <select id="modalEditUserStatus" name="modalEditUserStatus"
-                                        class="select2 form-select" aria-label="Default select example">
+                                    <select id="slctExtent" name="slctExtent" class="select2 form-select"
+                                        aria-label="Default select example">
                                         @foreach ($extents as $row)
                                             <option value="{{ $row->id_extent }}">{{ $row->name_extent }}</option>
                                         @endforeach
                                     </select>
-                                    <label for="modalEditUserStatus">Und/Medida</label>
+                                    <label for="slct-extent">Und/Medida</label>
                                 </div>
                             </div>
                             <div class="col-12 col-md-4">
                                 <div class="form-floating form-floating-outline">
-                                    <input type="text" name="modalEditUserEmail" class="form-control" placeholder="">
+                                    <input type="text" name="quantityApp" id="quantityApp" class="form-control"
+                                        value="1">
                                     <label for="modalEditUserEmail">Cantidad</label>
                                 </div>
                             </div>
                             <div class="col-12 col-md-4">
                                 <div class="form-floating form-floating-outline">
-                                    <input type="text" name="modalEditUserEmail" class="form-control" placeholder="">
+                                    <input type="text" name="weightApp" id="weightApp" class="form-control"
+                                        value="1">
                                     <label for="modalEditUserEmail">Peso (KGM)</label>
                                 </div>
                             </div>
                             <div class="col-12 text-center">
-                                <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
+                                <button class="btn btn-primary me-sm-3 me-1">Agregar</button>
                                 <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal"
-                                    aria-label="Close">Cancel</button>
+                                    aria-label="Close">Cerrar</button>
                             </div>
                         </form>
                     </div>

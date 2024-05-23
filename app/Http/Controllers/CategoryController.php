@@ -89,7 +89,7 @@ class CategoryController extends Controller
             $filePath = 'public/category/' . $record->img_category;
 
             if (Storage::exists($filePath)) {
-                Storage::delete($filePath); 
+                Storage::delete($filePath);
             } else {
                 return response()->json(['success' => false, 'message' => 'El archivo no existe']);
             }

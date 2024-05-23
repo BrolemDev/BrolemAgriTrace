@@ -1,18 +1,21 @@
 "use strict";
 $(function () {
     var e,
-        t = $(".datatables-permissions"),
+        t = $(".table-products"),
         l = "app-user-list.html";
     t.length &&
         (e = t.DataTable({
             lengthChange: !1,
-            ajax: assetsPath + "json/permissions-list.json",
             columns: [
                 { data: "" },
                 { data: "id" },
+                { data: "idunit" },
+                { data: "code" },
                 { data: "name" },
-                { data: "assigned_to" },
-                { data: "created_date" },
+                { data: "description" },
+                { data: "unit" },
+                { data: "weight" },
+                { data: "quantity" },
                 { data: "" },
             ],
             columnDefs: [
@@ -26,73 +29,15 @@ $(function () {
                         return "";
                     },
                 },
-                { targets: 1, searchable: !1, visible: !1 },
-                {
-                    targets: 2,
-                    render: function (e, t, a, n) {
-                        return (
-                            '<span class="text-nowrap text-heading">' +
-                            a.name +
-                            "</span>"
-                        );
-                    },
-                },
-                {
-                    targets: 3,
-                    orderable: !1,
-                    render: function (e, t, a, n) {
-                        for (
-                            var s = a.assigned_to,
-                                r = "",
-                                o = {
-                                    Admin:
-                                        '<a href="' +
-                                        l +
-                                        '"><span class="badge rounded-pill bg-label-primary m-1">Administrator</span></a>',
-                                    Manager:
-                                        '<a href="' +
-                                        l +
-                                        '"><span class="badge rounded-pill bg-label-warning m-1">Manager</span></a>',
-                                    Users:
-                                        '<a href="' +
-                                        l +
-                                        '"><span class="badge rounded-pill bg-label-success m-1">Users</span></a>',
-                                    Support:
-                                        '<a href="' +
-                                        l +
-                                        '"><span class="badge rounded-pill bg-label-info m-1">Support</span></a>',
-                                    Restricted:
-                                        '<a href="' +
-                                        l +
-                                        '"><span class="badge rounded-pill bg-label-danger m-1">Restricted User</span></a>',
-                                },
-                                d = 0;
-                            d < s.length;
-                            d++
-                        )
-                            r += o[s[d]];
-                        return '<span class="text-nowrap">' + r + "</span>";
-                    },
-                },
-                {
-                    targets: 4,
-                    orderable: !1,
-                    render: function (e, t, a, n) {
-                        return (
-                            '<span class="text-nowrap">' +
-                            a.created_date +
-                            "</span>"
-                        );
-                    },
-                },
+                { targets: [1, 2, 3, 4], searchable: !1, visible: !1 },
                 {
                     targets: -1,
                     searchable: !1,
                     className: "text-center",
-                    title: "Actions",
+                    title: "Acciones",
                     orderable: !1,
                     render: function (e, t, a, n) {
-                        return '<span class="text-nowrap"><button class="btn btn-sm btn-icon btn-text-secondary rounded-pill btn-icon me-2" data-bs-target="#editPermissionModal" data-bs-toggle="modal" data-bs-dismiss="modal"><i class="mdi mdi-pencil-outline mdi-20px"></i></button><button class="btn btn-sm btn-icon btn-text-secondary rounded-pill btn-icon delete-record"><i class="mdi mdi-delete-outline mdi-20px"></i></button></span>';
+                        return '<span class="text-nowrap"><button class="btn btn-sm btn-icon btn-text-secondary rounded-pill btn-icon me-2 btn-edit"><i class="mdi mdi-pencil-outline mdi-20px"></i></button><button class="btn btn-sm btn-icon btn-text-secondary rounded-pill btn-icon delete-record"><i class="mdi mdi-delete-outline mdi-20px"></i></button></span>';
                     },
                 },
             ],
@@ -104,7 +49,7 @@ $(function () {
                         "add-new btn btn-primary mb-3 mb-md-0 waves-effect waves-light",
                     attr: {
                         "data-bs-toggle": "modal",
-                        "data-bs-target": "#addModalProduct",
+                        "data-bs-target": "#ModalProduct",
                     },
                     init: function (e, t, a) {
                         $(t).removeClass("btn-secondary");
@@ -142,16 +87,12 @@ $(function () {
             },
             initComplete: function () {},
         })),
-        $(".datatables-permissions tbody").on(
-            "click",
-            ".delete-record",
-            function () {
-                e.row($(this).parents("tr")).remove().draw();
-            }
-        );
+        $(".table-products tbody").on("click", ".delete-record", function () {
+            e.row($(this).parents("tr")).remove().draw();
+        });
 
     $("#productApp").select2({
-        dropdownParent: $("#addModalProduct"),
+        dropdownParent: $("#ModalProduct"),
         ajax: {
             url: "/search-products",
             dataType: "json",
@@ -167,7 +108,11 @@ $(function () {
                         return {
                             id: product.id_product,
                             text: product.name_product,
-                            data: { code: product.code_product },
+                            data: {
+                                code: product.code_product,
+                                description: product.name_product,
+                                unit: product.extent_id,
+                            },
                         };
                     }),
                 };
@@ -185,4 +130,144 @@ $(function () {
             },
         },
     });
+
+    let f = document.getElementById("modalFormProduct"),
+        fv;
+    fv = FormValidation.formValidation(f, {
+        fields: {
+            productApp: {
+                validators: {
+                    notEmpty: {
+                        message: "Debes seleccionar un producto",
+                    },
+                },
+            },
+            codeApp: {
+                validators: {
+                    notEmpty: {
+                        message: "Porfavor ingresar código",
+                    },
+                },
+            },
+            descrApp: {
+                validators: {
+                    notEmpty: {
+                        message: "Porfavor ingresar descripción",
+                    },
+                },
+            },
+            quantityApp: {
+                validators: {
+                    notEmpty: {
+                        message: "Porfavor ingresar cantidad",
+                    },
+                },
+            },
+            weightApp: {
+                validators: {
+                    notEmpty: {
+                        message: "Porfavor ingresar peso",
+                    },
+                },
+            },
+        },
+        plugins: {
+            trigger: new FormValidation.plugins.Trigger(),
+            bootstrap5: new FormValidation.plugins.Bootstrap5({
+                eleValidClass: "",
+                rowSelector: function (e, a) {
+                    switch (e) {
+                        case "formValidationConfirmPass":
+                        case "formValidationFile":
+                        case "formValidationDob":
+                        case "formValidationSelect2":
+                        case "formValidationLang":
+                        case "formValidationTech":
+                        case "formValidationHobbies":
+                        case "formValidationBio":
+                        case "formValidationGender":
+                            return ".col-md-6";
+                        case "formValidationPlan":
+                            return ".col-xl-3";
+                        case "formValidationSwitch":
+                        case "formValidationCheckbox":
+                            return ".col-12";
+                        default:
+                            return ".row";
+                    }
+                },
+            }),
+            submitButton: new FormValidation.plugins.SubmitButton(),
+            autoFocus: new FormValidation.plugins.AutoFocus(),
+        },
+    });
+
+    fv.on("core.form.valid", function () {
+        e.row
+            .add({
+                id: $("#productApp").val(),
+                idunit: $("#slctExtent").val(),
+                code: $("#codeApp").val(),
+                name: $("#productApp").find("option:selected").text(),
+                description: $("#descrApp").val(),
+                unit: $("#slctExtent").find("option:selected").text(),
+                weight: $("#weightApp").val(),
+                quantity: $("#quantityApp").val(),
+            })
+            .draw();
+        console.log(e.rows().data());
+        $("#ModalProduct").modal("hide");
+    });
+
+    $("#productApp").on("select2:select", function (e) {
+        var code = e.params.data.data.code;
+        var description = e.params.data.data.description;
+        var unit = e.params.data.data.unit;
+
+        $("#codeApp").val(code);
+        $("#descrApp").val(description);
+        $("#slctExtent").val(unit).trigger("change");
+    });
+
+    $("#ModalProduct").on("hidden.bs.modal", function () {
+        resetForm();
+    });
+
+    e.on("click", ".btn-edit", function () {
+        let row = $(this).closest("tr");
+        let rowData = $(this).closest("table").DataTable().row(row).data();
+
+        const defaultValues = {
+            "#descrApp": rowData.description,
+            "#codeApp": rowData.code,
+            "#quantityApp": rowData.quantity,
+            "#weightApp": rowData.weight,
+            "#slctExtent": rowData.idunit,
+        };
+
+        $.each(defaultValues, function (selector, value) {
+            $(selector).val(value).trigger("change");
+        });
+
+        $("#ModalProduct").modal("show");
+    });
+
+    function resetForm() {
+        const defaultValues = {
+            "#productApp": null,
+            "#descrApp": "",
+            "#codeApp": "",
+            "#quantityApp": "1",
+            "#weightApp": "1",
+            "#slctExtent": "1",
+        };
+
+        $.each(defaultValues, function (selector, value) {
+            $(selector).val(value).trigger("change");
+        });
+        var formValidation = $("#modalFormProduct").data("formValidation");
+        if (formValidation) {
+            formValidation.resetForm(true);
+        }
+    }
 });
