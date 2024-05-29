@@ -215,7 +215,6 @@ $(function () {
                 quantity: $("#quantityApp").val(),
             })
             .draw();
-        console.log(e.rows().data());
         $("#ModalProduct").modal("hide");
     });
 
@@ -244,6 +243,9 @@ $(function () {
             "#weightApp": rowData.weight,
             "#slctExtent": rowData.idunit,
         };
+
+        var newOption = new Option(rowData.name, rowData.id, true, true);
+        $("#productApp").append(newOption).trigger("change");
 
         $.each(defaultValues, function (selector, value) {
             $(selector).val(value).trigger("change");

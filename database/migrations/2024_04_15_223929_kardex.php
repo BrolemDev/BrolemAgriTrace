@@ -33,6 +33,7 @@ return new class extends Migration
             $table->string('docref_kardex', 25)->nullable();
             $table->timestamps();
         });
+
     }
 
     /**
@@ -42,6 +43,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('products');
+
+        Schema::dropIfExists('kardex');
     }
 };

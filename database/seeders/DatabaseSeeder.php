@@ -15,9 +15,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            SunatDetractionSeeder::class,
-            SunatExtentSeeder::class,
-            SunatIgvSeeder::class,
+
+            SunatModalitySeeder::class,
+            SunatPortCodeSeeder::class,
+            SunatReasonASeeder::class,
         ]);
     }
 }

@@ -55,7 +55,11 @@
                                         <div class="form-floating form-floating-outline">
                                             <select id="reason" class="select2 form-select" data-allow-clear="true"
                                                 data-placeholder="Motivo del Traslado">
-                                                <option value="">Seleccionar Cliente</option>
+                                                <option value="">Seleccionar Motivo</option>
+                                                @foreach ($reasons as $row)
+                                                    <option value="{{ $row->id_reason }}">
+                                                        {{ Str::limit($row->description_reason, 40, '...') }}</option>
+                                                @endforeach
                                             </select>
                                             <label for="state">Seleccione Motivo del Traslado *</label>
                                         </div>
@@ -64,7 +68,11 @@
                                         <div class="form-floating form-floating-outline">
                                             <select id="transfer_mode" class="select2 form-select" data-allow-clear="true"
                                                 data-placeholder="Modalidad de Traslado ">
-                                                <option value="">Seleccionar Cliente</option>
+                                                <option value="">Seleccionar Modalidad</option>
+                                                @foreach ($modalities as $row)
+                                                    <option value="{{ $row->id_modality }}">{{ $row->description_modality }}
+                                                    </option>
+                                                @endforeach
                                             </select>
                                             <label for="state">Seleccione Modalidad de Traslado *</label>
                                         </div>
@@ -88,17 +96,21 @@
                                             <label for="pincode">Número de bultos *</label>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="form-floating form-floating-outline">
                                             <input type="text" id="pincode" class="form-control" placeholder="658468">
                                             <label for="pincode">Número de contenedor</label>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
                                             <select id="port_code" class="select2 form-select" data-allow-clear="true"
                                                 data-placeholder="Seleccione Código de puerto">
                                                 <option value="">Seleccionar Cliente</option>
+                                                @foreach ($ports as $port)
+                                                    <option value="{{ $port->id_portcode }}">
+                                                        {{ $port->description_portcode }}</option>
+                                                @endforeach
                                             </select>
                                             <label for="state">Código de puerto</label>
                                         </div>

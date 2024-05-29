@@ -25,7 +25,7 @@ use App\Http\Controllers\TransfersController;
 
 Route::controller(UserController::class)->group(function ($route) {
 
-    Route::get('/Usuarios', 'index')->name('users');
+    Route::get('/Usuarios', 'index')->name('user    s');
     Route::post('/Usuarios/roles', 'getRoles');
     Route::post('/newUser', 'new');
     Route::get('/Users', 'show');
