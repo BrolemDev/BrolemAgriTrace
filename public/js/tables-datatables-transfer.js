@@ -201,20 +201,45 @@ $(function () {
             autoFocus: new FormValidation.plugins.AutoFocus(),
         },
     });
-
+    
     fv.on("core.form.valid", function () {
-        e.row
-            .add({
-                id: $("#productApp").val(),
-                idunit: $("#slctExtent").val(),
-                code: $("#codeApp").val(),
-                name: $("#productApp").find("option:selected").text(),
-                description: $("#descrApp").val(),
-                unit: $("#slctExtent").find("option:selected").text(),
-                weight: $("#weightApp").val(),
-                quantity: $("#quantityApp").val(),
-            })
-            .draw();
+        var codeValue = $("#codeApp").val();
+
+        // Buscar todas las filas con el código dado
+        var rowsToEdit = e.rows(function (idx, data, node) {
+            return data.code === codeValue;
+        });
+
+        // Iterar sobre las filas encontradas y actualizarlas
+        rowsToEdit.every(function () {
+            this.data().id = $("#productApp").val();
+            this.data().idunit = $("#slctExtent").val();
+            this.data().name = $("#productApp").find("option:selected").text();
+            this.data().description = $("#descrApp").val();
+            this.data().unit = $("#slctExtent").find("option:selected").text();
+            this.data().weight = $("#weightApp").val();
+            this.data().quantity = $("#quantityApp").val();
+            this.invalidate();
+        });
+
+        // Si no se encontraron filas para editar, agregar una nueva fila
+        if (rowsToEdit.count() === 0) {
+            e.row
+                .add({
+                    id: $("#productApp").val(),
+                    idunit: $("#slctExtent").val(),
+                    code: codeValue,
+                    name: $("#productApp").find("option:selected").text(),
+                    description: $("#descrApp").val(),
+                    unit: $("#slctExtent").find("option:selected").text(),
+                    weight: $("#weightApp").val(),
+                    quantity: $("#quantityApp").val(),
+                })
+                .draw();
+        } else {
+            e.draw(false); // Redibujar el DataTable para aplicar los cambios
+        }
+
         $("#ModalProduct").modal("hide");
     });
 

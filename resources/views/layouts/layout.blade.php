@@ -178,6 +178,11 @@
 
                         <ul class="menu-sub">
                             <li class="menu-item">
+                                <a href="{{ route('settings') }}" class="menu-link">
+                                    <div data-i18n="Setting Company">Empresa</div>
+                                </a>
+                            </li>
+                            <li class="menu-item">
                                 <a href="{{ route('Sucursales') }}" class="menu-link">
                                     <div data-i18n="List Branches">Listar Sucursales</div>
                                 </a>

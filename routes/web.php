@@ -9,6 +9,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\KardexController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TransfersController;
 
 /*
@@ -25,7 +26,7 @@ use App\Http\Controllers\TransfersController;
 
 Route::controller(UserController::class)->group(function ($route) {
 
-    Route::get('/Usuarios', 'index')->name('user    s');
+    Route::get('/Usuarios', 'index')->name('users');
     Route::post('/Usuarios/roles', 'getRoles');
     Route::post('/newUser', 'new');
     Route::get('/Users', 'show');
@@ -103,3 +104,10 @@ Route::controller(TransfersController::class)->group(function ($route) {
     Route::get('/Generar_Guia_Remision', 'new')->name('transfers.new');
 });
 
+
+Route::controller(SettingsController::class)->group(function ($route) {
+
+    Route::get('/Configuraciones', 'index')->name('settings');
+    Route::get('/scopeCodeUbigeo', 'search');
+    Route::post('/updateSettings', 'update');
+});
