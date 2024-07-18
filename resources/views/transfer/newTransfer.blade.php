@@ -21,235 +21,274 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-lg-10 mx-auto">
-                                <!-- 1. Delivery Address -->
-                                <h5 class="mb-4">1. CLIENTE</h5>
-                                <div class="row g-4">
-                                    <div class="col-md-8">
-                                        <div class="form-floating form-floating-outline">
-                                            <select id="state" class="select2 form-select" data-allow-clear="true"
-                                                data-placeholder="Escribe el Número de RUC o Razón Social">
-                                                <option value="">Seleccionar Cliente</option>
-                                            </select>
-                                            <label for="state">Escribe el Número de RUC o Razón Social</label>
+                        <form id="formTransfer">
+                            <div class="row">
+                                <div class="col-lg-11 mx-auto">
+                                    <!-- 1. Delivery Address -->
+                                    <h5 class="mb-4">1. DESTINATARIO</h5>
+                                    <div class="row g-4">
+                                        <div class="col-md-3">
+                                            <div class="input-group input-group-merge mb-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control" id="ruc_destiny"
+                                                        placeholder="" name="ruc_destiny">
+                                                    <label for="ruc_destiny"> N° Doc: *</label>
+                                                </div>
+                                                <span class="input-group-text cursor-pointer btn-primary" id="getDestiny">
+                                                    <i class="mdi mdi-magnify"></i>
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="input-group input-group-merge mb-4">
-                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i
-                                                    class="mdi mdi-email-outline"></i></span>
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="text" class="form-control" id="codeP"
-                                                    placeholder="ABC123" name="product_code">
-                                                <label for="codeP">Email (Opcional)</label>
+                                        <div class="col-md-5">
+                                            <div class="input-group input-group-merge mb-4">
+                                                <span id="basic-icon-default-fullname2" class="input-group-text"><i
+                                                        class="mdi mdi-domain"></i></span>
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control" id="reason_destiny"
+                                                        placeholder="" name="reason_destiny">
+                                                    <label for="reason_destiny"> Razón Social *</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="input-group input-group-merge mb-4">
+                                                <span id="basic-icon-default-fullname2" class="input-group-text"><i
+                                                        class="mdi mdi-email-outline"></i></span>
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control" id="email_destiny"
+                                                        placeholder="" name="email_destiny">
+                                                    <label for="email_destiny">Email (Opcional)</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <hr>
-                                <!-- 2. Delivery Type -->
-                                <h5 class="my-4">2. DATOS DE TRASLADO</h5>
-                                <div class="row gy-4">
-                                    <div class="col-md-4 mb-2">
-                                        <div class="form-floating form-floating-outline">
-                                            <select id="reason" class="select2 form-select" data-allow-clear="true"
-                                                data-placeholder="Motivo del Traslado">
-                                                <option value="">Seleccionar Motivo</option>
-                                                @foreach ($reasons as $row)
-                                                    <option value="{{ $row->id_reason }}">
-                                                        {{ Str::limit($row->description_reason, 40, '...') }}</option>
-                                                @endforeach
-                                            </select>
-                                            <label for="state">Seleccione Motivo del Traslado *</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mb-2">
-                                        <div class="form-floating form-floating-outline">
-                                            <select id="transfer_mode" class="select2 form-select" data-allow-clear="true"
-                                                data-placeholder="Modalidad de Traslado ">
-                                                <option value="">Seleccionar Modalidad</option>
-                                                @foreach ($modalities as $row)
-                                                    <option value="{{ $row->id_modality }}">{{ $row->description_modality }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            <label for="state">Seleccione Modalidad de Traslado *</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mb-2">
-                                        <div class="form-floating form-floating-outline">
-                                            <input type="text" id="multicol-birthdate" class="form-control dob-picker"
-                                                placeholder="YYYY-MM-DD" name="end_date">
-                                            <label for="multicol-birthdate">Fecha Inicial de Traslado</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-floating form-floating-outline">
-                                            <input type="text" id="pincode" class="form-control" placeholder="658468">
-                                            <label for="pincode">Peso bruto (KGM) *</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-floating form-floating-outline">
-                                            <input type="text" id="pincode" class="form-control" placeholder="658468">
-                                            <label for="pincode">Número de bultos *</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="form-floating form-floating-outline">
-                                            <input type="text" id="pincode" class="form-control" placeholder="658468">
-                                            <label for="pincode">Número de contenedor</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-floating form-floating-outline">
-                                            <select id="port_code" class="select2 form-select" data-allow-clear="true"
-                                                data-placeholder="Seleccione Código de puerto">
-                                                <option value="">Seleccionar Cliente</option>
-                                                @foreach ($ports as $port)
-                                                    <option value="{{ $port->id_portcode }}">
-                                                        {{ $port->description_portcode }}</option>
-                                                @endforeach
-                                            </select>
-                                            <label for="state">Código de puerto</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr>
-                                <!-- 3. Apply Promo code -->
-                                <h5 class="my-4">3. DATOS DEL TRANSPORTE PRIVADO</h5>
-                                <div class="row gy-4">
-                                    <div class="col-md-3">
-                                        <div class="form-floating form-floating-outline">
-                                            <select id="doc" class="select2 form-select" data-allow-clear="true"
-                                                data-placeholder="Seleccione Tipo Doc.">
-                                                <option value="">Seleccionar Cliente</option>
-                                            </select>
-                                            <label for="state">Tipo Doc.Ident.* </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="input-group input-group-merge mb-4">
+                                    <hr>
+                                    <!-- 2. Delivery Type -->
+                                    <h5 class="my-4">2. DATOS DE TRASLADO</h5>
+                                    <div class="row gy-4">
+                                        <div class="col-md-4 mb-2">
                                             <div class="form-floating form-floating-outline">
-                                                <input type="text" class="form-control" id="codeP"
-                                                    placeholder="ABC123" name="product_code">
-                                                <label for="codeP"> N° Doc Conductor: *</label>
+                                                <select id="motive_trasnfer" name="motive_trasnfer"
+                                                    class="select2 form-select" data-allow-clear="true"
+                                                    data-placeholder="Motivo del Traslado">
+                                                    <option value="">Seleccionar Motivo</option>
+                                                    @foreach ($reasons as $row)
+                                                        <option value="{{ $row->id_reason }}">
+                                                            {{ Str::limit($row->description_reason, 40, '...') }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <label for="motive_trasnfer">Seleccione Motivo del Traslado *</label>
                                             </div>
-                                            <span class="input-group-text cursor-pointer" id="generateCode">
-                                                <i class="mdi mdi-magnify"></i>
-                                            </span>
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <div class="form-floating form-floating-outline">
+                                                <select id="mode_transfer" name="mode_transfer" class="select2 form-select"
+                                                    data-allow-clear="true" data-placeholder="Modalidad de Traslado ">
+                                                    <option value="">Seleccionar Modalidad</option>
+                                                    @foreach ($modalities as $row)
+                                                        <option value="{{ $row->id_modality }}">
+                                                            {{ $row->description_modality }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <label for="mode_transfer">Seleccione Modalidad de Traslado *</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" id="init_transfer" class="form-control dob-picker"
+                                                    placeholder="YYYY-MM-DD" name="init_transfer">
+                                                <label for="init_transfer">Fecha Inicial de Traslado</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" id="weight_trasnfer" class="form-control"
+                                                    placeholder="" name="weight_trasnfer">
+                                                <label for="weight_trasnfer">Peso bruto (KGM) *</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" id="package_trasnfer" name="package_trasnfer"
+                                                    class="form-control" placeholder="658468">
+                                                <label for="package_trasnfer">Número de bultos *</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" id="container_transfer" name="container_transfer"
+                                                    class="form-control" placeholder="">
+                                                <label for="container_transfer">Número de contenedor</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating form-floating-outline">
+                                                <select id="port_transfer" name="port_transfer"
+                                                    class="select2 form-select" data-allow-clear="true"
+                                                    data-placeholder="Seleccione Código de puerto">
+                                                    <option value="">Seleccionar Cliente</option>
+                                                    @foreach ($ports as $port)
+                                                        <option value="{{ $port->id_portcode }}">
+                                                            {{ $port->description_portcode }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <label for="port_transfer">Código de puerto</label>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <div class="input-group input-group-merge mb-4">
-                                            <span class="input-group-text" id="generateCode">
-                                                <i class="mdi mdi-card-account-details-outline"></i>
-                                            </span>
+                                    <hr>
+                                    <!-- 3. Apply Promo code -->
+                                    <h5 class="my-4">3. DATOS DEL TRANSPORTE PRIVADO</h5>
+                                    <div class="row gy-4">
+                                        <div class="col-md-3">
                                             <div class="form-floating form-floating-outline">
-                                                <input type="text" class="form-control" id="codeP"
-                                                    placeholder="ABC123" name="product_code">
-                                                <label for="codeP"> Nombre Conductor: *</label>
+                                                <select id="doc_transport" name="doc_transport"
+                                                    class="select2 form-select" data-allow-clear="true"
+                                                    data-placeholder="Seleccione Tipo Doc.">
+                                                    <option value="0">DOC.TRIB.NO.DOM.SIN.RUC</option>
+                                                    <option value="1">D.N.I.</option>
+                                                    <option value="4">CARNET DE EXTRANJERIA</option>
+                                                    <option value="6" selected="">R.U.C.</option>
+                                                    <option value="7">PASAPORTE</option>
+                                                    <option value="A">CED. DIPLOMATICA DE IDENTIDAD</option>
+                                                    <option value="B">OC.IDENT.PAIS.RESIDENCIA-NO.D</option>
+                                                    <option value="C">TIN</option>
+                                                    <option value="D">IN</option>
+                                                </select>
+                                                <label for="doc_transport">Tipo Doc.Ident.* </label>
                                             </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="input-group input-group-merge mb-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control" id="number_transport"
+                                                        placeholder="ABC123" name="number_transport">
+                                                    <label for="number_transport"> N° Doc Conductor: *</label>
+                                                </div>
+                                                <span class="input-group-text cursor-pointer btn-primary"
+                                                    id="getTransport">
+                                                    <i class="mdi mdi-magnify"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="input-group input-group-merge mb-4">
+                                                <span class="input-group-text">
+                                                    <i class="mdi mdi-card-account-details-outline"></i>
+                                                </span>
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control" id="names_transport"
+                                                        placeholder="" name="names_transport">
+                                                    <label for="names_transport"> Nombre Conductor: *</label>
+                                                </div>
 
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="input-group input-group-merge mb-4">
-                                            <span class="input-group-text" id="generateCode">
-                                                <i class="mdi mdi-car-3-plus"></i>
-                                            </span>
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="text" class="form-control" id="codeP"
-                                                    placeholder="ABC123" name="product_code">
-                                                <label for="codeP"> N° Placa Vehíc.: *</label>
+                                        <div class="col-md-3">
+                                            <div class="input-group input-group-merge mb-4">
+                                                <span class="input-group-text">
+                                                    <i class="mdi mdi-car-3-plus"></i>
+                                                </span>
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control" id="plate_transport"
+                                                        placeholder="" name="plate_transport">
+                                                    <label for="plate_transport"> N° Placa Vehíc.: *</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <hr>
-                                <!-- 4. Payment Method -->
-                                <div class="row gy-4 ">
-                                    <div class="col-md-6">
-                                        <h5 class="my-4">4. PUNTO DE PARTIDA</h5>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <h5 class="my-4">5. PUNTO DE LLEGADA</h5>
-                                    </div>
-                                    <div class="col-md-6 mb-2">
-                                        <div class="form-floating form-floating-outline">
-                                            <input type="text" id="pincode" class="form-control"
-                                                placeholder="658468">
-                                            <label for="pincode"> Dirección *</label>
+                                    <hr>
+                                    <!-- 4. Payment Method -->
+                                    <div class="row gy-4 ">
+                                        <div class="col-md-6">
+                                            <h5 class="my-4">4. PUNTO DE PARTIDA</h5>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5 class="my-4">5. PUNTO DE LLEGADA</h5>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" id="address_point" name="address_point"
+                                                    class="form-control" value="{{ session('address') }}">
+                                                <label for="address_point"> Dirección *</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" id="address_arrivall" name="address_arrival"
+                                                    class="form-control">
+                                                <label for="address_arrival"> Dirección *</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <select id="ubigeo_origin" name="ubigeo_origin"
+                                                    class="select-search form-select"
+                                                    data-placeholder="Seleccione Ubigeo de Origen">
+                                                    <option value="{{ session('ubigeo') }}">
+                                                        {{ session('ubigeo_data')->departamento }} -
+                                                        {{ session('ubigeo_data')->provincia }} -
+                                                        {{ session('ubigeo_data')->distrito }}
+                                                    </option>
+                                                </select>
+                                                <label for="ubigeo_origin"> Ubigeo * </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <select id="ubigeo_destiny" name="ubigeo_destiny"
+                                                    class="select-search form-select" data-allow-clear="true"
+                                                    data-placeholder="Seleccione Ubigeo de Llegada">
+                                                    <option value="">Seleccionar Cliente</option>
+                                                </select>
+                                                <label for="ubigeo_destiny"> Ubigeo * </label>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 mb-2">
-                                        <div class="form-floating form-floating-outline">
-                                            <input type="text" id="pincode" class="form-control"
-                                                placeholder="658468">
-                                            <label for="pincode"> Dirección *</label>
+                                    <div class="row gy-4 mt-3">
+                                        <div class="card-header p-0">
+                                            <div class="nav-align-top">
+                                                <ul class="nav nav-tabs" role="tablist">
+                                                    <li class="nav-item">
+                                                        <button type="button" class="nav-link active" role="tab"
+                                                            data-bs-toggle="tab" data-bs-target="#navs-top-home"
+                                                            aria-controls="navs-top-home" aria-selected="true">
+                                                            5. Detalle de guía de remisión: *
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating form-floating-outline">
-                                            <select id="ubigeo_origin" class="select2 form-select"
-                                                data-allow-clear="true" data-placeholder="Seleccione Ubigeo de Origen">
-                                                <option value="">Seleccionar Cliente</option>
-                                            </select>
-                                            <label for="state"> Ubigeo * </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating form-floating-outline">
-                                            <select id="ubigeo_destiny" class="select2 form-select"
-                                                data-allow-clear="true" data-placeholder="Seleccione Ubigeo de Llegada">
-                                                <option value="">Seleccionar Cliente</option>
-                                            </select>
-                                            <label for="state"> Ubigeo * </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row gy-4 mt-3">
-                                    <div class="card-header p-0">
-                                        <div class="nav-align-top">
-                                            <ul class="nav nav-tabs" role="tablist">
-                                                <li class="nav-item">
-                                                    <button type="button" class="nav-link active" role="tab"
-                                                        data-bs-toggle="tab" data-bs-target="#navs-top-home"
-                                                        aria-controls="navs-top-home" aria-selected="true">
-                                                        5. Detalle de guía de remisión: *
-                                                    </button>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="tab-content p-0">
-                                            <div class="tab-pane fade show active" id="navs-top-home" role="tabpanel">
-                                                <div class="card-datatable table-responsive">
-                                                    <table class="table-products table">
-                                                        <thead class="table-light">
-                                                            <tr>
-                                                                <th></th>
-                                                                <th></th>
-                                                                <th></th>
-                                                                <th></th>
-                                                                <th></th>
-                                                                <th>Descripcion</th>
-                                                                <th>Und/Medidad</th>
-                                                                <th>Peso (KGM)</th>
-                                                                <th>Cantidad</th>
-                                                                <th></th>
-                                                            </tr>
-                                                        </thead>
-                                                    </table>
+                                        <div class="card-body">
+                                            <div class="tab-content p-0">
+                                                <div class="tab-pane fade show active" id="navs-top-home"
+                                                    role="tabpanel">
+                                                    <div class="card-datatable table-responsive">
+                                                        <table class="table-products table">
+                                                            <thead class="table-light">
+                                                                <tr>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th>Descripcion</th>
+                                                                    <th>Und/Medidad</th>
+                                                                    <th>Peso (KGM)</th>
+                                                                    <th>Cantidad</th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>

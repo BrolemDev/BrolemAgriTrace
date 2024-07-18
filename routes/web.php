@@ -102,6 +102,7 @@ Route::controller(TransfersController::class)->group(function ($route) {
 
     Route::get('/Guias_Remision', 'index')->name('transfers');
     Route::get('/Generar_Guia_Remision', 'new')->name('transfers.new');
+    Route::post('/getDoc', 'getDoc');
 });
 
 

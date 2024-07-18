@@ -90,6 +90,42 @@ $(function () {
         $(".table-products tbody").on("click", ".delete-record", function () {
             e.row($(this).parents("tr")).remove().draw();
         });
+    let csrfToken = $('meta[name="csrf-token"]').attr("content");
+
+    $(".select-search").select2({
+        dropdownParent: $("#formTransfer"),
+        ajax: {
+            url: "/scopeCodeUbigeo",
+            dataType: "json",
+            delay: 250,
+            data: function (params) {
+                return {
+                    query: params.term,
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (row) {
+                        return {
+                            id: row.codigo_ubigeo,
+                            text: `${row.departamento} - ${row.provincia} - ${row.distrito}`,
+                        };
+                    }),
+                };
+            },
+            cache: true,
+        },
+        placeholder: "Buscar un ubigeo",
+        minimumInputLength: 2,
+        language: {
+            searching: function () {
+                return "Buscando...";
+            },
+            noResults: function () {
+                return "No se encontraron resultados";
+            },
+        },
+    });
 
     $("#productApp").select2({
         dropdownParent: $("#ModalProduct"),
@@ -129,6 +165,96 @@ $(function () {
                 return "No se encontraron resultados";
             },
         },
+    });
+
+    //Obtener los datos del destinatario
+
+    $("#getDestiny").on("click", function (e) {
+        blockUI();
+
+        let formData = new FormData();
+        formData.append("_token", csrfToken);
+        formData.append("doc", "6");
+        formData.append("number", $("#ruc_destiny").val());
+
+        fetch("getDoc", {
+            method: "POST",
+            body: formData,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    return response.json().then((data) => {
+                        throw new Error(data.message || "Error desconocido");
+                    });
+                }
+                return response.json();
+            })
+            .then((data) => {
+                if (data.status === "success") {
+                    $("#reason_destiny").val(data.data.razonSocial);
+                    console.log(data.data);
+                } else {
+                    throw new Error(data.message || "Error desconocido");
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error.message);
+                $("#reason_destiny").val("");
+                Toast.fire({
+                    icon: "error",
+                    title: error.message,
+                });
+            })
+            .finally(() => {
+                $.unblockUI();
+            });
+    });
+
+    $("#getTransport").on("click", function (e) {
+        blockUI();
+        console.log($("#doc_transport").val());
+        console.log($("#number_transport").val());
+
+        let formData = new FormData();
+        formData.append("_token", csrfToken);
+        formData.append("doc", $("#doc_transport").val());
+        formData.append("number", $("#number_transport").val());
+
+        fetch("getDoc", {
+            method: "POST",
+            body: formData,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Error en la solicitud");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                if (data.status === "success") {
+                    if ($("#doc_transport").val() == "6") {
+                        $("#names_transport").val(data.data.razonSocial);
+                    } else if ($("#doc_transport").val() == "1") {
+                        $("#names_transport").val(
+                            `${data.data.nombres} ${data.data.apellidoPaterno} ${data.data.apellidoMaterno}`
+                        );
+                    }
+                    console.log(data.data);
+                } else {
+                    throw new Error(data.message || "Error desconocido");
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error.message);
+                $("#names_transport").val();
+                Toast.fire({
+                    icon: "error",
+                    title: error.message,
+                });
+            })
+            .finally(() => {
+                $.unblockUI();
+            });
     });
 
     let f = document.getElementById("modalFormProduct"),
@@ -201,7 +327,7 @@ $(function () {
             autoFocus: new FormValidation.plugins.AutoFocus(),
         },
     });
-    
+
     fv.on("core.form.valid", function () {
         var codeValue = $("#codeApp").val();
 
@@ -297,4 +423,29 @@ $(function () {
             formValidation.resetForm(true);
         }
     }
+
+    function blockUI() {
+        $.blockUI({
+            message:
+                '<div class="d-flex justify-content-center"><div class="sk-wave m-0"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div> </div>',
+            timeout: 1e3,
+            css: {
+                backgroundColor: "transparent",
+                color: "#fff",
+                border: "0",
+            },
+            overlayCSS: { opacity: 0.5 },
+        });
+    }
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        },
+    });
 });
