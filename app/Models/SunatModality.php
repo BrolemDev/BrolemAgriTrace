@@ -9,5 +9,4 @@ class SunatModality extends Model
 {
     use HasFactory;
     protected $table = 'sunat_modality';
-    protected $primaryKey = 'id_modality';
 }

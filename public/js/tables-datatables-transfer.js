@@ -37,7 +37,7 @@ $(function () {
                     title: "Acciones",
                     orderable: !1,
                     render: function (e, t, a, n) {
-                        return '<span class="text-nowrap"><button class="btn btn-sm btn-icon btn-text-secondary rounded-pill btn-icon me-2 btn-edit"><i class="mdi mdi-pencil-outline mdi-20px"></i></button><button class="btn btn-sm btn-icon btn-text-secondary rounded-pill btn-icon delete-record"><i class="mdi mdi-delete-outline mdi-20px"></i></button></span>';
+                        return '<span class="text-nowrap"><button type="button" class="btn btn-sm btn-icon btn-text-secondary rounded-pill btn-icon me-2 btn-edit"><i class="mdi mdi-pencil-outline mdi-20px"></i></button><button class="btn btn-sm btn-icon btn-text-secondary rounded-pill btn-icon delete-record"><i class="mdi mdi-delete-outline mdi-20px"></i></button></span>';
                     },
                 },
             ],
@@ -192,7 +192,6 @@ $(function () {
             .then((data) => {
                 if (data.status === "success") {
                     $("#reason_destiny").val(data.data.razonSocial);
-                    console.log(data.data);
                 } else {
                     throw new Error(data.message || "Error desconocido");
                 }
@@ -212,8 +211,6 @@ $(function () {
 
     $("#getTransport").on("click", function (e) {
         blockUI();
-        console.log($("#doc_transport").val());
-        console.log($("#number_transport").val());
 
         let formData = new FormData();
         formData.append("_token", csrfToken);
@@ -239,7 +236,6 @@ $(function () {
                             `${data.data.nombres} ${data.data.apellidoPaterno} ${data.data.apellidoMaterno}`
                         );
                     }
-                    console.log(data.data);
                 } else {
                     throw new Error(data.message || "Error desconocido");
                 }
@@ -395,6 +391,7 @@ $(function () {
             "#slctExtent": rowData.idunit,
         };
 
+        console.log(getTableData());
         var newOption = new Option(rowData.name, rowData.id, true, true);
         $("#productApp").append(newOption).trigger("change");
 
@@ -404,6 +401,97 @@ $(function () {
 
         $("#ModalProduct").modal("show");
     });
+
+    //Create Trasnfer
+    let o = document.getElementById("formTransfer"),
+        ov;
+
+    ov = FormValidation.formValidation(o, {
+        fields: {
+            ruc_destiny: {
+                validators: {
+                    notEmpty: {
+                        message: "Porfavor ingresar RUC de destino",
+                    },
+                },
+            },
+        },
+        plugins: {
+            trigger: new FormValidation.plugins.Trigger(),
+            bootstrap5: new FormValidation.plugins.Bootstrap5({
+                eleValidClass: "",
+                rowSelector: function (e, a) {
+                    switch (e) {
+                        case "formValidationConfirmPass":
+                        case "formValidationFile":
+                        case "formValidationDob":
+                        case "formValidationSelect2":
+                        case "formValidationLang":
+                        case "formValidationTech":
+                        case "formValidationHobbies":
+                        case "formValidationBio":
+                        case "formValidationGender":
+                            return ".col-md-6";
+                        case "formValidationPlan":
+                            return ".col-xl-3";
+                        case "formValidationSwitch":
+                        case "formValidationCheckbox":
+                            return ".col-12";
+                        default:
+                            return ".row";
+                    }
+                },
+            }),
+            submitButton: new FormValidation.plugins.SubmitButton(),
+            autoFocus: new FormValidation.plugins.AutoFocus(),
+        },
+    });
+
+    ov.on("core.form.valid", function () {
+        sendDataServer();
+    });
+
+    function sendDataServer() {
+        blockUI();
+
+        let formData = new FormData(o);
+        formData.append("_token", csrfToken);
+        let tableData = getTableData();
+        formData.append("tableData", JSON.stringify(tableData));
+
+        fetch("newTransfer", {
+            method: "POST",
+            body: formData,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    return response.text().then((text) => {
+                        throw new Error(text);
+                    });
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error("Error:", error.message);
+                // Mostrar el contenido del error
+                alert("Error: " + error.message);
+            })
+            .finally(() => {
+                $.unblockUI();
+            });
+    }
+
+    function getTableData() {
+        let tableData = [];
+        e.rows().every(function (rowIdx, tableLoop, rowLoop) {
+            let data = this.data();
+            tableData.push(data);
+        });
+        return tableData;
+    }
 
     function resetForm() {
         const defaultValues = {

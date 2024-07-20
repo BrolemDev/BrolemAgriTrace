@@ -173,8 +173,7 @@ document.getElementById("layout-menu") &&
                             debug: !1,
                             fallbackLng: "es",
                             backend: {
-                                loadPath:
-                                    assetsPath + "json/locales/es.json",
+                                loadPath: assetsPath + "json/locales/es.json",
                             },
                             returnObjects: !0,
                         })
@@ -354,7 +353,6 @@ document.getElementById("layout-menu") &&
                         !1
                     );
             } catch (e) {}
-            
     })(),
     "undefined" != typeof $ &&
         $(function () {
@@ -547,6 +545,17 @@ document.getElementById("layout-menu") &&
                         e = new PerfectScrollbar($(this)[0], {
                             wheelPropagation: !1,
                             suppressScrollX: !0,
+                        });
+                    }),
+                    $(".input-number").each(function () {
+                        $(this).on("input", function (e) {
+                            var value = e.target.value;
+                            e.target.value = value.replace(/[^0-9.]/g, "");
+
+                            var parts = e.target.value.split(".");
+                            if (parts.length > 2) {
+                                e.target.value = parts[0] + "." + parts[1];
+                            }
                         });
                     }),
                     s.on("keyup", function () {

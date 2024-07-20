@@ -6,22 +6,22 @@
     <div class="container-xxl flex-grow-1 container-p-y">
         <!-- Sticky Actions -->
         <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div
-                        class="card-header bg-label-secondary d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row">
-                        <h5 class="card-title mb-sm-0 me-2">Guía de Remisión del Remitente</h5>
-                        <div class="action-btns">
-                            <button class="btn btn-outline-primary me-3">
-                                <span class="align-middle"> Atras</span>
-                            </button>
-                            <button class="btn btn-primary">
-                                Generar Guia de Remisión
-                            </button>
+            <form id="formTransfer">
+                <div class="col-12">
+                    <div class="card">
+                        <div
+                            class="card-header bg-label-secondary d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row">
+                            <h5 class="card-title mb-sm-0 me-2">Guía de Remisión del Remitente</h5>
+                            <div class="action-btns">
+                                <button class="btn btn-outline-primary me-3">
+                                    <span class="align-middle"> Atras</span>
+                                </button>
+                                <button class="btn btn-primary">
+                                    Generar Guia de Remisión
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <form id="formTransfer">
+                        <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-11 mx-auto">
                                     <!-- 1. Delivery Address -->
@@ -68,7 +68,7 @@
                                     <div class="row gy-4">
                                         <div class="col-md-4 mb-2">
                                             <div class="form-floating form-floating-outline">
-                                                <select id="motive_trasnfer" name="motive_trasnfer"
+                                                <select id="motive_transfer" name="motive_transfer"
                                                     class="select2 form-select" data-allow-clear="true"
                                                     data-placeholder="Motivo del Traslado">
                                                     <option value="">Seleccionar Motivo</option>
@@ -77,7 +77,7 @@
                                                             {{ Str::limit($row->description_reason, 40, '...') }}</option>
                                                     @endforeach
                                                 </select>
-                                                <label for="motive_trasnfer">Seleccione Motivo del Traslado *</label>
+                                                <label for="motive_transfer">Seleccione Motivo del Traslado *</label>
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-2">
@@ -103,16 +103,16 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-floating form-floating-outline">
-                                                <input type="text" id="weight_trasnfer" class="form-control"
-                                                    placeholder="" name="weight_trasnfer">
-                                                <label for="weight_trasnfer">Peso bruto (KGM) *</label>
+                                                <input type="text" id="weight_transfer" class="form-control input-number"
+                                                    placeholder="" name="weight_transfer">
+                                                <label for="weight_transfer">Peso bruto (KGM) *</label>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-floating form-floating-outline">
-                                                <input type="text" id="package_trasnfer" name="package_trasnfer"
-                                                    class="form-control" placeholder="658468">
-                                                <label for="package_trasnfer">Número de bultos *</label>
+                                                <input type="text" id="package_transfer" name="package_transfer"
+                                                    class="form-control input-number" placeholder="658468">
+                                                <label for="arr">Número de bultos *</label>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
@@ -216,7 +216,7 @@
                                         </div>
                                         <div class="col-md-6 mb-2">
                                             <div class="form-floating form-floating-outline">
-                                                <input type="text" id="address_arrivall" name="address_arrival"
+                                                <input type="text" id="address_arrival" name="address_arrival"
                                                     class="form-control">
                                                 <label for="address_arrival"> Dirección *</label>
                                             </div>
@@ -288,10 +288,10 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
         <!-- /Sticky Actions -->
         <div class="modal fade" id="ModalProduct" tabindex="-1" aria-hidden="true">
@@ -346,14 +346,14 @@
                             </div>
                             <div class="col-12 col-md-4">
                                 <div class="form-floating form-floating-outline">
-                                    <input type="text" name="quantityApp" id="quantityApp" class="form-control"
-                                        value="1">
+                                    <input type="text" name="quantityApp" id="quantityApp"
+                                        class="form-control input-number" value="1">
                                     <label for="modalEditUserEmail">Cantidad</label>
                                 </div>
                             </div>
                             <div class="col-12 col-md-4">
                                 <div class="form-floating form-floating-outline">
-                                    <input type="text" name="weightApp" id="weightApp" class="form-control"
+                                    <input type="text" name="weightApp" id="weightApp" class="form-control input-number"
                                         value="1">
                                     <label for="modalEditUserEmail">Peso (KGM)</label>
                                 </div>
@@ -363,7 +363,6 @@
                                 <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal"
                                     aria-label="Close">Cerrar</button>
                             </div>
-                        </form>
                     </div>
                 </div>
             </div>

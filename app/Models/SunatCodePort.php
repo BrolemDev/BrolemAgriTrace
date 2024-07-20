@@ -9,5 +9,4 @@ class SunatCodePort extends Model
 {
     use HasFactory;
     protected $table = 'sunat_portcode';
-    protected $primaryKey = 'id_portcode';
 }

@@ -9,5 +9,4 @@ class SunatReason extends Model
 {
     use HasFactory;
     protected $table = 'sunat_reason';
-    protected $primaryKey = 'id_reason';
 }
