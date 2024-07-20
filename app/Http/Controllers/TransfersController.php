@@ -107,4 +107,22 @@ class TransfersController extends Controller
 
         return response()->json(['message' => 'Guía de remision Agregada Correctamente', 'status' => 200]);
     }
+
+    public function pdf()
+    {
+        require_once(public_path('fpdf/fpdf.php'));
+
+        // Crear una instancia de FPDF
+        $pdf = new \FPDF('P', 'mm', 'A4');
+        $pdf->AddPage();
+        $pdf->SetFont('Arial', 'B', 16);
+        $pdf->Cell(40, 10, 'Aqui trabajaras');
+
+        // Evitar cualquier salida antes de generar el PDF
+        ob_clean();
+
+        // Generar el PDF y enviarlo al navegador
+        $pdf->Output();
+        exit;
+    }
 }
