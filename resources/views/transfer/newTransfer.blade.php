@@ -293,7 +293,7 @@
                 </div>
             </form>
         </div>
-        <!-- /Sticky Actions -->
+        <!-- /Modal Select Product -->
         <div class="modal fade" id="ModalProduct" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-simple modal-dialog-centered">
                 <div class="modal-content  p-3 p-md-4">
@@ -353,8 +353,8 @@
                             </div>
                             <div class="col-12 col-md-4">
                                 <div class="form-floating form-floating-outline">
-                                    <input type="text" name="weightApp" id="weightApp" class="form-control input-number"
-                                        value="1">
+                                    <input type="text" name="weightApp" id="weightApp"
+                                        class="form-control input-number" value="1">
                                     <label for="modalEditUserEmail">Peso (KGM)</label>
                                 </div>
                             </div>
@@ -367,6 +367,69 @@
                 </div>
             </div>
         </div>
+
+
+        <!-- Modal Finish function -->
+        <div class="modal fade" id="ModalTransfer" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-simple modal-refer-and-earn modal-dialog-centered">
+                <div class="modal-content p-3 p-md-5">
+                    <div class="modal-body pt-3 pt-md-0 px-0 pb-md-0">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div class="text-center mb-4">
+                            <h3 class="mb-2">Guía de Remesión</h3>
+                        </div>
+                        <div class="row py-2">
+                            <div class="col-12 col-lg-4 px-4">
+                                <a id="url_guide" href="{{ url('/GuiaRemisionPdf') }}" target="_blank">
+                                    <div class="d-flex justify-content-center mb-3">
+                                        <div class="modal-refer-and-earn-step bg-label-danger">
+                                            <i class="mdi mdi-file-pdf-box mdi-36px"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="text-center">
+                                    <h6 class="mb-2">Ver Guía de Remisión</h6>
+                                    <p class="mb-lg-0">
+                                        Redirige a la guía de remisión en formato PDF
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-4 px-4">
+                                <a href="{{ url('/Guias_Remision') }}">
+                                    <div class="d-flex justify-content-center mb-3">
+                                        <div class="modal-refer-and-earn-step bg-label-info">
+                                            <i class="mdi mdi-file-document-multiple-outline mdi-36px"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="text-center">
+                                    <h6 class="mb-2">Ver Guías de Remisión</h6>
+                                    <p class="mb-lg-0">
+                                        Mira toda la lista de guías de remisión
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-4 px-4">
+                                <a href="{{ '/Generar_Guia_Remision' }}">
+                                    <div class="d-flex justify-content-center mb-3">
+                                        <div class="modal-refer-and-earn-step bg-label-success">
+                                            <i class="mdi mdi-file-document-refresh-outline mdi-36px"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="text-center">
+                                    <h6 class="mb-2">Generar Nueva Guía</h6>
+                                    <p class="mb-0">
+                                        Genera una nueva guía de remisión
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/ Modal Finish function  -->
     </div>
     <!-- / Content -->
 @endsection()

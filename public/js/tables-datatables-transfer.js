@@ -451,6 +451,10 @@ $(function () {
         sendDataServer();
     });
 
+    $("#ModalTransfer").on("hidden.bs.modal", function () {
+        location.reload();
+    });
+
     function sendDataServer() {
         blockUI();
 
@@ -472,7 +476,14 @@ $(function () {
                 return response.json();
             })
             .then((data) => {
-                console.log(data);
+                $("#ModalTransfer").modal({
+                    backdrop: "static",
+                    keyboard: false,
+                });
+
+                $("#ModalTransfer").modal("show");
+
+                $("#url_guide").attr("href", data.url);
             })
             .catch((error) => {
                 console.error("Error:", error.message);
