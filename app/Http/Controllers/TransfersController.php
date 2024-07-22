@@ -108,6 +108,12 @@ class TransfersController extends Controller
         return response()->json(['icon' => 'success', 'message' => 'Guía de remision Agregada Correctamente', 'status' => 200, 'url' => '/GuiaRemisionPdf/' . $guide->id]);
     }
 
+    public function show(){
+        
+        $data = DeliveryGuide::guides();
+        return response()->json(['data' => $data]);
+    }
+
     public function pdf()
     {
         require_once(public_path('fpdf/fpdf.php'));

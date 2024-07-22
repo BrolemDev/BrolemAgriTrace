@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class DeliveryGuide extends Model
 {
@@ -29,6 +30,9 @@ class DeliveryGuide extends Model
         'ubigeo_destiny',
     ];
 
+
+
+
     public function reason()
     {
         return $this->belongsTo(SunatReason::class, 'reason_id');
@@ -47,5 +51,30 @@ class DeliveryGuide extends Model
     public function details()
     {
         return $this->hasMany(DeliveryGuideDetail::class);
+    }
+
+    public static function guides()
+    {
+        $guides = self::all();
+        $data = [];
+        foreach ($guides as $guide) {
+
+            $totalWeight = $guide->details->sum('weight');
+
+            $formattedDate = Carbon::parse($guide->created_at)->format('d-m-Y / h:i A');
+
+            $data[] = [
+                'id' => $guide->id,
+                'date' => $formattedDate,
+                'voucher' => $guide->id,
+                'destiny' => $guide->ruc_destiny,
+                'reason' => $guide->reason_destiny,
+                'weight' => $totalWeight,
+                'status' => $guide->status_guide,
+
+            ];
+        }
+
+        return $data;
     }
 }

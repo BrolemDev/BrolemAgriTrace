@@ -105,6 +105,7 @@ Route::controller(TransfersController::class)->group(function ($route) {
     Route::post('/getDoc', 'getDoc');
     Route::post('newTransfer', 'create');
     Route::get('GuiaRemisionPdf', 'pdf');
+    Route::get('/table_guides', 'show');
 });
 
 

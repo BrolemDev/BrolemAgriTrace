@@ -36,6 +36,7 @@ return new class extends Migration
             $table->string('address_destiny');
             $table->string('ubigeo_origin');
             $table->string('ubigeo_destiny');
+            $table->integer('status_guide')->default(0);
             $table->timestamps();
         });
 
