@@ -108,8 +108,9 @@ class TransfersController extends Controller
         return response()->json(['icon' => 'success', 'message' => 'Guía de remision Agregada Correctamente', 'status' => 200, 'url' => '/GuiaRemisionPdf/' . $guide->id]);
     }
 
-    public function show(){
-        
+    public function show()
+    {
+
         $data = DeliveryGuide::guides();
         return response()->json(['data' => $data]);
     }
@@ -122,7 +123,65 @@ class TransfersController extends Controller
         $pdf = new \FPDF('P', 'mm', 'A4');
         $pdf->AddPage();
         $pdf->SetFont('Arial', 'B', 16);
-        $pdf->Cell(40, 10, 'Aqui trabajaras');
+        $pdf->SetFont('Arial', 'B', 12);
+
+        $pdf->SetXY(120, 10);
+        $pdf->Cell(80, 5, 'R.U.C. ' . session('ruc'), 0, 2, 'C');
+        $pdf->Cell(80, 8, 'GUIA DE REMISION', 0, 2, 'C');
+        $pdf->Cell(80, 5, 'T008 - 000405', 0, 2, 'C');
+        $pdf->Ln(15);
+
+
+        $pdf->SetFont('Helvetica', 'B', 8);
+        $pdf->Cell(35, 7, 'FECHA DE EMISION:', 1, 0, 'C');
+        $pdf->Cell(40, 7, 'FECHA DE TRASLADO:', 1, 0, 'C');
+        $pdf->Cell(35, 7, 'DOCS. REFERENCIA: ', 1, 0, 'C');
+        $pdf->Cell(40, 7, 'MOTIVO TRASLADO:', 1, 0, 'C');
+        $pdf->Cell(40, 7, 'MOD. TRANSPORTE:', 1, 1, 'C');
+
+        $pdf->Cell(35, 10, '', 1, 0, 'C');
+        $pdf->Cell(40, 10, '', 1, 0, 'C');
+        $pdf->Cell(35, 10, '', 1, 0, 'C');
+        $pdf->Cell(40, 10, '', 1, 0, 'C');
+        $pdf->Cell(40, 10, '', 1, 1, 'C');
+        $pdf->Ln(5);
+
+        $pdf->Cell(95, 7, 'DIRECCION DE PARTIDA', 1, 0, 'C');
+        $pdf->Cell(95, 7, 'DIRECCION DE LLEGADA', 1, 1, 'C');
+        $pdf->Cell(95, 10, '', 1, 0, 'C');
+        $pdf->Cell(95, 10, '', 1, 1, 'C');
+        $pdf->Ln(7);
+
+        $pdf->Cell(70, 7, 'DESTINATARIO', 1, 0, 'C');
+        $pdf->Cell(35, 7, 'RUC TRANSPORTE', 1, 0, 'C');
+        $pdf->Cell(85, 7, 'RAZON SOCIAL TRANSP.', 1, 1, 'C');
+
+        $pdf->Cell(70, 7, 'WALTER CELIS VELA - Num.Doc.: 43365149', 1, 0, 'C');
+        $pdf->Cell(35, 7, '20517547434', 1, 0, 'C');
+        $pdf->Cell(85, 7, 'IMPORTACIONES Y EXPORTACIONES FACIL CAR E.I.R.L.', 1, 1, 'C');
+        $pdf->Ln(7);
+
+        $pdf->Cell(70, 10, 'REMITIMOS A UD.(ES) EN BUENAS CONDICIONES LO SIGUIENTE:', 0, 2);
+        $pdf->Cell(25, 7, 'CANT.', 1, 0, 'C');
+        $pdf->Cell(95, 7, 'PRODUCTO', 1, 0, 'C');
+        $pdf->Cell(40, 7, 'UNID/MED: ', 1, 0, 'C');
+        $pdf->Cell(30, 7, 'PESO', 1, 1, 'C');
+
+        $pdf->Cell(25, 7, '2', 1, 0, 'C');
+        $pdf->Cell(95, 7, 'LLANTA 11R22.5 18PR TRANSTONE E606 TL Del ', 1, 0, 'C');
+        $pdf->Cell(40, 7, 'UNIDADES', 1, 0, 'C');
+        $pdf->Cell(30, 7, '0.000', 1, 1, 'C');
+
+        $pdf->Cell(0, 7, 'Peso Bruto (KGM): 30.000', 1, 1, 'L');
+        $pdf->Cell(0, 7, 'Numero de Bulltos o Pallets: 2', 1, 1, 'L');
+        $pdf->Ln(7);
+
+        $pdf->SetFont('Helvetica', 'B', 15);
+        $pdf->Cell(0, 7, 'Obervacion:', 0, 1, 'L');
+        $pdf->SetFont('Helvetica', 'B', 8);
+        $pdf->Cell(15, 8, 'Destino:', 0, 0, 'C');
+        $pdf->Cell(0, 20, 'Lima - Peru', 0, 0, '');
+
 
         // Evitar cualquier salida antes de generar el PDF
         ob_clean();
