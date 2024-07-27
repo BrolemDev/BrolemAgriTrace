@@ -37,8 +37,16 @@ class Supplier extends Model
                 'expiry' => $row->expiry_validate,
                 'observation' => $row->observation,
                 'status' => $row->status_supplier,
+                'representative' => $row->representative
             ];
         }
         return $data;
+    }
+
+
+    public function scopeSearch($query, $searchTerm)
+    {
+        return $query->where('ruc_supplier', 'LIKE', "%{$searchTerm}%")
+            ->orWhere('name_supplier', 'LIKE', "%{$searchTerm}%");
     }
 }

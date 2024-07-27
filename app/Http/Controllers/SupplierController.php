@@ -58,6 +58,7 @@ class SupplierController extends Controller
             $supplier->address_supplier  = $request->input("address");
             $supplier->email_supplier  = $request->input("mail");
             $supplier->ubigeo  = $request->input("ubigeo");
+            $supplier->representative  = $request->input("representative");
             $supplier->status_supplier = 1;
             $supplier->save();
 
@@ -83,6 +84,7 @@ class SupplierController extends Controller
             $supplier->address_supplier  = $request->input("address");
             $supplier->email_supplier  = $request->input("mail");
             $supplier->ubigeo  = $request->input("ubigeo");
+            $supplier->representative  = $request->input("representative");
             $supplier->status_supplier = 1;
             $supplier->save();
 
@@ -174,5 +176,13 @@ class SupplierController extends Controller
             $supplier->save();
             return response()->json(['type' => 'info', 'message' => 'Documento Invalidado']);
         }
+    }
+
+    public function search(Request $request)
+    {
+        $searchTerm = $request->input('query');
+        $results = Supplier::search($searchTerm)->get();
+
+        return response()->json($results);
     }
 }

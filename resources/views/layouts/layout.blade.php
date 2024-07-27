@@ -224,6 +224,24 @@
                     </li>
                     <li class="menu-item">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class='menu-icon tf-icons mdi mdi-form-select'></i>
+                            <div data-i18n="Purchase Orders">Ordenes de Compra</div>
+                        </a>
+                        <ul class="menu-sub">
+                            <li class="menu-item">
+                                <a href="{{ Route('oc.new') }}" class="menu-link">
+                                    <div data-i18n="New purchase order">Nueva Orden de Compra</div>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="{{ route('transfers') }}" class="menu-link">
+                                    <div data-i18n="Purchase Order List">Lista de Orden de Compra</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class='menu-icon tf-icons mdi mdi-truck-cargo-container'></i>
                             <div data-i18n="Reference guides">Guías de Remisión</div>
                         </a>

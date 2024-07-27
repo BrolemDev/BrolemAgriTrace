@@ -90,6 +90,13 @@
                                     <label for="ubigeo">Ubigeo</label>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-floating form-floating-outline">
+                                    <input type="text" id="representative" name="representative" class="form-control"
+                                        placeholder="Representante">
+                                    <label for="representative">Representante</label>
+                                </div>
+                            </div>
                             <div class="col-12 text-center">
                                 <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Guardar</button>
                                 <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal"

@@ -10,6 +10,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\KardexController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\TitOrdenController;
 use App\Http\Controllers\TransfersController;
 
 /*
@@ -61,6 +62,7 @@ Route::controller(SupplierController::class)->group(function ($route) {
     Route::post('/verifySupplier', 'verifyRUC');
     Route::post('/verifySanitary', 'fileSanitary');
     Route::post('/deleteSupplier', 'delete');
+    Route::get('/scopeSupplier', 'search');
 });
 
 Route::controller(CategoryController::class)->group(function ($route) {
@@ -109,6 +111,11 @@ Route::controller(TransfersController::class)->group(function ($route) {
     Route::get('/table_guides', 'show');
 });
 
+
+Route::controller(TitOrdenController::class)->group(function ($route) {
+
+    Route::get('/NuevaOrdenCompra', 'create')->name('oc.new');
+});
 
 Route::controller(SettingsController::class)->group(function ($route) {
 

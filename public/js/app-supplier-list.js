@@ -184,6 +184,7 @@ $(function () {
         $("#phone").val(rowData.phone);
         $("#address").val(rowData.address);
         $("#ubigeo").val(rowData.ubigeo);
+        $("#representative").val(rowData.representative);
         $("#title-form").text("Editar Proveedor");
         $("#title-form").attr("data-i18n", "Edit Supplier");
         $("#addPermissionModal").modal("show");

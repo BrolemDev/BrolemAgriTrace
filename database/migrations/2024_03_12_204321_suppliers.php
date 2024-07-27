@@ -28,6 +28,7 @@ return new class extends Migration
             $table->date('expiry_validate')->nullable();
             $table->date('expiry_sanitary')->nullable();
             $table->boolean('status_supplier')->default(0);
+            $table->string('representative');
             $table->timestamps();
         });
     }
