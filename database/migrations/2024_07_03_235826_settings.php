@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('ecommerce')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
-            $table->integer('ubigeo')->nullable();
+            $table->string('ubigeo')->nullable();
             $table->string('urbanization')->nullable();
             $table->string('address')->nullable();
             $table->timestamps();
