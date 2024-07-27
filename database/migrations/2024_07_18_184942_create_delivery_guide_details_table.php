@@ -37,6 +37,7 @@ return new class extends Migration
             $table->string('ubigeo_origin');
             $table->string('ubigeo_destiny');
             $table->integer('status_guide')->default(0);
+            $table->string('link_guide');
             $table->timestamps();
         });
 

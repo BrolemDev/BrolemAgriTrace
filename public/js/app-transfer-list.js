@@ -25,16 +25,19 @@ $(function () {
             colorClass: "btn-danger",
             iconClass: "mdi-close-circle-outline",
             titleText: "No Generado",
+            idclass: "datatables-cancel",
         },
         1: {
             colorClass: "btn-success",
             iconClass: "mdi-checkbox-marked-circle-outline",
             titleText: "Recibido",
+            idclass: "datatables-success",
         },
         2: {
             colorClass: "btn-warning",
             iconClass: "mdi-alert-circle-outline",
             titleText: "Pendiente",
+            idclass: "datatables-warning",
         },
     };
     $("#flatpickr-range").flatpickr({
@@ -142,9 +145,10 @@ $(function () {
                             colorClass: "btn-primary",
                             iconClass: "mdi-checkbox-marked-circle-outline",
                             titleText: "Descargar PDF",
+                            idclass: "datatables-pdf",
                         };
 
-                        return `<button type="button" class="btn btn-icon ${config.colorClass} btn-fab demo waves-effect waves-light" data-bs-toggle="tooltip" data-bs-placement="top" title="${config.titleText}">
+                        return `<button type="button" class="btn btn-icon ${config.colorClass} btn-fab demo waves-effect waves-light ${config.idclass}" data-bs-toggle="tooltip" data-bs-placement="top" title="${config.titleText}">
                             <span class="tf-icons mdi ${config.iconClass} mdi-24px"></span>
                         </button>`;
                     },
@@ -225,12 +229,43 @@ $(function () {
                     "form-select-sm"
                 );
         }, 300);
+    var p = [].slice.call(document.querySelectorAll(".clipboard-btn"));
+    ClipboardJS
+        ? p.map(function (t) {
+              new ClipboardJS(t).on("success", function (t) {
+                  "copy" == t.action &&
+                      Toast.fire({
+                          icon: "success",
+                          title: "Enlace Copiado",
+                      });
+              });
+          })
+        : p.map(function (t) {
+              t.setAttribute("disabled", !0);
+          });
 
     $(".create-guide").each(function () {
         $(this).click(function (e) {
             e.preventDefault();
             location.href = "Generar_Guia_Remision";
         });
+    });
+
+    e.on("click", ".datatables-cancel", function (e) {
+        let row = $(this).closest("tr");
+        let rowData = $(this).closest("table").DataTable().row(row).data();
+
+        $("#clipboard-link").val(rowData.link);
+        $("#modal-link").modal("show");
+    });
+
+    $("#whatsapp-button").on("click", function () {
+        var message = encodeURIComponent(
+            "Hola, te compartimos el enlace para que puedas registrar la recepción de tu guía: " +
+                $("#clipboard-link").val()
+        );
+        var whatsappUrl = "https://wa.me/?text=" + message;
+        window.open(whatsappUrl, "_blank");
     });
 
     e.on("click", ".btn-acepted", function () {
@@ -319,6 +354,15 @@ $(function () {
 
         return result;
     }
+
+    const blockUI = () => {
+        $.blockUI({
+            message:
+                '<div class="sk-wave mx-auto"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div>',
+            css: { backgroundColor: "transparent", border: "0" },
+            overlayCSS: { opacity: 0.5 },
+        });
+    };
 
     const Toast = Swal.mixin({
         toast: true,

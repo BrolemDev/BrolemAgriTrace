@@ -87,6 +87,7 @@ class TransfersController extends Controller
         $guide->address_destiny = $request->input('address_arrival');
         $guide->ubigeo_origin = $request->input('ubigeo_origin');
         $guide->ubigeo_destiny = $request->input('ubigeo_destiny');
+        $guide->link_guide = $this->generateToken(25);
         $guide->save();
 
         $tableData = json_decode($request->input('tableData'), true);
@@ -126,6 +127,37 @@ class TransfersController extends Controller
         return response()->json($deliveryGuide);
     }
 
+    private function generateToken($length = 25)
+    {
+        // Caracteres permitidos para el token
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!$&*()_+=~`[]{}|;:,<>';
+        $charactersLength = strlen($characters);
+        $token = '';
+
+        for ($i = 0; $i < $length; $i++) {
+            $token .= $characters[rand(0, $charactersLength - 1)];
+        }
+
+        return $token;
+    }
+
+    public function validateGuide(Request $request)
+    {
+        $token = $request->query('token');
+        if (empty($token)) {
+            return redirect('/')->with('error', 'Token inválido.');
+        }
+
+        // Buscar la guía correspondiente al token
+        $guide = DeliveryGuide::where('link_guide', $token)->first();
+
+        if (!$guide) {
+            return redirect('/')->with('error', 'Guía no encontrada.');
+        }
+
+        return view('transfer.validateTransfer', $guide);
+    }
+
     public function pdf($id)
     {
 
@@ -161,7 +193,7 @@ class TransfersController extends Controller
         $pdf->SetFont('Helvetica', 'B', 9);
         $pdf->Cell($width, 8, 'GUIA DE REMISION', 0, 2, 'C');
         $pdf->SetFont('Helvetica', '', 9);
-        $pdf->Cell($width, 5, 'T002 - '. $formattedId, 0, 2, 'C');
+        $pdf->Cell($width, 5, 'T002 - ' . $formattedId, 0, 2, 'C');
         $pdf->Ln(15);
 
 

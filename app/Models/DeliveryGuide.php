@@ -70,6 +70,7 @@ class DeliveryGuide extends Model
                 'destiny' => $guide->ruc_destiny,
                 'reason' => $guide->reason_destiny,
                 'weight' => $totalWeight,
+                'link' => url('/Validar_Guia?token=' . urlencode($guide->link_guide)),
                 'status' => $guide->status_guide,
 
             ];
