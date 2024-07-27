@@ -22,7 +22,6 @@ class DatabaseSeeder extends Seeder
             SettingsSeeder::class,
             SunatDetractionSeeder::class,
             SunatIgvSeeder::class,
-            SettingsSeeder::class
         ]);
     }
 }
