@@ -77,4 +77,54 @@ class DeliveryGuide extends Model
 
         return $data;
     }
+
+    public static function guideData($id)
+    {
+        $guide = self::find($id);
+
+        if (!$guide) {
+            return null;
+        }
+
+        $ubigeoOrigin = SunatCodeUbigeo::where('codigo_ubigeo', $guide->ubigeo_origin)->first();
+        $ubigeoDestiny = SunatCodeUbigeo::where('codigo_ubigeo', $guide->ubigeo_destiny)->first();
+
+        $formattedDate = Carbon::parse($guide->created_at)->format('d-m-Y / h:i A');
+
+        return [
+            'id' => $guide->id,
+            'date' => $formattedDate,
+            'dateTransfer' => $guide->init_transfer,
+            'voucher' => $guide->id,
+            'destiny' => $guide->ruc_destiny,
+            'reason' => $guide->reason_destiny,
+            'weight' => $guide->weight_transfer,
+            'package' => $guide->package_transfer,
+            'status' => $guide->status_guide,
+            'typeDoc' => $guide->doc_transport,
+            'transportDoc' => $guide->number_transport,
+            'transport' => $guide->names_transport,
+            'plate' => $guide->plate_transport,
+            'addressPoint' => $guide->address_point,
+            'addressDestiny' => $guide->address_destiny,
+            'originUbigeo' => $guide->ubigeo_origin,
+            'destinyUbigeo' => $guide->ubigeo_destiny,
+            'reason_name' => optional($guide->reason)->description_reason,
+            'modality_name' => optional($guide->modality)->description_modality,
+            'port_name' =>  optional($guide->port)->description_portcode,
+            'ubigeo_origin' => optional($ubigeoOrigin)->departamento . ' - ' . optional($ubigeoOrigin)->provincia . ' - ' . optional($ubigeoOrigin)->distrito,
+            'ubigeo_destiny' => optional($ubigeoDestiny)->departamento . ' - ' . optional($ubigeoDestiny)->provincia . ' - ' . optional($ubigeoDestiny)->distrito,
+
+            'details' => $guide->details->map(function ($detail) {
+                return [
+                    'code' => $detail->code,
+                    'name' => $detail->name,
+                    'description' => $detail->description,
+                    'unit' => $detail->unit,
+                    'weight' => $detail->weight,
+                    'quantity' => $detail->quantity,
+                ];
+            }),
+        ];
+    }
 }

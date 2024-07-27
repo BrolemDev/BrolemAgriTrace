@@ -115,9 +115,30 @@ class TransfersController extends Controller
         return response()->json(['data' => $data]);
     }
 
-    public function pdf()
+    public function guide($id)
     {
+        $deliveryGuide = DeliveryGuide::guideData($id);
+
+        if (!$deliveryGuide) {
+            return response()->json(['error' => 'Guía de remisión no encontrada'], 404);
+        }
+
+        return response()->json($deliveryGuide);
+    }
+
+    public function pdf($id)
+    {
+
+        $deliveryGuide = DeliveryGuide::guideData($id);
+
         require_once(public_path('fpdf/fpdf.php'));
+
+        $formattedId = str_pad($deliveryGuide['id'], 6, '0', STR_PAD_LEFT);
+        $typeDocMap = [
+            1 => 'DNI',
+            6 => 'RUC'
+        ];
+        $documentType = $typeDocMap[$deliveryGuide['typeDoc']] ?? 'DOC.';
 
         // Crear una instancia de FPDF
         $pdf = new \FPDF('P', 'mm', 'A4');
@@ -126,9 +147,21 @@ class TransfersController extends Controller
         $pdf->SetFont('Arial', 'B', 12);
 
         $pdf->SetXY(120, 10);
-        $pdf->Cell(80, 5, 'R.U.C. ' . session('ruc'), 0, 2, 'C');
-        $pdf->Cell(80, 8, 'GUIA DE REMISION', 0, 2, 'C');
-        $pdf->Cell(80, 5, 'T008 - 000405', 0, 2, 'C');
+
+        $x = 120;
+        $y = 15;
+        $width = 80;
+        $height = 25;
+
+        $pdf->Rect($x, $y, $width, $height);
+
+        $pdf->SetXY($x, $y + 3);
+        $pdf->SetFont('Helvetica', '', 9);
+        $pdf->Cell($width, 5, 'R.U.C. ' . session('ruc'), 0, 2, 'C');
+        $pdf->SetFont('Helvetica', 'B', 9);
+        $pdf->Cell($width, 8, 'GUIA DE REMISION', 0, 2, 'C');
+        $pdf->SetFont('Helvetica', '', 9);
+        $pdf->Cell($width, 5, 'T002 - '. $formattedId, 0, 2, 'C');
         $pdf->Ln(15);
 
 
@@ -139,48 +172,62 @@ class TransfersController extends Controller
         $pdf->Cell(40, 7, 'MOTIVO TRASLADO:', 1, 0, 'C');
         $pdf->Cell(40, 7, 'MOD. TRANSPORTE:', 1, 1, 'C');
 
-        $pdf->Cell(35, 10, '', 1, 0, 'C');
-        $pdf->Cell(40, 10, '', 1, 0, 'C');
-        $pdf->Cell(35, 10, '', 1, 0, 'C');
-        $pdf->Cell(40, 10, '', 1, 0, 'C');
-        $pdf->Cell(40, 10, '', 1, 1, 'C');
+        $pdf->SetFont('Helvetica', '', 8);
+        $pdf->Cell(35, 8, $deliveryGuide['date'], 1, 0, 'C');
+        $pdf->Cell(40, 8, $deliveryGuide['dateTransfer'], 1, 0, 'C');
+        $pdf->Cell(35, 8, '', 1, 0, 'C');
+        $pdf->Cell(40, 8,  $deliveryGuide['reason_name'], 1, 0, 'C');
+        $pdf->Cell(40, 8,  $deliveryGuide['modality_name'], 1, 1, 'C');
         $pdf->Ln(5);
 
-        $pdf->Cell(95, 7, 'DIRECCION DE PARTIDA', 1, 0, 'C');
-        $pdf->Cell(95, 7, 'DIRECCION DE LLEGADA', 1, 1, 'C');
-        $pdf->Cell(95, 10, '', 1, 0, 'C');
-        $pdf->Cell(95, 10, '', 1, 1, 'C');
+        $pdf->SetFont('Helvetica', 'B', 8);
+        $pdf->Cell(95, 7,  utf8_decode('DIRECCIÓN DE PARTIDA'), 1, 0, 'C');
+        $pdf->Cell(95, 7, utf8_decode('DIRECCIÓN DE LLEGADA'), 1, 1, 'C');
+        $pdf->SetFont('Helvetica', '', 8);
+        $pdf->Cell(95, 10, utf8_decode($deliveryGuide['addressPoint']), 'LR', 0, 'C');
+        $pdf->Cell(95, 10, utf8_decode($deliveryGuide['addressDestiny']), 'LR', 1, 'C');
+        $pdf->Cell(95, 5, utf8_decode($deliveryGuide['ubigeo_origin']), 'LRB', 0, 'C');
+        $pdf->Cell(95, 5, utf8_decode($deliveryGuide['ubigeo_destiny']), 'LRB', 1, 'C');
         $pdf->Ln(7);
 
-        $pdf->Cell(70, 7, 'DESTINATARIO', 1, 0, 'C');
-        $pdf->Cell(35, 7, 'RUC TRANSPORTE', 1, 0, 'C');
-        $pdf->Cell(85, 7, 'RAZON SOCIAL TRANSP.', 1, 1, 'C');
+        $pdf->SetFont('Helvetica', 'B', 8);
+        $pdf->Cell(75, 7, 'DESTINATARIO', 1, 0, 'C');
+        $pdf->Cell(35, 7, $documentType . ' TRANSPORTE', 1, 0, 'C');
+        $pdf->Cell(80, 7, 'RAZON SOCIAL TRANSP.', 1, 1, 'C');
 
-        $pdf->Cell(70, 7, 'WALTER CELIS VELA - Num.Doc.: 43365149', 1, 0, 'C');
-        $pdf->Cell(35, 7, '20517547434', 1, 0, 'C');
-        $pdf->Cell(85, 7, 'IMPORTACIONES Y EXPORTACIONES FACIL CAR E.I.R.L.', 1, 1, 'C');
+        $pdf->SetFont('Helvetica', '', 8);
+        $pdf->Cell(75, 7, utf8_decode($deliveryGuide['reason']) . ' - ' . $deliveryGuide['destiny'], 1, 0, 'C');
+        $pdf->Cell(35, 7, utf8_decode($deliveryGuide['transportDoc']), 1, 0, 'C');
+        $pdf->Cell(80, 7, utf8_decode($deliveryGuide['transport']), 1, 1, 'C');
         $pdf->Ln(7);
 
-        $pdf->Cell(70, 10, 'REMITIMOS A UD.(ES) EN BUENAS CONDICIONES LO SIGUIENTE:', 0, 2);
-        $pdf->Cell(25, 7, 'CANT.', 1, 0, 'C');
-        $pdf->Cell(95, 7, 'PRODUCTO', 1, 0, 'C');
-        $pdf->Cell(40, 7, 'UNID/MED: ', 1, 0, 'C');
+        $pdf->SetFont('Helvetica', 'B', 8);
+        $pdf->Cell(70, 5, 'REMITIMOS A UD.(ES) EN BUENAS CONDICIONES LO SIGUIENTE:', 0, 2);
+        $pdf->Cell(30, 7, 'CANT.', 1, 0, 'C');
+        $pdf->Cell(85, 7, 'PRODUCTO', 1, 0, 'C');
+        $pdf->Cell(45, 7, 'UNID/MED: ', 1, 0, 'C');
         $pdf->Cell(30, 7, 'PESO', 1, 1, 'C');
 
-        $pdf->Cell(25, 7, '2', 1, 0, 'C');
-        $pdf->Cell(95, 7, 'LLANTA 11R22.5 18PR TRANSTONE E606 TL Del ', 1, 0, 'C');
-        $pdf->Cell(40, 7, 'UNIDADES', 1, 0, 'C');
-        $pdf->Cell(30, 7, '0.000', 1, 1, 'C');
+        $pdf->SetFont('Helvetica', '', 9);
+        foreach ($deliveryGuide['details'] as $detail) {
+            $pdf->Cell(30, 5, $detail['quantity'], 'L', 0, 'C');
+            $pdf->Cell(85, 5, $detail['name'], 0, 0, 'L');
+            $pdf->Cell(45, 5, $detail['unit'], 0, 0, 'C');
+            $pdf->Cell(30, 5, $detail['weight'], 'R', 1, 'C');
+        }
 
-        $pdf->Cell(0, 7, 'Peso Bruto (KGM): 30.000', 1, 1, 'L');
-        $pdf->Cell(0, 7, 'Numero de Bulltos o Pallets: 2', 1, 1, 'L');
+        $pdf->Cell(0, 7, 'Peso Bruto (KGM): ' . $deliveryGuide['weight'], 1, 1, 'L');
+        $pdf->Cell(0, 7, 'Numero de Bulltos o Pallets:' . $deliveryGuide['package'], 1, 1, 'L');
         $pdf->Ln(7);
 
         $pdf->SetFont('Helvetica', 'B', 15);
-        $pdf->Cell(0, 7, 'Obervacion:', 0, 1, 'L');
-        $pdf->SetFont('Helvetica', 'B', 8);
+        $pdf->SetFillColor(75, 139, 59);
+        $pdf->SetTextColor(255, 255, 255);
+        $pdf->Cell(0, 10, 'Obervacion:', 0, 1, 'L', true);
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetFillColor(255, 255, 255);
+        $pdf->SetFont('Helvetica', '', 9);
         $pdf->Cell(15, 8, 'Destino:', 0, 0, 'C');
-        $pdf->Cell(0, 20, 'Lima - Peru', 0, 0, '');
 
 
         // Evitar cualquier salida antes de generar el PDF

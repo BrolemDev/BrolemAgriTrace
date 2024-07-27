@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class SunatCodePort extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'id_portcode';
     protected $table = 'sunat_portcode';
 }

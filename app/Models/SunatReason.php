@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class SunatReason extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'id_reason';
     protected $table = 'sunat_reason';
 }
