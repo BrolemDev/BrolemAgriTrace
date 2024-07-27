@@ -348,7 +348,7 @@ $(function () {
                         .every(function () {
                             var t = this,
                                 a = $(
-                                    '<select id="branchID" class="select2 form-select text-capitalize" name="branchId"><option value=""> Mostrar Productos/Servicios en Todos los Almacenes</option></select>'
+                                    '<select id="branchID" class="select2 form-select text-capitalize" name="branchId"><option value=""> Mostrar Productos/Servicios en Todos los Almacenes</option><option value=1"">Sucursal 1</option></select>'
                                 )
                                     .appendTo(".branch_product")
                                     .on("change", function () {

@@ -19,8 +19,10 @@ class DatabaseSeeder extends Seeder
             SunatModalitySeeder::class,
             SunatPortCodeSeeder::class,
             SunatReasonASeeder::class,
+            SettingsSeeder::class,
+            SunatDetractionSeeder::class,
+            SunatIgvSeeder::class,
             SettingsSeeder::class
-
         ]);
     }
 }
