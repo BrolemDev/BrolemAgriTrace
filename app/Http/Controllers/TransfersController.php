@@ -209,7 +209,7 @@ class TransfersController extends Controller
         $pdf->Cell(40, 8, $deliveryGuide['dateTransfer'], 1, 0, 'C');
         $pdf->Cell(35, 8, '', 1, 0, 'C');
         $pdf->Cell(40, 8,  $deliveryGuide['reason_name'], 1, 0, 'C');
-        $pdf->Cell(40, 8,  $deliveryGuide['modality_name'], 1, 1, 'C');
+        $pdf->Cell(40, 8,   utf8_decode($deliveryGuide['modality_name']), 1, 1, 'C');
         $pdf->Ln(5);
 
         $pdf->SetFont('Helvetica', 'B', 8);
