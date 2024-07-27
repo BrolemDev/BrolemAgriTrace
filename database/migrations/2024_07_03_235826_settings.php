@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSettingsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -20,7 +20,7 @@ class CreateSettingsTable extends Migration
             $table->string('ecommerce')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
-            $table->integer('ubigeo')->nullable(); // Usar 'integer' en lugar de 'int'
+            $table->integer('ubigeo')->nullable();
             $table->string('urbanization')->nullable();
             $table->string('address')->nullable();
             $table->timestamps();
@@ -36,4 +36,4 @@ class CreateSettingsTable extends Migration
     {
         Schema::dropIfExists('settings');
     }
-}
+};
