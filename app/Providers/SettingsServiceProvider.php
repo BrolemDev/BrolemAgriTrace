@@ -6,6 +6,7 @@ use App\Models\Settings;
 use App\Models\sunatCodeUbigeo;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Schema;
 
 class SettingsServiceProvider extends ServiceProvider
 {
@@ -36,25 +37,29 @@ class SettingsServiceProvider extends ServiceProvider
      */
     public static function updateSessionData()
     {
-        // Obtener el primer registro de la tabla settings
-        $settings = Settings::first();
+        // Verificar si la tabla settings existe antes de intentar obtener datos
+        if (Schema::hasTable('settings')) {
+            $settings = Settings::first();
 
-        // Agregar los datos de configuración a la sesión
-        if ($settings) {
-            Session::put('ruc', $settings->ruc);
-            Session::put('reason', $settings->reason);
-            Session::put('ecommerce', $settings->ecommerce);
-            Session::put('phone', $settings->phone);
-            Session::put('email', $settings->email);
-            Session::put('ubigeo', $settings->ubigeo);
-            Session::put('urbanization', $settings->urbanization);
-            Session::put('address', $settings->address);
+            // Agregar los datos de configuración a la sesión
+            if ($settings) {
+                Session::put('ruc', $settings->ruc);
+                Session::put('reason', $settings->reason);
+                Session::put('ecommerce', $settings->ecommerce);
+                Session::put('phone', $settings->phone);
+                Session::put('email', $settings->email);
+                Session::put('ubigeo', $settings->ubigeo);
+                Session::put('urbanization', $settings->urbanization);
+                Session::put('address', $settings->address);
 
-            // Obtener los datos relacionados de la tabla ubigeo
-            $ubigeo = sunatCodeUbigeo::find($settings->ubigeo);
+                // Verificar si la tabla ubigeo existe antes de intentar obtener datos
+                if (Schema::hasTable('sunat_codigoubigeo')) {
+                    $ubigeo = sunatCodeUbigeo::find($settings->ubigeo);
 
-            if ($ubigeo) {
-                Session::put('ubigeo_data', $ubigeo);
+                    if ($ubigeo) {
+                        Session::put('ubigeo_data', $ubigeo);
+                    }
+                }
             }
         }
     }
