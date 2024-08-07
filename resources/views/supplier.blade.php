@@ -85,9 +85,10 @@
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-floating form-floating-outline">
-                                    <input type="text" id="ubigeo" name="ubigeo" class="form-control"
-                                        placeholder="Ubigeo">
-                                    <label for="ubigeo">Ubigeo</label>
+                                    <select id="ubigeo" name="ubigeo" class="select-ubigeo form-select"
+                                        data-placeholder="Seleccione Ubigeo de Proveedor">
+                                    </select>
+                                    <label for="ubigeo"> Ubigeo * </label>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
@@ -100,7 +101,7 @@
                             <div class="col-12 text-center">
                                 <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Guardar</button>
                                 <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal"
-                                    aria-label="Close" >Cancelar</button>
+                                    aria-label="Close">Cancelar</button>
                             </div>
                         </form>
                     </div>

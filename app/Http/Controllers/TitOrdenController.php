@@ -74,14 +74,15 @@ class TitOrdenController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+
+    public function pdf()
     {
-        //
+        require_once(public_path('fpdf/fpdf.php'));
+        $pdf = new \FPDF('P', 'mm', 'A4');
+        $pdf->AddPage();
+        $pdf->SetFont('Arial', 'B', 12);
+
+
+        //Orden de Compra
     }
 }

@@ -10,6 +10,8 @@ class sunatCodeUbigeo extends Model
     use HasFactory;
     protected $table = 'sunat_codigoubigeo';
     protected $primaryKey = 'codigo_ubigeo';
+    public $incrementing = false;
+    protected $keyType = 'string';
     protected $fillable = ['departamento', 'provincia', 'distrito'];
 
 

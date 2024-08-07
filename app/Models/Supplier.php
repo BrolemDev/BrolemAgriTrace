@@ -19,9 +19,10 @@ class Supplier extends Model
     public static function  getSuppliers()
     {
         $suppliers = self::all();
-
         $data = [];
         foreach ($suppliers as $row) {
+            $ubigeo = SunatCodeUbigeo::where('codigo_ubigeo', $row->ubigeo,)->first();
+
             $data[] = [
                 'id' => $row->id_supplier,
                 'name' => $row->name_supplier,
@@ -29,7 +30,8 @@ class Supplier extends Model
                 'address' => $row->address_supplier,
                 'phone' => $row->phone_supplier,
                 'email' => $row->email_supplier,
-                'ubigeo' => $row->ubigeo,
+                'id_ubigeo' => $row->ubigeo,
+                'ubigeo' => optional($ubigeo)->departamento . ' - ' . optional($ubigeo)->provincia . ' - ' . optional($ubigeo)->distrito,
                 'verify' => $row->verify_ruc,
                 'file' => $row->file_sanitary,
                 'sanitary' => $row->verify_sanitary,

@@ -57,7 +57,7 @@
                     <form class="row g-3" onsubmit="return false">
                         <div class="col-lg-10">
                             <div class="input-group input-group-merge">
-                                <input type="text" id="clipboard-link" class="form-control" value="" />
+                                <input type="text" id="clipboard-link" class="form-control" vsalue="" />
                                 <span class="clipboard-btn input-group-text text-primary cursor-pointer"
                                     data-clipboard-action="copy" data-clipboard-target="#clipboard-link">Copiar</span>
                             </div>

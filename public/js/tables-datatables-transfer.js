@@ -391,7 +391,6 @@ $(function () {
             "#slctExtent": rowData.idunit,
         };
 
-        console.log(getTableData());
         var newOption = new Option(rowData.name, rowData.id, true, true);
         $("#productApp").append(newOption).trigger("change");
 

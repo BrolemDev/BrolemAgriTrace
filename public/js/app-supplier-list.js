@@ -167,6 +167,42 @@ $(function () {
                 });
             }
         );
+
+    $(".select-ubigeo").select2({
+        dropdownParent: $("#supplierForm"),
+        ajax: {
+            url: "/scopeCodeUbigeo",
+            dataType: "json",
+            delay: 250,
+            data: function (params) {
+                return {
+                    query: params.term,
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (row) {
+                        return {
+                            id: row.codigo_ubigeo,
+                            text: `${row.departamento} - ${row.provincia} - ${row.distrito}`,
+                        };
+                    }),
+                };
+            },
+            cache: true,
+        },
+        placeholder: "Buscar un ubigeo",
+        minimumInputLength: 2,
+        language: {
+            searching: function () {
+                return "Buscando...";
+            },
+            noResults: function () {
+                return "No se encontraron resultados";
+            },
+        },
+    });
+
     $(".btn-add").on("click", function () {
         closeForm();
         $("#title-form").text("Agregar Proveedor");
@@ -185,6 +221,10 @@ $(function () {
         $("#address").val(rowData.address);
         $("#ubigeo").val(rowData.ubigeo);
         $("#representative").val(rowData.representative);
+
+        var newOption = new Option(rowData.ubigeo, rowData.id_ubigeo, true, true);
+        $("#ubigeo").append(newOption).trigger("change");
+
         $("#title-form").text("Editar Proveedor");
         $("#title-form").attr("data-i18n", "Edit Supplier");
         $("#addPermissionModal").modal("show");
