@@ -33,7 +33,13 @@ $(function () {
                     datePattern: ["m", "y"],
                 }),
                 l && new Cleave(l, { numeral: !0, numeralPositiveOnly: !0 }),
-                m && new Cleave(m, { phone: !0, phoneRegionCode: "US" }),
+                m &&
+                    new Cleave(m, {
+                        phone: !0,
+                        phoneRegionCode: "US",
+                        blocks: [9],
+                        numericOnly: !0,
+                    }),
                 u && new Cleave(u, { delimiter: "", numeral: !0 }),
                 c &&
                     new Cleave(c, {
@@ -203,10 +209,10 @@ $(function () {
                 e.addEventListener("click", (e) => {
                     switch (t._currentIndex) {
                         case 0:
-                            p.validate();
+                            g.validate();
                             break;
                         case 1:
-                            g.validate();
+                            p.validate();
                             break;
                         case 2:
                             v.validate();

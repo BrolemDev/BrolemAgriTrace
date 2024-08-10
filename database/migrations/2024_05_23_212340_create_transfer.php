@@ -28,6 +28,12 @@ return new class extends Migration
             $table->string('id_portcode', 36)->primary();
             $table->string('description_portcode', 60);
         });
+
+        Schema::create('sunat_typedocument', function (Blueprint $table) {
+            $table->string('id_doc')->primary();
+            $table->string('name_doc');
+            $table->string('description_doc');
+        });
     }
 
     /**

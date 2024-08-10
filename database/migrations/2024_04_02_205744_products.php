@@ -33,7 +33,7 @@ return new class extends Migration
             $table->integer('stock_min')->default(0);
             $table->unsignedBigInteger('detraction_id')->nullable();
             $table->foreign('detraction_id')->references('id_detraction')->on('sunat_detraction');
-            $table->string('detail_product', 200);
+            $table->string('detail_product', 200)->nullable();
             $table->boolean('status_product')->default(1);
             $table->timestamps();
         });

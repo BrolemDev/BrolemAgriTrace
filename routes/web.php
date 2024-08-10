@@ -115,6 +115,7 @@ Route::controller(TransfersController::class)->group(function ($route) {
 Route::controller(TitOrdenController::class)->group(function ($route) {
 
     Route::get('/NuevaOrdenCompra', 'create')->name('oc.new');
+    Route::get('/pdfordencompra', 'pdf');
 });
 
 Route::controller(SettingsController::class)->group(function ($route) {

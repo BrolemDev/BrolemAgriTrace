@@ -111,7 +111,6 @@ class TransfersController extends Controller
 
     public function show()
     {
-
         $data = DeliveryGuide::guides();
         return response()->json(['data' => $data]);
     }
@@ -154,6 +153,7 @@ class TransfersController extends Controller
         if (!$guide) {
             return redirect('/')->with('error', 'Guía no encontrada.');
         }
+
 
         return view('transfer.validateTransfer', $guide);
     }

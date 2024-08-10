@@ -109,6 +109,19 @@
                 <div class="w-px-700 mt-5 mt-lg-0">
                     <div id="multiStepsValidation" class="bs-stepper wizard-numbered">
                         <div class="bs-stepper-header border-bottom-0">
+                            <div class="line"></div>
+                            <div class="step" data-target="#personalInfoValidation">
+                                <button type="button" class="step-trigger">
+                                    <span class="bs-stepper-circle"><i class="mdi mdi-check"></i></span>
+                                    <span class="bs-stepper-label">
+                                        <span class="bs-stepper-number">01</span>
+                                        <span class="d-flex flex-column gap-1 ms-2">
+                                            <span class="bs-stepper-title">Personal</span>
+                                            <span class="bs-stepper-subtitle">Ingrese Información</span>
+                                        </span>
+                                    </span>
+                                </button>
+                            </div>
                             <div class="step" data-target="#accountDetailsValidation">
                                 <button type="button" class="step-trigger">
                                     <span class="bs-stepper-circle"><i class="mdi mdi-check"></i></span>
@@ -121,19 +134,7 @@
                                     </span>
                                 </button>
                             </div>
-                            <div class="line"></div>
-                            <div class="step" data-target="#personalInfoValidation">
-                                <button type="button" class="step-trigger">
-                                    <span class="bs-stepper-circle"><i class="mdi mdi-check"></i></span>
-                                    <span class="bs-stepper-label">
-                                        <span class="bs-stepper-number">02</span>
-                                        <span class="d-flex flex-column gap-1 ms-2">
-                                            <span class="bs-stepper-title">Personal</span>
-                                            <span class="bs-stepper-subtitle">Enter Information</span>
-                                        </span>
-                                    </span>
-                                </button>
-                            </div>
+
                             <div class="line"></div>
                             <div class="step" data-target="#billingLinksValidation">
                                 <button type="button" class="step-trigger">
@@ -150,6 +151,95 @@
                         </div>
                         <div class="bs-stepper-content">
                             <form id="multiStepsForm" onsubmit="return false">
+                                <!-- Personal Info -->
+                                <div id="personalInfoValidation" class="content">
+                                    <div class="content-header mb-3">
+                                        <h4 class="mb-0">Información personal</h4>
+                                        <small>Ingrese su información personal</small>
+                                    </div>
+                                    <div class="row g-3">
+                                        <div class="col-sm-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <select id="multiStepsState" class="select2 form-select"
+                                                    data-allow-clear="true">
+
+                                                </select>
+                                                <label for="multiStepsState">State</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" id="multiStepsFirstName"
+                                                    name="multiStepsFirstName" class="form-control"
+                                                    placeholder="John" />
+                                                <label for="multiStepsFirstName">Apellidos</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" id="multiStepsLastName"
+                                                    name="multiStepsLastName" class="form-control"
+                                                    placeholder="Doe" />
+                                                <label for="multiStepsLastName">Nombres</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="input-group input-group-merge">
+                                                <span class="input-group-text">(+51)</span>
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" id="multiStepsMobile"
+                                                        name="multiStepsMobile"
+                                                        class="form-control multi-steps-mobile"
+                                                        placeholder="932 265 454" />
+                                                    <label for="multiStepsMobile">Número Celular</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" id="multiStepsPincode" name="multiStepsPincode"
+                                                    class="form-control multi-steps-pincode" placeholder="Postal Code"
+                                                    maxlength="6" />
+                                                <label for="multiStepsPincode">Pincode</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" id="multiStepsAddress" name="multiStepsAddress"
+                                                    class="form-control" placeholder="Address" />
+                                                <label for="multiStepsAddress">Address</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" id="multiStepsArea" name="multiStepsArea"
+                                                    class="form-control" placeholder="Area/Landmark" />
+                                                <label for="multiStepsArea">Landmark</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" id="multiStepsCity" class="form-control"
+                                                    placeholder="Jackson" />
+                                                <label for="multiStepsCity">City</label>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="col-12 d-flex justify-content-between">
+                                            <button class="btn btn-secondary btn-prev" disabled="">
+                                                <i class="mdi mdi-arrow-left me-sm-1 me-0"></i>
+                                                <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                                            </button>
+                                            <button class="btn btn-primary btn-next">
+                                                <span
+                                                    class="align-middle d-sm-inline-block d-none me-sm-1 me-0">Next</span>
+                                                <i class="mdi mdi-arrow-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!-- Account Details -->
                                 <div id="accountDetailsValidation" class="content">
                                     <div class="content-header mb-3">
@@ -209,143 +299,6 @@
                                             </div>
                                         </div>
                                         <div class="col-12 d-flex justify-content-between">
-                                            <button class="btn btn-secondary btn-prev" disabled="">
-                                                <i class="mdi mdi-arrow-left me-sm-1 me-0"></i>
-                                                <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                                            </button>
-                                            <button class="btn btn-primary btn-next">
-                                                <span
-                                                    class="align-middle d-sm-inline-block d-none me-sm-1 me-0">Next</span>
-                                                <i class="mdi mdi-arrow-right"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Personal Info -->
-                                <div id="personalInfoValidation" class="content">
-                                    <div class="content-header mb-3">
-                                        <h4 class="mb-0">Personal Information</h4>
-                                        <small>Enter Your Personal Information</small>
-                                    </div>
-                                    <div class="row g-3">
-                                        <div class="col-sm-6">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="text" id="multiStepsFirstName"
-                                                    name="multiStepsFirstName" class="form-control"
-                                                    placeholder="John" />
-                                                <label for="multiStepsFirstName">First Name</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="text" id="multiStepsLastName"
-                                                    name="multiStepsLastName" class="form-control"
-                                                    placeholder="Doe" />
-                                                <label for="multiStepsLastName">Last Name</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="input-group input-group-merge">
-                                                <span class="input-group-text">US (+1)</span>
-                                                <div class="form-floating form-floating-outline">
-                                                    <input type="text" id="multiStepsMobile"
-                                                        name="multiStepsMobile"
-                                                        class="form-control multi-steps-mobile"
-                                                        placeholder="202 555 0111" />
-                                                    <label for="multiStepsMobile">Mobile</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="text" id="multiStepsPincode" name="multiStepsPincode"
-                                                    class="form-control multi-steps-pincode" placeholder="Postal Code"
-                                                    maxlength="6" />
-                                                <label for="multiStepsPincode">Pincode</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="text" id="multiStepsAddress" name="multiStepsAddress"
-                                                    class="form-control" placeholder="Address" />
-                                                <label for="multiStepsAddress">Address</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="text" id="multiStepsArea" name="multiStepsArea"
-                                                    class="form-control" placeholder="Area/Landmark" />
-                                                <label for="multiStepsArea">Landmark</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="text" id="multiStepsCity" class="form-control"
-                                                    placeholder="Jackson" />
-                                                <label for="multiStepsCity">City</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-floating form-floating-outline">
-                                                <select id="multiStepsState" class="select2 form-select"
-                                                    data-allow-clear="true">
-                                                    <option value="">Select</option>
-                                                    <option value="AL">Alabama</option>
-                                                    <option value="AK">Alaska</option>
-                                                    <option value="AZ">Arizona</option>
-                                                    <option value="AR">Arkansas</option>
-                                                    <option value="CA">California</option>
-                                                    <option value="CO">Colorado</option>
-                                                    <option value="CT">Connecticut</option>
-                                                    <option value="DE">Delaware</option>
-                                                    <option value="DC">District Of Columbia</option>
-                                                    <option value="FL">Florida</option>
-                                                    <option value="GA">Georgia</option>
-                                                    <option value="HI">Hawaii</option>
-                                                    <option value="ID">Idaho</option>
-                                                    <option value="IL">Illinois</option>
-                                                    <option value="IN">Indiana</option>
-                                                    <option value="IA">Iowa</option>
-                                                    <option value="KS">Kansas</option>
-                                                    <option value="KY">Kentucky</option>
-                                                    <option value="LA">Louisiana</option>
-                                                    <option value="ME">Maine</option>
-                                                    <option value="MD">Maryland</option>
-                                                    <option value="MA">Massachusetts</option>
-                                                    <option value="MI">Michigan</option>
-                                                    <option value="MN">Minnesota</option>
-                                                    <option value="MS">Mississippi</option>
-                                                    <option value="MO">Missouri</option>
-                                                    <option value="MT">Montana</option>
-                                                    <option value="NE">Nebraska</option>
-                                                    <option value="NV">Nevada</option>
-                                                    <option value="NH">New Hampshire</option>
-                                                    <option value="NJ">New Jersey</option>
-                                                    <option value="NM">New Mexico</option>
-                                                    <option value="NY">New York</option>
-                                                    <option value="NC">North Carolina</option>
-                                                    <option value="ND">North Dakota</option>
-                                                    <option value="OH">Ohio</option>
-                                                    <option value="OK">Oklahoma</option>
-                                                    <option value="OR">Oregon</option>
-                                                    <option value="PA">Pennsylvania</option>
-                                                    <option value="RI">Rhode Island</option>
-                                                    <option value="SC">South Carolina</option>
-                                                    <option value="SD">South Dakota</option>
-                                                    <option value="TN">Tennessee</option>
-                                                    <option value="TX">Texas</option>
-                                                    <option value="UT">Utah</option>
-                                                    <option value="VT">Vermont</option>
-                                                    <option value="VA">Virginia</option>
-                                                    <option value="WA">Washington</option>
-                                                    <option value="WV">West Virginia</option>
-                                                    <option value="WI">Wisconsin</option>
-                                                    <option value="WY">Wyoming</option>
-                                                </select>
-                                                <label for="multiStepsState">State</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 d-flex justify-content-between">
                                             <button class="btn btn-secondary btn-prev">
                                                 <i class="mdi mdi-arrow-left me-sm-1 me-0"></i>
                                                 <span class="align-middle d-sm-inline-block d-none">Previous</span>
@@ -358,6 +311,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <!-- Billing Links -->
                                 <div id="billingLinksValidation" class="content">
                                     <div class="content-header mb-3">
