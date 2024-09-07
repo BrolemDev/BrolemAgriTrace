@@ -5,7 +5,7 @@
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="card">
             <div class="card-header border-bottom">
-                <h5 class="card-title">Filtro de búsqueda</h5>
+                <h5 class="card-title">Guias de Remision</h5>
                 <div class="d-flex justify-content-between align-items-center row py-3 gap-3 gap-md-0">
                     <div class="col-md-3">
                         <div class="form-floating form-floating-outline">

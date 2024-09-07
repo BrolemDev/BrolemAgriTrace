@@ -12,6 +12,7 @@
         Brolem | Validar Guia
     </title>
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon/favicon.ico') }}">
@@ -40,6 +41,7 @@
     <link rel="stylesheet" href="{{ asset('vendor/libs/bootstrap-select/bootstrap-select.css') }}" />
     <link rel="stylesheet" href="{{ asset('vendor/libs/select2/select2.css') }}" />
     <link rel="stylesheet" href="{{ asset('vendor/libs/%40form-validation/umd/styles/index.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('vendor/libs/dropzone/dropzone.css') }}">
 
     <!-- Page CSS -->
 
@@ -96,7 +98,7 @@
                     </svg>
                 </span>
             </span>
-            <span class="app-brand-text demo text-heading fw-bold">Materialize</span>
+            <span class="app-brand-text demo text-heading fw-bold">Brolem</span>
         </a>
         <div class="authentication-inner row m-0">
             <div class="d-none d-lg-flex col-lg-4 align-items-center justify-content-center p-5 mt-5 mt-xxl-0">
@@ -126,15 +128,14 @@
                                 <button type="button" class="step-trigger">
                                     <span class="bs-stepper-circle"><i class="mdi mdi-check"></i></span>
                                     <span class="bs-stepper-label">
-                                        <span class="bs-stepper-number">01</span>
+                                        <span class="bs-stepper-number">02</span>
                                         <span class="d-flex flex-column gap-1 ms-2">
-                                            <span class="bs-stepper-title">Account</span>
-                                            <span class="bs-stepper-subtitle">Account Details</span>
+                                            <span class="bs-stepper-title">Recepción</span>
+                                            <span class="bs-stepper-subtitle">Estado recepción</span>
                                         </span>
                                     </span>
                                 </button>
                             </div>
-
                             <div class="line"></div>
                             <div class="step" data-target="#billingLinksValidation">
                                 <button type="button" class="step-trigger">
@@ -142,15 +143,16 @@
                                     <span class="bs-stepper-label">
                                         <span class="bs-stepper-number">03</span>
                                         <span class="d-flex flex-column gap-1 ms-2">
-                                            <span class="bs-stepper-title">Billing</span>
-                                            <span class="bs-stepper-subtitle">Payment Details</span>
+                                            <span class="bs-stepper-title">Imagenes</span>
+                                            <span class="bs-stepper-subtitle">Evidencias imagen</span>
                                         </span>
                                     </span>
                                 </button>
                             </div>
                         </div>
                         <div class="bs-stepper-content">
-                            <form id="multiStepsForm" onsubmit="return false">
+                            <form id="multiStepsForm" onsubmit="return false" enctype="multipart/form-data">
+                                <input type="hidden" name="idG" value="{{$guide->id}}">
                                 <!-- Personal Info -->
                                 <div id="personalInfoValidation" class="content">
                                     <div class="content-header mb-3">
@@ -160,81 +162,57 @@
                                     <div class="row g-3">
                                         <div class="col-sm-6">
                                             <div class="form-floating form-floating-outline">
-                                                <select id="multiStepsState" class="select2 form-select"
-                                                    data-allow-clear="true">
-
+                                                <select id="document_type" name="document_type"
+                                                    class="select2 form-select" data-allow-clear="true">
+                                                    @foreach ($documents as $doc)
+                                                        <option value="{{ $doc->id_doc }}">{{ $doc->name_doc }}
+                                                        </option>
+                                                    @endforeach
                                                 </select>
-                                                <label for="multiStepsState">State</label>
+                                                <label for="document_type">Tipo de Documento</label>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-floating form-floating-outline">
-                                                <input type="text" id="multiStepsFirstName"
-                                                    name="multiStepsFirstName" class="form-control"
-                                                    placeholder="John" />
-                                                <label for="multiStepsFirstName">Apellidos</label>
+                                                <input type="text" id="document_number" name="document_number"
+                                                    class="form-control" placeholder="00000000" />
+                                                <label for="document_number">Número de Documento</label>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-floating form-floating-outline">
-                                                <input type="text" id="multiStepsLastName"
-                                                    name="multiStepsLastName" class="form-control"
-                                                    placeholder="Doe" />
-                                                <label for="multiStepsLastName">Nombres</label>
+                                                <input type="text" id="lastname" name="lastname"
+                                                    class="form-control" placeholder="Apellidos" />
+                                                <label for="lastname">Apellidos</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" id="firstname" name="firstname"
+                                                    class="form-control" placeholder="Nombres" />
+                                                <label for="firstname">Nombres</label>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="input-group input-group-merge">
                                                 <span class="input-group-text">(+51)</span>
                                                 <div class="form-floating form-floating-outline">
-                                                    <input type="text" id="multiStepsMobile"
-                                                        name="multiStepsMobile"
+                                                    <input type="text" id="phone_number" name="phone_number"
                                                         class="form-control multi-steps-mobile"
                                                         placeholder="932 265 454" />
-                                                    <label for="multiStepsMobile">Número Celular</label>
+                                                    <label for="phone_number">Número Celular</label>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="text" id="multiStepsPincode" name="multiStepsPincode"
-                                                    class="form-control multi-steps-pincode" placeholder="Postal Code"
-                                                    maxlength="6" />
-                                                <label for="multiStepsPincode">Pincode</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="text" id="multiStepsAddress" name="multiStepsAddress"
-                                                    class="form-control" placeholder="Address" />
-                                                <label for="multiStepsAddress">Address</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="text" id="multiStepsArea" name="multiStepsArea"
-                                                    class="form-control" placeholder="Area/Landmark" />
-                                                <label for="multiStepsArea">Landmark</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="text" id="multiStepsCity" class="form-control"
-                                                    placeholder="Jackson" />
-                                                <label for="multiStepsCity">City</label>
-                                            </div>
-                                        </div>
-
-
 
                                         <div class="col-12 d-flex justify-content-between">
                                             <button class="btn btn-secondary btn-prev" disabled="">
                                                 <i class="mdi mdi-arrow-left me-sm-1 me-0"></i>
-                                                <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                                                <span class="align-middle d-sm-inline-block d-none">Anterior</span>
                                             </button>
                                             <button class="btn btn-primary btn-next">
                                                 <span
-                                                    class="align-middle d-sm-inline-block d-none me-sm-1 me-0">Next</span>
+                                                    class="align-middle d-sm-inline-block d-none me-sm-1 me-0">Siguiente</span>
                                                 <i class="mdi mdi-arrow-right"></i>
                                             </button>
                                         </div>
@@ -243,69 +221,36 @@
                                 <!-- Account Details -->
                                 <div id="accountDetailsValidation" class="content">
                                     <div class="content-header mb-3">
-                                        <h4 class="mb-0">Account Information</h4>
-                                        <small>Enter Your Account Details</small>
+                                        <h4 class="mb-0">Recepción</h4>
+                                        <small>Ingresa el estado recepción</small>
                                     </div>
                                     <div class="row g-3">
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-12">
                                             <div class="form-floating form-floating-outline">
-                                                <input type="text" name="multiStepsUsername"
-                                                    id="multiStepsUsername" class="form-control"
-                                                    placeholder="johndoe" />
-                                                <label for="multiStepsUsername">Username</label>
+                                                <select id="condition" name="condition" class="select2 form-select"
+                                                    data-allow-clear="true">
+                                                    <option value="Bueno">Bueno</option>
+                                                    <option value="Dañado">Dañado</option>
+                                                    <option value="Incompleto">Incompleto</option>
+                                                </select>
+                                                <label for="condition">Condición</label>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="email" name="multiStepsEmail" id="multiStepsEmail"
-                                                    class="form-control" placeholder="john.doe@email.com"
-                                                    aria-label="john.doe" />
-                                                <label for="multiStepsEmail">Email</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6 form-password-toggle">
-                                            <div class="input-group input-group-merge">
-                                                <div class="form-floating form-floating-outline">
-                                                    <input type="password" id="multiStepsPass" name="multiStepsPass"
-                                                        class="form-control"
-                                                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                                        aria-describedby="multiStepsPass2" />
-                                                    <label for="multiStepsPass">Password</label>
-                                                </div>
-                                                <span class="input-group-text cursor-pointer" id="multiStepsPass2"><i
-                                                        class="mdi mdi-eye-off-outline"></i></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6 form-password-toggle">
-                                            <div class="input-group input-group-merge">
-                                                <div class="form-floating form-floating-outline">
-                                                    <input type="password" id="multiStepsConfirmPass"
-                                                        name="multiStepsConfirmPass" class="form-control"
-                                                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                                        aria-describedby="multiStepsConfirmPass2" />
-                                                    <label for="multiStepsConfirmPass">Confirm Password</label>
-                                                </div>
-                                                <span class="input-group-text cursor-pointer"
-                                                    id="multiStepsConfirmPass2"><i
-                                                        class="mdi mdi-eye-off-outline"></i></span>
-                                            </div>
-                                        </div>
+
                                         <div class="col-md-12">
                                             <div class="form-floating form-floating-outline">
-                                                <input type="text" name="multiStepsURL" id="multiStepsURL"
-                                                    class="form-control" placeholder="johndoe/profile"
-                                                    aria-label="johndoe" />
-                                                <label for="multiStepsURL">Profile Link</label>
+                                                <textarea class="form-control" rows="3" id="observation" name="observation"></textarea>
+                                                <label for="observation">Observaciones aqui</label>
                                             </div>
                                         </div>
                                         <div class="col-12 d-flex justify-content-between">
                                             <button class="btn btn-secondary btn-prev">
                                                 <i class="mdi mdi-arrow-left me-sm-1 me-0"></i>
-                                                <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                                                <span class="align-middle d-sm-inline-block d-none">Anterior</span>
                                             </button>
                                             <button class="btn btn-primary btn-next">
                                                 <span
-                                                    class="align-middle d-sm-inline-block d-none me-sm-1 me-0">Next</span>
+                                                    class="align-middle d-sm-inline-block d-none me-sm-1 me-0">Siguiente</span>
                                                 <i class="mdi mdi-arrow-right"></i>
                                             </button>
                                         </div>
@@ -314,127 +259,32 @@
 
                                 <!-- Billing Links -->
                                 <div id="billingLinksValidation" class="content">
-                                    <div class="content-header mb-3">
-                                        <h4 class="mb-0">Select Plan</h4>
-                                        <small>Select plan as per your requirement</small>
-                                    </div>
-                                    <!-- Custom plan options -->
-                                    <div class="row gap-md-0 gap-3 mb-4">
-                                        <div class="col-md">
-                                            <div class="form-check custom-option custom-option-icon">
-                                                <label class="form-check-label custom-option-content"
-                                                    for="basicOption">
-                                                    <span class="custom-option-body">
-                                                        <span class="fs-4 d-block fw-medium text-heading">Basic</span>
-                                                        <small>A simple start for start ups & Students</small>
-                                                        <span class="d-flex justify-content-center py-2">
-                                                            <sup class="text-primary fs-6 lh-1 mt-2">$</sup>
-                                                            <span class="fw-medium display-5 text-primary">0</span>
-                                                            <sub class="lh-1 fs-big mt-auto mb-2">/month</sub>
-                                                        </span>
-                                                    </span>
-                                                    <input name="customRadioIcon" class="form-check-input"
-                                                        type="radio" value="" id="basicOption" />
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md">
-                                            <div class="form-check custom-option custom-option-icon">
-                                                <label class="form-check-label custom-option-content"
-                                                    for="standardOption">
-                                                    <span class="custom-option-body">
-                                                        <span
-                                                            class="fs-4 d-block fw-medium text-heading">Standard</span>
-                                                        <small>For small to medium businesses</small>
-                                                        <span class="d-flex justify-content-center py-2">
-                                                            <sup class="text-primary fs-6 lh-1 mt-2">$</sup>
-                                                            <span class="fw-medium display-5 text-primary">99</span>
-                                                            <sub class="lh-1 fs-big mt-auto mb-2">/month</sub>
-                                                        </span>
-                                                    </span>
-                                                    <input name="customRadioIcon" class="form-check-input"
-                                                        type="radio" value="" id="standardOption"
-                                                        checked="" />
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md">
-                                            <div class="form-check custom-option custom-option-icon">
-                                                <label class="form-check-label custom-option-content"
-                                                    for="enterpriseOption">
-                                                    <span class="custom-option-body">
-                                                        <span
-                                                            class="fs-4 d-block fw-medium text-heading">Enterprise</span>
-                                                        <small>Solution for enterprise & organizations</small>
-                                                        <span class="d-flex justify-content-center py-2">
-                                                            <sup class="text-primary fs-6 lh-1 mt-2">$</sup>
-                                                            <span class="fw-medium display-5 text-primary">499</span>
-                                                            <sub class="lh-1 fs-big mt-auto mb-2">/year</sub>
-                                                        </span>
-                                                    </span>
-                                                    <input name="customRadioIcon" class="form-check-input"
-                                                        type="radio" value="" id="enterpriseOption" />
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                     <!--/ Custom plan options -->
                                     <div class="content-header mb-3">
-                                        <h4 class="mb-0">Payment Information</h4>
-                                        <small>Enter your card information</small>
+                                        <h4 class="mb-0">Iamgenes</h4>
+                                        <small>Guarda evidencia de recepción</small>
                                     </div>
                                     <!-- Credit Card Details -->
                                     <div class="row g-3">
-                                        <div class="col-md-12">
-                                            <div class="input-group input-group-merge">
-                                                <div class="form-floating form-floating-outline">
-                                                    <input id="multiStepsCard" class="form-control multi-steps-card"
-                                                        name="multiStepsCard" type="text"
-                                                        placeholder="1356 3215 6548 7898"
-                                                        aria-describedby="multiStepsCardImg" />
-                                                    <label for="multiStepsCard">Card Number</label>
-                                                </div>
-                                                <span class="input-group-text cursor-pointer"
-                                                    id="multiStepsCardImg"><span class="card-type"></span></span>
+                                        <div class="col-md-12  mb-3">
+                                            <div class="input-group">
+                                                <input type="file" class="form-control form-control-lg"
+                                                    multiple="multiple" id="imgsReception" name="imgsReception[]"
+                                                    aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                                                <button class="btn btn-outline-primary" type="button"
+                                                    id="inputGroupFileAddon04"><i
+                                                        class="mdi mdi-cloud-upload fs-3"></i></button>
                                             </div>
                                         </div>
-                                        <div class="col-md-5">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="text" id="multiStepsName" class="form-control"
-                                                    name="multiStepsName" placeholder="John Doe" />
-                                                <label for="multiStepsName">Name On Card</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 col-md-4">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="text" id="multiStepsExDate"
-                                                    class="form-control multi-steps-exp-date" name="multiStepsExDate"
-                                                    placeholder="MM/YY" />
-                                                <label for="multiStepsExDate">Expiry Date</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 col-md-3">
-                                            <div class="input-group input-group-merge">
-                                                <div class="form-floating form-floating-outline">
-                                                    <input type="text" id="multiStepsCvv"
-                                                        class="form-control multi-steps-cvv" name="multiStepsCvv"
-                                                        maxlength="3" placeholder="654" />
-                                                    <label for="multiStepsCvv">CVV Code</label>
-                                                </div>
-                                                <span class="input-group-text cursor-pointer"
-                                                    id="multiStepsCvvHelp"><i
-                                                        class="mdi mdi-help-circle-outline text-muted"
-                                                        data-bs-toggle="tooltip" data-bs-placement="top"
-                                                        title="Card Verification Value"></i></span>
-                                            </div>
-                                        </div>
+
                                         <div class="col-12 d-flex justify-content-between">
                                             <button class="btn btn-secondary btn-prev">
                                                 <i class="mdi mdi-arrow-left me-sm-1 me-0"></i>
-                                                <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                                                <span class="align-middle d-sm-inline-block d-none">Anterior</span>
                                             </button>
                                             <button type="submit" class="btn btn-primary btn-next btn-submit">
-                                                Submit
+                                                Guardar Recepción
                                             </button>
                                         </div>
                                     </div>
@@ -469,9 +319,12 @@
 
     <!-- Vendors JS -->
     <script src="{{ asset('vendor/libs/cleavejs/cleave.js') }}"></script>
+    <script src="{{ asset('vendor/libs/dropzone/dropzone.js') }}"></script>
     <script src="{{ asset('vendor/libs/cleavejs/cleave-phone.js') }}"></script>
     <script src="{{ asset('vendor/libs/bs-stepper/bs-stepper.js') }}"></script>
     <script src="{{ asset('vendor/libs/select2/select2.js') }}"></script>
+    <script src="{{ asset('vendor/libs/block-ui/block-ui.js') }}"></script>
+    <script src="{{ asset('vendor/libs/autosize/autosize.js') }}"></script>
     <script src="{{ asset('vendor/libs/%40form-validation/umd/bundle/popular.min.js') }}"></script>
     <script src="{{ asset('vendor/libs/%40form-validation/umd/plugin-bootstrap5/index.min.js') }}"></script>
     <script src="{{ asset('vendor/libs/%40form-validation/umd/plugin-auto-focus/index.min.js') }}"></script>

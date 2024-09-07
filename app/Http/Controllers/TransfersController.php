@@ -5,13 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\DeliveryGuide;
 use App\Models\DeliveryGuideDetail;
 use App\Models\Extent;
+use App\Models\Reception\Images;
+use App\Models\Reception\Reception;
 use App\Models\SunatCodePort;
 use App\Models\SunatModality;
 use App\Models\SunatReason;
+use App\Models\SunatTypeDocument;
 use App\Traits\SUNATTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+
 
 class TransfersController extends Controller
 {
@@ -140,7 +145,7 @@ class TransfersController extends Controller
         return $token;
     }
 
-    public function validateGuide(Request $request)
+    public function showFormValidate(Request $request)
     {
         $token = $request->query('token');
         if (empty($token)) {
@@ -154,10 +159,67 @@ class TransfersController extends Controller
             return redirect('/')->with('error', 'Guía no encontrada.');
         }
 
+        $documents = SunatTypeDocument::all();
 
-        return view('transfer.validateTransfer', $guide);
+        return view('transfer.validateTransfer', compact('guide', 'documents'));
     }
 
+    public function validateGuide(Request $request)
+    {
+
+        $reception = Reception::create([
+            'delivery_guide_id' => $request->input('idG'),
+            'doc_id' => $request->input('document_type'),
+            'document_number' => $request->input('document_number'),
+            'first_name' => $request->input('firstname'),
+            'last_name' => $request->input('lastname'),
+            'phone_number' => $request->input('phone_number'),
+            'condition' => $request->input('condition'),
+            'observation' => $request->input('observation'),
+        ]);
+
+        $receptionId = $reception->id_receptions;
+
+
+        $images = $request->file('imgsReception');
+
+
+        if ($images && is_array($images)) {
+            foreach ($images as $image) {
+                // Generar un nuevo nombre único para la imagen
+                $newName = uniqid() . '.' . $image->getClientOriginalExtension();
+
+                // Ruta de almacenamiento
+                $destinationPath = 'receptions/' . $receptionId;
+
+                // Crear la carpeta si no existe
+                if (!Storage::exists($destinationPath)) {
+                    Storage::makeDirectory($destinationPath);
+                }
+
+                // Mover la imagen a la carpeta especificada
+                $image->storeAs($destinationPath, $newName);
+
+                // Guardar la información de la imagen en la base de datos
+                Images::create([
+                    'reception_id' => $receptionId,
+                    'image_path' => $destinationPath . '/' . $newName,
+                ]);
+            }
+        }
+
+        $deliveryGuide = DeliveryGuide::find($request->input('idG'));
+        $deliveryGuide->update([
+            'link_guide' => null,
+            'is_validated' => 1,
+            'validated_at' => now(), // Asigna el tiempo actual directamente
+        ]);
+
+        return response()->json([
+            'message' => 'Reception and images saved successfully.',
+            'reception_id' => $receptionId,
+        ], 200);
+    }
     public function pdf($id)
     {
 
@@ -187,11 +249,18 @@ class TransfersController extends Controller
 
         $pdf->Rect($x, $y, $width, $height);
 
+        $pdf->SetXY(20, 26);
+        $pdf->SetFont('Helvetica', 'B', 8);
+        $pdf->Image(public_path('img/brolemlogo.png'), 26, 5, 60, 20, 'PNG');
+        $pdf->Cell(70, 7, 'BROLEM COMPANY S.A.C', 0, 2, 'C');
+        $pdf->Cell(70, 7, 'JR. ENRIQUE BARREDA NRO. 535', 0, 2, 'C');
+        $pdf->Cell(70, 7, 'LA VICTORIA. LIMA-PERU', 0, 0, 'C');
+
         $pdf->SetXY($x, $y + 3);
         $pdf->SetFont('Helvetica', '', 9);
         $pdf->Cell($width, 5, 'R.U.C. ' . session('ruc'), 0, 2, 'C');
         $pdf->SetFont('Helvetica', 'B', 9);
-        $pdf->Cell($width, 8, 'GUIA DE REMISION', 0, 2, 'C');
+        $pdf->Cell($width, 9, 'GUIA DE REMISION', 0, 2, 'C');
         $pdf->SetFont('Helvetica', '', 9);
         $pdf->Cell($width, 5, 'T002 - ' . $formattedId, 0, 2, 'C');
         $pdf->Ln(15);
@@ -223,14 +292,23 @@ class TransfersController extends Controller
         $pdf->Ln(7);
 
         $pdf->SetFont('Helvetica', 'B', 8);
-        $pdf->Cell(75, 7, 'DESTINATARIO', 1, 0, 'C');
-        $pdf->Cell(35, 7, $documentType . ' TRANSPORTE', 1, 0, 'C');
-        $pdf->Cell(80, 7, 'RAZON SOCIAL TRANSP.', 1, 1, 'C');
+        $pdf->Cell(83, 7, 'RUC DESTINATARIO', 1, 0, 'C');
+        $pdf->Cell(107, 7, 'RAZON SOCIAL DESTINATARIO.', 1, 1, 'C');
 
         $pdf->SetFont('Helvetica', '', 8);
-        $pdf->Cell(75, 7, utf8_decode($deliveryGuide['reason']) . ' - ' . $deliveryGuide['destiny'], 1, 0, 'C');
-        $pdf->Cell(35, 7, utf8_decode($deliveryGuide['transportDoc']), 1, 0, 'C');
-        $pdf->Cell(80, 7, utf8_decode($deliveryGuide['transport']), 1, 1, 'C');
+        $pdf->Cell(83, 7,  $deliveryGuide['destiny'], 1, 0, 'C');
+        $pdf->Cell(107, 7, utf8_decode($deliveryGuide['reason']), 1, 1, 'C');
+        $pdf->Ln(7);
+
+        $pdf->SetFont('Helvetica', 'B', 8);
+        $pdf->Cell(53, 7, $documentType .  ' TRANSPORTE', 1, 0, 'C');
+        $pdf->Cell(88, 7, 'RAZON SOCIAL TRANSP.', 1, 0, 'C');
+        $pdf->Cell(49, 7, 'PLACA TRANSP.', 1, 1, 'C');
+
+        $pdf->SetFont('Helvetica', '', 8);
+        $pdf->Cell(53, 7, utf8_decode($deliveryGuide['transportDoc']), 1, 0, 'C');
+        $pdf->Cell(88, 7,  utf8_decode($deliveryGuide['transport']), 1, 0, 'C');
+        $pdf->Cell(49, 7, utf8_decode($deliveryGuide['plate']), 1, 1, 'C');
         $pdf->Ln(7);
 
         $pdf->SetFont('Helvetica', 'B', 8);
@@ -259,7 +337,6 @@ class TransfersController extends Controller
         $pdf->SetTextColor(0, 0, 0);
         $pdf->SetFillColor(255, 255, 255);
         $pdf->SetFont('Helvetica', '', 9);
-        $pdf->Cell(15, 8, 'Destino:', 0, 0, 'C');
 
 
         // Evitar cualquier salida antes de generar el PDF

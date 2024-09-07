@@ -21,6 +21,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-12 mx-auto" id="dataOC">
+                                    <h5 class="my-4">1. DATOS DE PROVEEDOR</h5>
                                     <div class="row g-4">
                                         <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
@@ -44,140 +45,130 @@
                                             </div>
                                         </div>
                                         <div class="col-md-3">
-                                          <div class="input-group input-group-merge mb-4">
-                                              <span id="basic-icon-default-fullname2" class="input-group-text"><i
-                                                      class="mdi mdi-phone-in-talk"></i></span>
-                                              <div class="form-floating form-floating-outline">
-                                                  <input type="text" class="form-control" id="phone"
-                                                      placeholder="Número Celular" name="phone">
-                                                  <label for="phone"> Número Celular *</label>
-                                              </div>
-                                          </div>
-                                      </div>
-                                        <div class="col-md-4">
                                             <div class="input-group input-group-merge mb-4">
+                                                <span id="basic-icon-default-fullname2" class="input-group-text"><i
+                                                        class="mdi mdi-phone-in-talk"></i></span>
                                                 <div class="form-floating form-floating-outline">
-                                                    <input type="text" class="form-control" id="ruc_destiny"
-                                                        placeholder="" name="ruc_destiny">
-                                                    <label for="ruc_destiny"> N° Doc: *</label>
+                                                    <input type="text" class="form-control" id="phone"
+                                                        placeholder="Número Celular" name="phone">
+                                                    <label for="phone"> Número Celular *</label>
                                                 </div>
-                                                <span class="input-group-text cursor-pointer btn-primary" id="getDestiny">
-                                                    <i class="mdi mdi-magnify"></i>
-                                                </span>
                                             </div>
                                         </div>
-
                                     </div>
+
                                     <hr>
                                     <!-- 2. Delivery Type -->
-                                    <h5 class="my-4">2. DATOS DE TRASLADO</h5>
-                                    <div class="row gy-4">
-                                        <div class="col-md-4 mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="text" id="init_transfer" class="form-control dob-picker"
-                                                    placeholder="YYYY-MM-DD" name="init_transfer">
-                                                <label for="init_transfer">Fecha Inicial de Traslado</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="text" id="weight_transfer" class="form-control input-number"
-                                                    placeholder="" name="weight_transfer">
-                                                <label for="weight_transfer">Peso bruto (KGM) *</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="text" id="package_transfer" name="package_transfer"
-                                                    class="form-control input-number" placeholder="658468">
-                                                <label for="arr">Número de bultos *</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="text" id="container_transfer" name="container_transfer"
-                                                    class="form-control" placeholder="">
-                                                <label for="container_transfer">Número de contenedor</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <!-- 3. Apply Promo code -->
-                                    <h5 class="my-4">3. DATOS DEL TRANSPORTE PRIVADO</h5>
-                                    <div class="row gy-4">
-                                        <div class="col-md-3">
-                                            <div class="input-group input-group-merge mb-4">
-                                                <div class="form-floating form-floating-outline">
-                                                    <input type="text" class="form-control" id="number_transport"
-                                                        placeholder="ABC123" name="number_transport">
-                                                    <label for="number_transport"> N° Doc Conductor: *</label>
-                                                </div>
-                                                <span class="input-group-text cursor-pointer btn-primary" id="getTransport">
-                                                    <i class="mdi mdi-magnify"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="input-group input-group-merge mb-4">
-                                                <span class="input-group-text">
-                                                    <i class="mdi mdi-card-account-details-outline"></i>
-                                                </span>
-                                                <div class="form-floating form-floating-outline">
-                                                    <input type="text" class="form-control" id="names_transport"
-                                                        placeholder="" name="names_transport">
-                                                    <label for="names_transport"> Nombre Conductor: *</label>
-                                                </div>
+                                    <h5 class="my-4">2. DATOS DE OC</h5>
 
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="input-group input-group-merge mb-4">
-                                                <span class="input-group-text">
-                                                    <i class="mdi mdi-car-3-plus"></i>
-                                                </span>
-                                                <div class="form-floating form-floating-outline">
-                                                    <input type="text" class="form-control" id="plate_transport"
-                                                        placeholder="" name="plate_transport">
-                                                    <label for="plate_transport"> N° Placa Vehíc.: *</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <!-- 4. Payment Method -->
-                                    <div class="row gy-4 ">
-                                        <div class="col-md-6">
-                                            <h5 class="my-4">4. PUNTO DE PARTIDA</h5>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <h5 class="my-4">5. PUNTO DE LLEGADA</h5>
-                                        </div>
-                                        <div class="col-md-6 mb-2">
+                                    <div class="row gy-4">
+                                        <div class="col-md-4">
                                             <div class="form-floating form-floating-outline">
-                                                <input type="text" id="address_point" name="address_point"
-                                                    class="form-control" value="{{ session('address') }}">
-                                                <label for="address_point"> Dirección *</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="text" id="address_arrival" name="address_arrival"
-                                                    class="form-control">
-                                                <label for="address_arrival"> Dirección *</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-floating form-floating-outline">
-                                                <select id="ubigeo_destiny" name="ubigeo_destiny"
-                                                    class="select-search form-select" data-allow-clear="true"
-                                                    data-placeholder="Seleccione Ubigeo de Llegada">
-                                                    <option value="">Seleccionar Cliente</option>
+                                                <select id="type_oc" name="type_oc" class="select2 form-select"
+                                                    data-allow-clear="true" data-placeholder="Seleccione Tipo OC.">
+                                                    <option value="1">Materia Prima</option>
+                                                    <option value="2">Insumos de Exportación</option>
+                                                    <option value="3">Productos Para Calidad</option>
+                                                    <option value="4">Productos para Administración</option>
                                                 </select>
-                                                <label for="ubigeo_destiny"> Ubigeo * </label>
+                                                <label for="doc_transport">Tipo de OC.* </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating form-floating-outline">
+                                                <select id="payment_method" name="payment_method"
+                                                    class="select2 form-select" data-allow-clear="true"
+                                                    data-placeholder="Seleccione Tipo OC.">
+                                                    <option value="1">Efectivo</option>
+                                                    <option value="2">Transferencia</option>
+                                                </select>
+                                                <label for="doc_transport">Forma de Pago.* </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating form-floating-outline">
+                                                <select id="delivery_time" name="delivery_time" class="select2 form-select"
+                                                    data-allow-clear="true" data-placeholder="Seleccione Tipo OC.">
+                                                    <option value="3">Hasta 3 días</option>
+                                                    <option value="7">Hasta 7 días</option>
+                                                    <option value="14">Hasta 14 días</option>
+                                                    <option value="30">Hasta 30 días</option>
+                                                </select>
+                                                <label for="delivery_time">Tiempo Entrega.* </label>
                                             </div>
                                         </div>
                                     </div>
+
+
+                                    <hr>
+                                    
+                                    <div>
+                                        <div class="card-title m-0">
+                                            <h5 class="mb-1">Datos adicionales en Materia Prima</h5>
+                                        </div>
+                                        <div class="row gy-4 mt-2">
+
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <input type="file" class="form-control form-control-lg"
+                                                        id="inputGroupFile04" aria-describedby="inputGroupFileAddon04"
+                                                        aria-label="Upload">
+                                                    <button class="btn btn-secondary waves-effect" type="button"
+                                                        id="inputGroupFileAddon04">Archivo 1</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <input type="file" class="form-control form-control-lg"
+                                                        id="inputGroupFile04" aria-describedby="inputGroupFileAddon04"
+                                                        aria-label="Upload">
+                                                    <button class="btn btn-secondary waves-effect" type="button"
+                                                        id="inputGroupFileAddon04">Archivo 2</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+
+                                    <h5 class="my-4">3. DATOS DE ALMACEN</h5>
+
+                                    <div class="row gy-4">
+                                        <div class="col-md-4">
+                                            <div class="form-floating form-floating-outline">
+                                                <select id="store" name="store" class="select2 form-select"
+                                                    data-allow-clear="true"
+                                                    data-placeholder="Escribe código o nombre de sucursal    .">
+
+                                                </select>
+                                                <label for="store">Sucursal.* </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="input-group input-group-merge mb-4">
+                                                <span id="basic-icon-default-fullname2" class="input-group-text"><i
+                                                        class="mdi mdi-badge-account-outline"></i></span>
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control" id="address"
+                                                        placeholder="Dirección sucursal" name="address">
+                                                    <label for="address"> Dirección sucursal *</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-floating form-floating-outline">
+                                                <select id="ubigeo" name="ubigeo" class="form-select">
+                                                </select>
+                                                <label for="ubigeo">Ubigeo sucursal *</label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <hr>
+
                                     <div class="row gy-4 mt-3">
                                         <div class="card-header p-0">
                                             <div class="nav-align-top">
@@ -186,7 +177,7 @@
                                                         <button type="button" class="nav-link active" role="tab"
                                                             data-bs-toggle="tab" data-bs-target="#navs-top-home"
                                                             aria-controls="navs-top-home" aria-selected="true">
-                                                            5. Detalle de guía de remisión: *
+                                                            4. Productos OC: *
                                                         </button>
                                                     </li>
                                                 </ul>
@@ -206,10 +197,12 @@
                                                                     <th></th>
                                                                     <th></th>
                                                                     <th>Descripcion</th>
-                                                                    <th>Und/Medidad</th>
-                                                                    <th>Peso (KGM)</th>
                                                                     <th>Cantidad</th>
-                                                                    <th></th>
+                                                                    <th>Und/Medidad</th>
+                                                                    <th>F.T.</th>
+                                                                    <th>F.T.</th>
+                                                                    <th>Precio Unitario</th>
+                                                                    <th>Importe</th>
                                                                 </tr>
                                                             </thead>
                                                         </table>

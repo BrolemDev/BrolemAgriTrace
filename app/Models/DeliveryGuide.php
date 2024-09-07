@@ -28,10 +28,10 @@ class DeliveryGuide extends Model
         'address_destiny',
         'ubigeo_origin',
         'ubigeo_destiny',
+        'link_guide',
+        'is_validated',
+        'validated_at',
     ];
-
-
-
 
     public function reason()
     {

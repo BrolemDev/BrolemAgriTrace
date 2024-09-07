@@ -37,7 +37,7 @@ return new class extends Migration
             $table->string('ubigeo_origin');
             $table->string('ubigeo_destiny');
             $table->integer('status_guide')->default(0);
-            $table->string('link_guide');
+            $table->string('link_guide')->nullable();
             // Campos para validación
             $table->boolean('is_validated')->default(false);
             $table->timestamp('validated_at')->nullable();

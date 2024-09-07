@@ -3,29 +3,31 @@ $(function () {
     var e = $(".select2");
     e.length &&
         e.each(function () {
-            var e = $(this);
-            select2Focus(e),
-                e.wrap('<div class="position-relative"></div>'),
-                e.select2({
-                    placeholder: "Select an country",
-                    dropdownParent: e.parent(),
+            var i = $(this);
+            select2Focus(i),
+                i.wrap('<div class="position-relative"></div>').select2({
+                    dropdownParent: i.parent(),
+                    placeholder: i.data("placeholder"),
                 });
         });
 }),
     document.addEventListener("DOMContentLoaded", function (e) {
+        let csrfToken = $('meta[name="csrf-token"]').attr("content");
         var n = document.querySelector("#multiStepsValidation");
         if (null !== n) {
             var a = n.querySelector("#multiStepsForm");
             const d = a.querySelector("#accountDetailsValidation");
             var s = a.querySelector("#personalInfoValidation"),
                 i = a.querySelector("#billingLinksValidation"),
+                as = document.querySelector("#observation"),
                 o = [].slice.call(a.querySelectorAll(".btn-next")),
                 a = [].slice.call(a.querySelectorAll(".btn-prev")),
                 r = document.querySelector(".multi-steps-exp-date"),
                 l = document.querySelector(".multi-steps-cvv"),
                 m = document.querySelector(".multi-steps-mobile"),
                 u = document.querySelector(".multi-steps-pincode"),
-                c = document.querySelector(".multi-steps-card");
+                c = document.querySelector(".multi-steps-card"),
+                form = document.getElementById("multiStepsForm");
             r &&
                 new Cleave(r, {
                     date: !0,
@@ -54,37 +56,66 @@ $(function () {
                                       '-cc.png" height="28"/>'
                                     : "";
                         },
-                    });
+                    }),
+                as && autosize(as);
             let t = new Stepper(n, { linear: !0 });
-            const p = FormValidation.formValidation(d, {
+
+            const g = FormValidation.formValidation(s, {
                     fields: {
-                        multiStepsUsername: {
-                            validators: {
-                                notEmpty: { message: "Please enter username" },
-                                stringLength: {
-                                    min: 6,
-                                    max: 30,
-                                    message:
-                                        "The name must be more than 6 and less than 30 characters long",
-                                },
-                                regexp: {
-                                    regexp: /^[a-zA-Z0-9 ]+$/,
-                                    message:
-                                        "The name can only consist of alphabetical, number and space",
-                                },
-                            },
-                        },
-                        multiStepsEmail: {
+                        document_number: {
                             validators: {
                                 notEmpty: {
-                                    message: "Please enter email address",
-                                },
-                                emailAddress: {
                                     message:
-                                        "The value is not a valid email address",
+                                        "Por favor ingrese el número de documento",
                                 },
                             },
                         },
+                        lastname: {
+                            validators: {
+                                notEmpty: {
+                                    message: "Por favor ingrese sus apellidos",
+                                },
+                            },
+                        },
+                        firstname: {
+                            validators: {
+                                notEmpty: {
+                                    message: "Por favor ingrese sus nombres",
+                                },
+                            },
+                        },
+                        phone_number: {
+                            validators: {
+                                notEmpty: {
+                                    message:
+                                        "Por favor ingrese su número de teléfono",
+                                },
+                            },
+                        },
+                    },
+                    plugins: {
+                        trigger: new FormValidation.plugins.Trigger(),
+                        bootstrap5: new FormValidation.plugins.Bootstrap5({
+                            eleValidClass: "",
+                            rowSelector: function (e, t) {
+                                switch (e) {
+                                    case "multiStepsFirstName":
+                                        return ".col-sm-6";
+                                    case "multiStepsAddress":
+                                        return ".col-md-12";
+                                    default:
+                                        return ".row";
+                                }
+                            },
+                        }),
+                        autoFocus: new FormValidation.plugins.AutoFocus(),
+                        submitButton: new FormValidation.plugins.SubmitButton(),
+                    },
+                }).on("core.form.valid", function () {
+                    t.next();
+                }),
+                p = FormValidation.formValidation(d, {
+                    fields: {
                         multiStepsPass: {
                             validators: {
                                 notEmpty: { message: "Please enter password" },
@@ -130,44 +161,6 @@ $(function () {
                 }).on("core.form.valid", function () {
                     t.next();
                 }),
-                g = FormValidation.formValidation(s, {
-                    fields: {
-                        multiStepsFirstName: {
-                            validators: {
-                                notEmpty: {
-                                    message: "Please enter first name",
-                                },
-                            },
-                        },
-                        multiStepsAddress: {
-                            validators: {
-                                notEmpty: {
-                                    message: "Please enter your address",
-                                },
-                            },
-                        },
-                    },
-                    plugins: {
-                        trigger: new FormValidation.plugins.Trigger(),
-                        bootstrap5: new FormValidation.plugins.Bootstrap5({
-                            eleValidClass: "",
-                            rowSelector: function (e, t) {
-                                switch (e) {
-                                    case "multiStepsFirstName":
-                                        return ".col-sm-6";
-                                    case "multiStepsAddress":
-                                        return ".col-md-12";
-                                    default:
-                                        return ".row";
-                                }
-                            },
-                        }),
-                        autoFocus: new FormValidation.plugins.AutoFocus(),
-                        submitButton: new FormValidation.plugins.SubmitButton(),
-                    },
-                }).on("core.form.valid", function () {
-                    t.next();
-                }),
                 v = FormValidation.formValidation(i, {
                     fields: {
                         multiStepsCard: {
@@ -203,7 +196,35 @@ $(function () {
                         });
                     },
                 }).on("core.form.valid", function () {
-                    alert("Submitted..!!");
+                    blockUI();
+
+                    const formData = new FormData(form);
+                    formData.append("_token", csrfToken);
+                    
+                    console.log(formData);
+                    
+
+                    fetch("validateGuide", {
+                        method: "POST",
+                        body: formData,
+                    })
+                        .then((response) => {
+                            if (!response.ok) {
+                                return response.text().then((text) => {
+                                    throw new Error(text);
+                                });
+                            }
+                            return response.json();
+                        })
+                        .then((data) => {
+                            console.log(data);
+                        })
+                        .catch((error) => {
+                            console.error("Error:", error.message);
+                        })
+                        .finally(() => {
+                            $.unblockUI();
+                        });
                 });
             o.forEach((e) => {
                 e.addEventListener("click", (e) => {
@@ -228,5 +249,19 @@ $(function () {
                         }
                     });
                 });
+        }
+
+        function blockUI() {
+            $.blockUI({
+                message:
+                    '<div class="d-flex justify-content-center"><div class="sk-wave m-0"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div> </div>',
+                timeout: 1e3,
+                css: {
+                    backgroundColor: "transparent",
+                    color: "#fff",
+                    border: "0",
+                },
+                overlayCSS: { opacity: 0.5 },
+            });
         }
     });

@@ -3,6 +3,7 @@ $(function () {
     var e,
         t = $(".table-products"),
         l = "app-user-list.html";
+
     t.length &&
         (e = t.DataTable({
             lengthChange: !1,
@@ -15,6 +16,8 @@ $(function () {
                 { data: "description" },
                 { data: "unit" },
                 { data: "weight" },
+                { data: "quantity" },
+                { data: "quantity" },
                 { data: "quantity" },
                 { data: "" },
             ],
@@ -34,17 +37,28 @@ $(function () {
                     targets: -1,
                     searchable: !1,
                     className: "text-center",
-                    title: "Acciones",
+                    title: "Importe",
                     orderable: !1,
                     render: function (e, t, a, n) {
                         return '<span class="text-nowrap"><button type="button" class="btn btn-sm btn-icon btn-text-secondary rounded-pill btn-icon me-2 btn-edit"><i class="mdi mdi-pencil-outline mdi-20px"></i></button><button class="btn btn-sm btn-icon btn-text-secondary rounded-pill btn-icon delete-record"><i class="mdi mdi-delete-outline mdi-20px"></i></button></span>';
                     },
                 },
             ],
+            language: {
+                emptyTable: "No hay productos en la tabla",
+                search: "Buscar",
+                info: "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                infoEmpty: "Mostrando 0 a 0 de 0 entradas",
+                infoFiltered: "(filtrado de un total de _MAX_ entradas)",
+                paginate: {
+                    previous: "Anterior",
+                    next: "Siguiente"
+                }
+            },
             dom: '<"row mx-1"<"col-sm-12 col-md-3" l><"col-sm-12 col-md-9"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-md-end justify-content-center flex-wrap me-1"<"me-3"f>B>>>t<"row mx-2"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
             buttons: [
                 {
-                    text: "Agregar",
+                    text: "Agregar Producto",
                     className:
                         "add-new btn btn-primary mb-3 mb-md-0 waves-effect waves-light",
                     attr: {
@@ -93,7 +107,55 @@ $(function () {
 
     let csrfToken = $('meta[name="csrf-token"]').attr("content");
 
+    $("#type_oc").change(function () {
+        
+        console.log($(this).val());
+        
+    });
+    
+
+
     $("#doc_supplier").select2({
+        dropdownParent: $("#dataOC"),
+        ajax: {
+            url: "/scopeSupplier",
+            dataType: "json",
+            delay: 250,
+            data: function (params) {
+                return {
+                    query: params.term,
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (row) {
+                        return {
+                            id: row.id_supplier,
+                            text: row.ruc_supplier + " - " + row.name_supplier,
+                            data: {
+                                representative: row.representative,
+                                address: row.address_supplier,
+                                phone: row.phone_supplier,
+                            },
+                        };
+                    }),
+                };
+            },
+            cache: true,
+        },
+        placeholder: "Buscar un producto",
+        minimumInputLength: 2,
+        language: {
+            searching: function () {
+                return "Buscando...";
+            },
+            noResults: function () {
+                return "No se encontraron resultados";
+            },
+        },
+    });
+
+    $("#store").select2({
         dropdownParent: $("#dataOC"),
         ajax: {
             url: "/scopeSupplier",
@@ -173,8 +235,44 @@ $(function () {
         },
     });
 
+    $("#ubigeo").select2({
+        dropdownParent: $("#formAccountSettings"),
+        ajax: {
+            url: "/scopeCodeUbigeo",
+            dataType: "json",
+            delay: 250,
+            data: function (params) {
+                return {
+                    query: params.term,
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (row) {
+                        return {
+                            id: row.codigo_ubigeo,
+                            text: `${row.departamento} - ${row.provincia} - ${row.distrito}`,
+                        };
+                    }),
+                };
+            },
+            cache: true,
+        },
+        placeholder: "Ubigeo Sucursal",
+        minimumInputLength: 2,
+        language: {
+            searching: function () {
+                return "Buscando...";
+            },
+            noResults: function () {
+                return "No se encontraron resultados";
+            },
+        },
+    });
+
     let f = document.getElementById("modalFormProduct"),
         fv;
+
     fv = FormValidation.formValidation(f, {
         fields: {
             productApp: {
@@ -321,7 +419,6 @@ $(function () {
         $("#ModalProduct").modal("show");
     });
 
-    //Create Trasnfer
     let o = document.getElementById("formOC"),
         ov;
 
@@ -455,6 +552,7 @@ $(function () {
             overlayCSS: { opacity: 0.5 },
         });
     }
+
     const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -466,4 +564,5 @@ $(function () {
             toast.onmouseleave = Swal.resumeTimer;
         },
     });
+
 });
