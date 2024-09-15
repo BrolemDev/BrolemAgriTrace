@@ -2,6 +2,7 @@
 
 namespace App\Models\Reception;
 
+use App\Models\SunatTypeDocument;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,4 +21,9 @@ class Reception extends Model
         'condition',
         'observation',
     ];
+
+    public function sunatTypeDocument()
+    {
+        return $this->belongsTo(SunatTypeDocument::class, 'doc_id', 'id_doc');
+    }
 }

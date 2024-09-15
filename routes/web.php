@@ -106,6 +106,8 @@ Route::controller(TransfersController::class)->group(function ($route) {
     Route::get('/Generar_Guia_Remision', 'new')->name('transfers.new');
     Route::get('/Validar_Guia', 'showFormValidate')->name('transfers.validate');
     Route::post('/validateGuide', 'validateGuide');
+    Route::get('/Recepcion/{guide}', 'showReception');
+    Route::get('/ConfirmacionGuia', 'confirmGuide');
     Route::post('/getDoc', 'getDoc');
     Route::post('newTransfer', 'create');
     Route::get('GuiaRemisionPdf/{id}', 'pdf');

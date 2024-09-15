@@ -259,6 +259,13 @@ $(function () {
         $("#modal-link").modal("show");
     });
 
+    e.on("click", ".datatables-success", function (e) {
+        let row = $(this).closest("tr");
+        let rowData = $(this).closest("table").DataTable().row(row).data();
+    
+        window.open("Recepcion/" + rowData.id, "_blank");
+    });
+
     $("#whatsapp-button").on("click", function () {
         var message = encodeURIComponent(
             "Hola, te compartimos el enlace para que puedas registrar la recepción de tu guía: " +

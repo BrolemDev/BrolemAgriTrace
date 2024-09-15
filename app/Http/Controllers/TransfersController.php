@@ -190,7 +190,7 @@ class TransfersController extends Controller
                 $newName = uniqid() . '.' . $image->getClientOriginalExtension();
 
                 // Ruta de almacenamiento
-                $destinationPath = 'receptions/' . $receptionId;
+                $destinationPath = 'public/receptions/' . $receptionId;
 
                 // Crear la carpeta si no existe
                 if (!Storage::exists($destinationPath)) {
@@ -210,6 +210,7 @@ class TransfersController extends Controller
 
         $deliveryGuide = DeliveryGuide::find($request->input('idG'));
         $deliveryGuide->update([
+            'status_guide' => 1,
             'link_guide' => null,
             'is_validated' => 1,
             'validated_at' => now(), // Asigna el tiempo actual directamente
@@ -220,6 +221,21 @@ class TransfersController extends Controller
             'reception_id' => $receptionId,
         ], 200);
     }
+
+    public function showReception($guide)
+    {
+        $title = "Recepcion";
+        $reception = Reception::where('delivery_guide_id', $guide)->first();
+        $imgReception = Images::where('reception_id', $reception->id_receptions)->get();
+
+        return view('transfer.reception', compact('title', 'reception', 'imgReception'));
+    }
+
+    public function confirmGuide()
+    {
+        return view('transfer.confirmGuide');
+    }
+
     public function pdf($id)
     {
 

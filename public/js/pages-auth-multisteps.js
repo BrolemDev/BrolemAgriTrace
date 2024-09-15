@@ -200,9 +200,8 @@ $(function () {
 
                     const formData = new FormData(form);
                     formData.append("_token", csrfToken);
-                    
+
                     console.log(formData);
-                    
 
                     fetch("validateGuide", {
                         method: "POST",
@@ -215,9 +214,23 @@ $(function () {
                                 });
                             }
                             return response.json();
+                            º;
                         })
                         .then((data) => {
-                            console.log(data);
+                            if (
+                                data.message ===
+                                "Reception and images saved successfully."
+                            ) {
+                                window.location.href = "/ConfirmacionGuia";
+                            } else {
+                                alert(
+                                    "Hubo un problema al guardar. comunicarse con sistemas."
+                                );
+                                console.log(
+                                    "Mensaje del servidor:",
+                                    data.message
+                                );
+                            }
                         })
                         .catch((error) => {
                             console.error("Error:", error.message);
