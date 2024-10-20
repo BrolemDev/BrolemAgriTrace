@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use App\Models\Branch;
+use App\Models\Product;
 
 class BranchController extends Controller
 {
@@ -31,13 +32,30 @@ class BranchController extends Controller
             $branch->phone_branch  = $request->input("phone");
             $branch->save();
 
+            // Crear el producto asociado a la sucursal
+            $product = new Product();
+            $product->code_product = '0000000'; // Puedes cambiar esto por una lógica dinámica si lo deseas
+            $product->name_product = 'Producto Example';
+            $product->branch_id = $branch->id_branch;
+            $product->category_id = 1;
+            $product->extent_id = 1;
+            $product->igv_id = "10";
+            $product->price_pen = 00.00;
+            $product->price_pen_igv = 00.00;
+            $product->price_usd = 00.00;
+            $product->price_usd_igv = 00.00;
+            $product->stock = 0;
+            $product->stock_min = 0;
+            $product->detail_product = 'Producto de ejemplo : ' . $request->input("name");
+            $product->save();
+
             return response()->json(['message' => 'Sucursal Agregado Correctamente', 'status' => 200]);
         } catch (QueryException $e) {
             $errorCode = $e->errorInfo[1];
             if ($errorCode == 1062) { // El código 1062 representa un error de duplicado de clave única
                 return response()->json(['message' => 'La sucursal ya existe en la base de datos', 'status' => 409]); // 409: Conflict
             } else {
-                return response()->json(['message' => 'Error al agregar el sucursal', 'status' =>  500]);
+                return response()->json(['message' => $e->errorInfo, 'status' =>  500]);
             }
         }
     }

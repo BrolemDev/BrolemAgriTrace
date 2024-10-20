@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="es" class="light-style layout-navbar-fixed layout-menu-fixed layout-compact " dir="ltr"
-    data-theme="theme-default" data-assets-path="{{ asset('') }}" data-template="vertical-menu-template">
+    data-theme="theme-default" data-assets-path="{{ asset('') }}">
 
 <head>
     <meta charset="utf-8">
@@ -748,26 +748,12 @@
                 </nav>
                 <!-- / Navbar -->
                 <!-- Content wrapper -->
-                <div class="content-wrapper">
+                <div class="content-wrapper  p-5" style="flex: 0.6 !important">
                     <!-- Content -->
                     @yield('content')
                     <!-- / Content -->
                     <!-- Footer -->
-                    <footer class="content-footer footer bg-footer-theme">
-                        <div class="container-xxl">
-                            <div
-                                class="footer-container d-flex align-items-center justify-content-between py-3 flex-md-row flex-column">
-                                <div class="mb-2 mb-md-0">
-                                    ©
-                                    <script>
-                                        document.write(new Date().getFullYear())
-                                    </script>, made with <span class="text-danger"><i
-                                            class="tf-icons mdi mdi-heart"></i></span> by <a href=""
-                                        target="_blank" class="footer-link fw-medium"></a>
-                                </div>
-                            </div>
-                        </div>
-                    </footer>
+
                     <!-- / Footer -->
                     <div class="content-backdrop fade"></div>
                 </div>

@@ -10,7 +10,8 @@
 
         <h4 class="py-3 mb-2">Lista de Sucursales</h4>
 
-        <p class="mb-4">Aquí puedes ver la información de cada sucursal, validar su estado, así como también crear, editar o eliminar sucursales.</p>
+        <p class="mb-4">Aquí puedes ver la información de cada sucursal, validar su estado, así como también crear, editar
+            o eliminar sucursales.</p>
 
 
         <!-- Permission Table -->
@@ -100,7 +101,7 @@
                             <div class="col-12 text-center">
                                 <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Guardar</button>
                                 <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal"
-                                    aria-label="Close" >Cancelar</button>
+                                    aria-label="Close">Cancelar</button>
                             </div>
                         </form>
                     </div>

@@ -22,7 +22,11 @@ class DatabaseSeeder extends Seeder
             SettingsSeeder::class,
             SunatDetractionSeeder::class,
             SunatIgvSeeder::class,
-            SunatTypeDocument::class
+            SunatTypeDocument::class,
+            TypeOrderSeeder::class,
+            BranchSeeder::class,
+            CategorySeeder::class
+
         ]);
     }
 }

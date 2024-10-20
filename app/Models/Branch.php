@@ -42,4 +42,30 @@ class Branch extends Model
         }
         return $data;
     }
+    public static function filterBranchesOC()
+    {
+        // Obtiene todas las sucursales
+        $branchs = self::all();
+
+        // Obtiene todos los códigos de ubigeo necesarios en una sola consulta
+        $ubigeos = SunatCodeUbigeo::whereIn('codigo_ubigeo', $branchs->pluck('ubigeo_branch'))->get()->keyBy('codigo_ubigeo');
+
+        $data = [];
+        foreach ($branchs as $row) {
+            // Busca el ubigeo en la colección
+            $ubigeo = $ubigeos->get($row->ubigeo_branch);
+
+            $data[] = [
+                'id' => $row->id_branch,
+                'anexo' => $row->anexo_branch,
+                'name' => $row->name_branch,
+                'address' => $row->address_branch,
+                'urbanization' => $row->urbanization_branch, // Corrige este nombre si es necesario
+                'ubigeo' => $ubigeo ? "{$ubigeo->departamento} - {$ubigeo->provincia} - {$ubigeo->distrito}" : 'N/A',
+                'status' => $row->status_branch,
+            ];
+        }
+
+        return $data;
+    }
 }

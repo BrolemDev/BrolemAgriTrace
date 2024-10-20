@@ -2,8 +2,9 @@
 $(function () {
     var e,
         t = $(".table-products"),
-        l = "app-user-list.html";
-
+        l = "app-user-list.html",
+        ao = document.querySelector("#autosize-demo");
+    autosize(ao);
     t.length &&
         (e = t.DataTable({
             lengthChange: !1,
@@ -17,8 +18,7 @@ $(function () {
                 { data: "unit" },
                 { data: "weight" },
                 { data: "quantity" },
-                { data: "quantity" },
-                { data: "quantity" },
+                { data: "price" },
                 { data: "" },
             ],
             columnDefs: [
@@ -37,7 +37,7 @@ $(function () {
                     targets: -1,
                     searchable: !1,
                     className: "text-center",
-                    title: "Importe",
+                    title: "Acciones",
                     orderable: !1,
                     render: function (e, t, a, n) {
                         return '<span class="text-nowrap"><button type="button" class="btn btn-sm btn-icon btn-text-secondary rounded-pill btn-icon me-2 btn-edit"><i class="mdi mdi-pencil-outline mdi-20px"></i></button><button class="btn btn-sm btn-icon btn-text-secondary rounded-pill btn-icon delete-record"><i class="mdi mdi-delete-outline mdi-20px"></i></button></span>';
@@ -52,8 +52,8 @@ $(function () {
                 infoFiltered: "(filtrado de un total de _MAX_ entradas)",
                 paginate: {
                     previous: "Anterior",
-                    next: "Siguiente"
-                }
+                    next: "Siguiente",
+                },
             },
             dom: '<"row mx-1"<"col-sm-12 col-md-3" l><"col-sm-12 col-md-9"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-md-end justify-content-center flex-wrap me-1"<"me-3"f>B>>>t<"row mx-2"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
             buttons: [
@@ -108,12 +108,28 @@ $(function () {
     let csrfToken = $('meta[name="csrf-token"]').attr("content");
 
     $("#type_oc").change(function () {
-        
-        console.log($(this).val());
-        
+        if ($(this).val() == "1") {
+            $("#file_subject").removeClass("hidden");
+        } else {
+            $("#file_subject").addClass("hidden");
+        }
     });
-    
 
+    $("#store").on("change", function () {
+        var selectedOption = $(this).find("option:selected");
+
+        var address = selectedOption.data("address");
+        var ubigeo = selectedOption.data("ubigeo");
+
+        $("#address").val(address);
+
+        if ($('#ubigeo option[value="' + ubigeo + '"]').length === 0) {
+            var newOption = new Option(ubigeo, ubigeo, true, true);
+            $("#ubigeo").append(newOption).trigger("change");
+        } else {
+            $("#ubigeo").val(ubigeo).trigger("change");
+        }
+    });
 
     $("#doc_supplier").select2({
         dropdownParent: $("#dataOC"),
@@ -146,46 +162,9 @@ $(function () {
         placeholder: "Buscar un producto",
         minimumInputLength: 2,
         language: {
-            searching: function () {
-                return "Buscando...";
+            inputTooShort: function () {
+                return "Por favor ingrese 2 o más caracteres";
             },
-            noResults: function () {
-                return "No se encontraron resultados";
-            },
-        },
-    });
-
-    $("#store").select2({
-        dropdownParent: $("#dataOC"),
-        ajax: {
-            url: "/scopeSupplier",
-            dataType: "json",
-            delay: 250,
-            data: function (params) {
-                return {
-                    query: params.term,
-                };
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (row) {
-                        return {
-                            id: row.id_supplier,
-                            text: row.ruc_supplier + " - " + row.name_supplier,
-                            data: {
-                                representative: row.representative,
-                                address: row.address_supplier,
-                                phone: row.phone_supplier,
-                            },
-                        };
-                    }),
-                };
-            },
-            cache: true,
-        },
-        placeholder: "Buscar un producto",
-        minimumInputLength: 2,
-        language: {
             searching: function () {
                 return "Buscando...";
             },
@@ -216,6 +195,8 @@ $(function () {
                                 code: product.code_product,
                                 description: product.name_product,
                                 unit: product.extent_id,
+                                price_pen: product.price_pen,
+                                price_usd: product.price_usd,
                             },
                         };
                     }),
@@ -226,6 +207,9 @@ $(function () {
         placeholder: "Buscar un producto",
         minimumInputLength: 2,
         language: {
+            inputTooShort: function () {
+                return "Por favor ingrese 2 o más caracteres";
+            },
             searching: function () {
                 return "Buscando...";
             },
@@ -235,8 +219,26 @@ $(function () {
         },
     });
 
+    $("#productApp").on("select2:select", function (e) {
+        var code = e.params.data.data.code;
+        var description = e.params.data.data.description;
+        var unit = e.params.data.data.unit;
+        var priceS = e.params.data.data.price_pen;
+        var priceD = e.params.data.data.price_usd;
+
+        if ($("#coin").val() == "3") {
+            $("#priceApp").val(priceS);
+        } else {
+            $("#priceApp").val(priceD);
+        }
+
+        $("#codeApp").val(code);
+        $("#descrApp").val(description);
+        $("#slctExtent").val(unit).trigger("change");
+    });
+
     $("#ubigeo").select2({
-        dropdownParent: $("#formAccountSettings"),
+        dropdownParent: $("#dataOC"),
         ajax: {
             url: "/scopeCodeUbigeo",
             dataType: "json",
@@ -359,6 +361,7 @@ $(function () {
             this.data().unit = $("#slctExtent").find("option:selected").text();
             this.data().weight = $("#weightApp").val();
             this.data().quantity = $("#quantityApp").val();
+            this.data().price = $("#quantityApp").val();
             this.invalidate();
         });
 
@@ -374,6 +377,7 @@ $(function () {
                     unit: $("#slctExtent").find("option:selected").text(),
                     weight: $("#weightApp").val(),
                     quantity: $("#quantityApp").val(),
+                    price: $("#quantityApp").val(),
                 })
                 .draw();
         } else {
@@ -381,6 +385,15 @@ $(function () {
         }
 
         $("#ModalProduct").modal("hide");
+    });
+
+    $("#coin").on("change", function () {
+        var coin = $(this).val();
+        if (coin == "3") {
+            $("#currency").text("S/.");
+        } else {
+            $("#currency").text("$");
+        }
     });
 
     $("#doc_supplier").on("select2:select", function (e) {
@@ -479,7 +492,7 @@ $(function () {
         let tableData = getTableData();
         formData.append("tableData", JSON.stringify(tableData));
 
-        fetch("newTransfer", {
+        fetch("newOC", {
             method: "POST",
             body: formData,
         })
@@ -492,14 +505,12 @@ $(function () {
                 return response.json();
             })
             .then((data) => {
-                $("#ModalTransfer").modal({
-                    backdrop: "static",
-                    keyboard: false,
+                console.log(data);
+
+                Toast.fire({
+                    icon:data.icon,
+                    title: data.message,
                 });
-
-                $("#ModalTransfer").modal("show");
-
-                $("#url_guide").attr("href", data.url);
             })
             .catch((error) => {
                 console.error("Error:", error.message);
@@ -564,5 +575,4 @@ $(function () {
             toast.onmouseleave = Swal.resumeTimer;
         },
     });
-
 });

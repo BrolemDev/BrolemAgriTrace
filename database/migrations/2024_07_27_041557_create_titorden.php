@@ -25,20 +25,22 @@ return new class extends Migration
             $table->id('id_payment');
             $table->string('description_payment');
             $table->timestamps();
-        }); 
+        });
 
         // Crear la tabla de órdenes
         Schema::create('tit_orden', function (Blueprint $table) {
             $table->id('id_orden');
             $table->unsignedBigInteger('supplier_id');
+            $table->unsignedBigInteger('branch_id');
             $table->unsignedBigInteger('typeoc_id');
             $table->unsignedBigInteger('payment_id');
             $table->string('delivery_time');
-            $table->string('observation_delivery');
-            $table->string('delivery_place');
-            $table->string('raw_material1');
-            $table->string('raw_material2');
             $table->string('type_money');
+
+            $table->string('raw_material1')->nullable();
+            $table->string('raw_material2')->nullable();
+
+
             $table->decimal('total_amount', 10, 2); // Monto total
             $table->decimal('igv_amount', 10, 2); // IGV del monto total
             $table->string('observation_oc');

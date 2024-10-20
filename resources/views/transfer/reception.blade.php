@@ -8,7 +8,7 @@
         </h4>
         <div class="row">
             <!-- User Sidebar -->
-            <div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
+            <div class="col-xl-3 col-lg-5 col-md-5 order-1 order-md-0">
                 <!-- User Card -->
                 <div class="card mb-4">
                     <div class="card-body">
@@ -17,6 +17,8 @@
                             <ul class="list-unstyled mb-4">
                                 <li class="mb-3">
                                     <span class="fw-medium text-heading me-2">Nombres y Apellidos:</span>
+                                </li>
+                                <li class="mb-3">
                                     <span>{{ $reception->last_name }} {{ $reception->first_name }}</span>
                                 </li>
                                 <li class="mb-3">
@@ -36,7 +38,6 @@
                                     <span class="fw-medium text-heading me-2">Observaciones:</span>
                                 </li>
                                 <li class="mb-3">
-
                                     <span>{{ $reception->observation }}</span>
                                 </li>
 
@@ -49,7 +50,7 @@
             <!--/ User Sidebar -->
 
             <!-- User Content -->
-            <div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
+            <div class="col-xl-9 col-lg-7 col-md-7 order-0 order-md-1">
 
                 <!-- Activity Timeline -->
                 <div class="card mb-4">

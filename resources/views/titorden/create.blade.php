@@ -3,7 +3,7 @@
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
-            <form id="formOC">
+            <form id="formOC" enctype="multipart/form-data">
                 <div class="col-12">
                     <div class="card">
                         <div
@@ -82,64 +82,84 @@
                                                     <option value="1">Efectivo</option>
                                                     <option value="2">Transferencia</option>
                                                 </select>
-                                                <label for="doc_transport">Forma de Pago.* </label>
+                                                <label for="payment_method">Forma de Pago.* </label>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-floating form-floating-outline">
-                                                <select id="delivery_time" name="delivery_time" class="select2 form-select"
-                                                    data-allow-clear="true" data-placeholder="Seleccione Tipo OC.">
-                                                    <option value="3">Hasta 3 días</option>
-                                                    <option value="7">Hasta 7 días</option>
-                                                    <option value="14">Hasta 14 días</option>
-                                                    <option value="30">Hasta 30 días</option>
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="text" class="form-control"id="delivery_time"
+                                                        name="delivery_time" placeholder="Tiempo de Entrega">
+                                                    <label for="delivery_time">Tiempo Entrega.* (<code>Dias</code>) </label>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating form-floating-outline">
+                                                <select id="coin" name="coin" class="select2 form-select"
+                                                    data-allow-clear="true" data-placeholder="Seleccione Tipo Moneda.">
+                                                    <option value="">Tipo de Moneda</option>
+
+                                                    <option value="3" selected>Soles (S/.)</option>
+                                                    <option value="7">Dolares ($/.)</option>
                                                 </select>
-                                                <label for="delivery_time">Tiempo Entrega.* </label>
+                                                <label for="coin">Seleccione Tipo Moneda.* </label>
                                             </div>
                                         </div>
                                     </div>
 
 
                                     <hr>
-                                    
-                                    <div>
+
+                                    <div id="file_subject">
                                         <div class="card-title m-0">
                                             <h5 class="mb-1">Datos adicionales en Materia Prima</h5>
                                         </div>
                                         <div class="row gy-4 mt-2">
-
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <input type="file" class="form-control form-control-lg"
-                                                        id="inputGroupFile04" aria-describedby="inputGroupFileAddon04"
-                                                        aria-label="Upload">
+                                                    <input type="file" name="raw_material1"
+                                                        class="form-control form-control-lg" id="inputFile01"
+                                                        aria-describedby="inputFileAddon01" aria-label="Upload"
+                                                        accept=".pdf,.doc,.docx,.xls,.xlsx">
                                                     <button class="btn btn-secondary waves-effect" type="button"
-                                                        id="inputGroupFileAddon04">Archivo 1</button>
+                                                        id="inputFileAddon01">Documento 1</button>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <input type="file" class="form-control form-control-lg"
-                                                        id="inputGroupFile04" aria-describedby="inputGroupFileAddon04"
-                                                        aria-label="Upload">
+                                                    <input type="file" name="raw_material2"
+                                                        class="form-control form-control-lg" id="inputFile02"
+                                                        aria-describedby="inputFileAddon02" aria-label="Upload"
+                                                        accept=".pdf,.doc,.docx,.xls,.xlsx">
                                                     <button class="btn btn-secondary waves-effect" type="button"
-                                                        id="inputGroupFileAddon04">Archivo 2</button>
+                                                        id="inputFileAddon02">Documento 2</button>
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <hr>
+
                                     </div>
 
-                                    <hr>
 
                                     <h5 class="my-4">3. DATOS DE ALMACEN</h5>
 
                                     <div class="row gy-4">
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-floating form-floating-outline">
                                                 <select id="store" name="store" class="select2 form-select"
                                                     data-allow-clear="true"
-                                                    data-placeholder="Escribe código o nombre de sucursal    .">
-
+                                                    data-placeholder="Escribe código o nombre de sucursal .">
+                                                    <option value="">Seleccionar Sucursal</option>
+                                                    @foreach ($stores as $store)
+                                                        <option value="{{ $store['id'] }}"
+                                                            data-address="{{ $store['address'] }}"
+                                                            data-ubigeo="{{ $store['ubigeo'] }}">
+                                                            {{ $store['name'] }}
+                                                        </option>
+                                                    @endforeach
                                                 </select>
                                                 <label for="store">Sucursal.* </label>
                                             </div>
@@ -157,9 +177,10 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4">
+                                        <div class="col-md-5">
                                             <div class="form-floating form-floating-outline">
-                                                <select id="ubigeo" name="ubigeo" class="form-select">
+                                                <select id="ubigeo" name="ubigeo" class="select2 form-select"
+                                                    data-allow-clear="true" data-placeholder="Escribe el ubigeo.">
                                                 </select>
                                                 <label for="ubigeo">Ubigeo sucursal *</label>
                                             </div>
@@ -168,6 +189,24 @@
                                     </div>
 
                                     <hr>
+
+                                    <h5 class="my-4">4. DATOS EXTRAS</h5>
+
+                                    <div class="row gy-4">
+
+                                        <div class="col-md-12">
+                                            <div class="input-group input-group-merge mb-4">
+                                                <span id="basic-icon-default-fullname2" class="input-group-text"><i
+                                                        class="mdi mdi-badge-account-outline"></i></span>
+                                                <div class="form-floating form-floating-outline">
+                                                    <textarea id="autosize-demo" rows="3" name="observation" class="form-control"></textarea>
+                                                    <label for="address"> Observaciones *</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
 
                                     <div class="row gy-4 mt-3">
                                         <div class="card-header p-0">
@@ -196,13 +235,12 @@
                                                                     <th></th>
                                                                     <th></th>
                                                                     <th></th>
-                                                                    <th>Descripcion</th>
-                                                                    <th>Cantidad</th>
+                                                                    <th>Descripción</th>
                                                                     <th>Und/Medidad</th>
-                                                                    <th>F.T.</th>
-                                                                    <th>F.T.</th>
+                                                                    <th>Cantidad</th>
                                                                     <th>Precio Unitario</th>
                                                                     <th>Importe</th>
+                                                                    <th></th>
                                                                 </tr>
                                                             </thead>
                                                         </table>
@@ -279,6 +317,14 @@
                                     <input type="text" name="weightApp" id="weightApp"
                                         class="form-control input-number" value="1">
                                     <label for="modalEditUserEmail">Peso (KGM)</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="form-floating form-floating-outline">
+                                    <input type="text" name="priceApp" id="priceApp"
+                                        class="form-control input-number" value="00.00">
+                                    <label for="modalEditUserEmail">Precio (<code id="currency"
+                                            class="fs-6">S/.</code>)</label>
                                 </div>
                             </div>
                             <div class="col-12 text-center">
@@ -359,6 +405,7 @@
 @endsection()
 
 @section('scripts')
+    <script src="{{ asset('vendor/libs/autosize/autosize.js') }}"></script>
     <script src="{{ asset('vendor/libs/jquery-sticky/jquery-sticky.js') }}"></script>
     <script src="{{ asset('vendor/libs/cleavejs/cleave.js') }}"></script>
     <script src="{{ asset('vendor/libs/cleavejs/cleave-phone.js') }}"></script>
