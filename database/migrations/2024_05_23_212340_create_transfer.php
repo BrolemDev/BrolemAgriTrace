@@ -43,6 +43,7 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('sunat_typedocument');
         Schema::dropIfExists('sunat_portcode');
         Schema::dropIfExists('sunat_modality');
         Schema::dropIfExists('sunat_reason');

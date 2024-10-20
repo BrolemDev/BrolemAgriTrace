@@ -43,7 +43,7 @@ return new class extends Migration
 
             $table->decimal('total_amount', 10, 2); // Monto total
             $table->decimal('igv_amount', 10, 2); // IGV del monto total
-            $table->string('observation_oc');
+            $table->string('observation_oc')->nullable();
             $table->timestamps();
 
             // Definir claves foráneas

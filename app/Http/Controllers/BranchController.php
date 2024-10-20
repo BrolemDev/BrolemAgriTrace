@@ -34,7 +34,7 @@ class BranchController extends Controller
 
             // Crear el producto asociado a la sucursal
             $product = new Product();
-            $product->code_product = '0000000'; // Puedes cambiar esto por una lógica dinámica si lo deseas
+            $product->code_product = str_pad(rand(0, 9999999), 7, '0', STR_PAD_LEFT);
             $product->name_product = 'Producto Example';
             $product->branch_id = $branch->id_branch;
             $product->category_id = 1;

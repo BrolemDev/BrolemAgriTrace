@@ -25,11 +25,11 @@
                             <div style="text-align: right;">
                                 <h4 class="fw-medium">Orden de Compra</h4>
                                 <div class="mb-1">
-                                    <span>OC-002-029</span>
+                                    <span>OC-002-{{ str_pad($order->id_orden, 3, '0', STR_PAD_LEFT) }}</span>
                                 </div>
                                 <div>
                                     <span>Fecha:</span>
-                                    <span>25/03/2023</span>
+                                    <span>{{ $order->created_at->format('Y/m/d') }}</span>
                                 </div>
                             </div>
 
@@ -40,34 +40,21 @@
                         <div class="d-flex justify-content-between flex-wrap">
                             <div class="my-3">
                                 <h6 class="pb-2">PROVEEDOR :</h6>
-                                <p class="mb-1">Thomas shelby</p>
-                                <p class="mb-1">Shelby Company Limited</p>
+                                <p class="mb-1">{{ $supplier->ruc_supplier }}</p>
+                                <p class="mb-1">{{ $supplier->name_supplier }}</p>
                                 <p class="mb-1"><strong>REPRESENTANTE:</strong></p>
-                                <p class="mb-0">peakyFBlinders@gmail.com</p>
+                                <p class="mb-0">{{ $supplier->representative }}</p>
                             </div>
                             <div class="my-3">
                                 <h6 class="pb-2">ENVIE A:</h6>
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <td class="pe-3 fw-medium">Total Due:</td>
-                                            <td>$12,110.55</td>
+                                            <td>{{ $setting->address }}</td>
                                         </tr>
                                         <tr>
-                                            <td class="pe-3 fw-medium">Bank name:</td>
-                                            <td>American Bank</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="pe-3 fw-medium">Country:</td>
-                                            <td>United States</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="pe-3 fw-medium">IBAN:</td>
-                                            <td>ETD95476213874685</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="pe-3 fw-medium">SWIFT code:</td>
-                                            <td>BR91905</td>
+                                            <td>{{ $ubigeo->departamento }} - {{ $ubigeo->provincia }} -
+                                                {{ $ubigeo->distrito }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -94,33 +81,6 @@
                                     <td>$32</td>
                                     <td>1</td>
                                     <td>$32.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-nowrap text-heading">
-                                        Frest Admin Template
-                                    </td>
-                                    <td class="text-nowrap">Angular Admin Template</td>
-                                    <td>$22</td>
-                                    <td>1</td>
-                                    <td>$22.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-nowrap text-heading">
-                                        Apex Admin Template
-                                    </td>
-                                    <td class="text-nowrap">HTML Admin Template</td>
-                                    <td>$17</td>
-                                    <td>2</td>
-                                    <td>$34.00</td>
-                                </tr>
-                                <tr class="border-bottom">
-                                    <td class="text-nowrap text-heading">
-                                        Robust Admin Template
-                                    </td>
-                                    <td class="text-nowrap">React Admin Template</td>
-                                    <td>$66</td>
-                                    <td>1</td>
-                                    <td>$66.00</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -361,7 +361,7 @@ $(function () {
             this.data().unit = $("#slctExtent").find("option:selected").text();
             this.data().weight = $("#weightApp").val();
             this.data().quantity = $("#quantityApp").val();
-            this.data().price = $("#quantityApp").val();
+            this.data().price = $("#priceApp").val();
             this.invalidate();
         });
 
@@ -377,7 +377,7 @@ $(function () {
                     unit: $("#slctExtent").find("option:selected").text(),
                     weight: $("#weightApp").val(),
                     quantity: $("#quantityApp").val(),
-                    price: $("#quantityApp").val(),
+                    price: $("#priceApp").val(),
                 })
                 .draw();
         } else {
@@ -437,10 +437,17 @@ $(function () {
 
     ov = FormValidation.formValidation(o, {
         fields: {
-            ruc_destiny: {
+            doc_supplier: {
                 validators: {
                     notEmpty: {
-                        message: "Porfavor ingresar RUC de destino",
+                        message: "Porfavor ingresar RUC del proveedor",
+                    },
+                },
+            },
+            delivery_time: {
+                validators: {
+                    notEmpty: {
+                        message: "Porfavor ingresar el tiempo de entrega",
                     },
                 },
             },
@@ -485,40 +492,85 @@ $(function () {
     });
 
     function sendDataServer() {
-        blockUI();
+        // Bloquear UI al iniciar la petición
+        $.blockUI({
+            message: `
+        <div class="d-flex justify-content-center">
+            <p class="mb-0">Guardando...</p>
+            <div class="sk-wave m-0">
+                <div class="sk-rect sk-wave-rect"></div>
+                <div class="sk-rect sk-wave-rect"></div>
+                <div class="sk-rect sk-wave-rect"></div>
+                <div class="sk-rect sk-wave-rect"></div>
+                <div class="sk-rect sk-wave-rect"></div>
+            </div>
+        </div>`,
+            css: {
+                backgroundColor: "transparent",
+                color: "#fff",
+                border: "0",
+            },
+            overlayCSS: {
+                opacity: 0.5,
+            },
+        });
 
-        let formData = new FormData(o);
-        formData.append("_token", csrfToken);
-        let tableData = getTableData();
-        formData.append("tableData", JSON.stringify(tableData));
+        // Crear formData y agregar CSRF token
+        let formData = new FormData(o); // 'o' es el formulario
+        formData.append("_token", csrfToken); // Agregar el token de CSRF
 
+        // Obtener los datos de la tabla y agregarlos a formData
+        let tableData = getTableData(); // Función que devuelve los datos de la tabla
+        formData.append("tableData", JSON.stringify(tableData)); // Convertir en JSON
+
+        let redirectId = null; // Variable para almacenar el id para la redirección
+
+        // Enviar la solicitud con fetch
         fetch("newOC", {
             method: "POST",
             body: formData,
         })
             .then((response) => {
+                // Si la respuesta no es OK, manejar el error
                 if (!response.ok) {
                     return response.text().then((text) => {
                         throw new Error(text);
                     });
                 }
-                return response.json();
+                return response.json(); // Parsear la respuesta como JSON
             })
             .then((data) => {
-                console.log(data);
-
-                Toast.fire({
-                    icon:data.icon,
-                    title: data.message,
-                });
+                // Guardar el ID en una variable para usarlo más adelante
+                if (data.id) {
+                    redirectId = data.id;
+                }
             })
             .catch((error) => {
+                // Manejar cualquier error que ocurra en el proceso
                 console.error("Error:", error.message);
-                // Mostrar el contenido del error
-                alert("Error: " + error.message);
+                alert("Error: " + error.message); // Mostrar alerta con el mensaje de error
             })
             .finally(() => {
-                $.unblockUI();
+                // Mostrar el mensaje final de éxito y desbloquear la UI
+                $.blockUI({
+                    message: '<div class="p-3 bg-success">La OC se ha agregado correctamente</div>',
+                    timeout: 500, // Mostrar el mensaje de éxito por 500 ms
+                    css: {
+                        backgroundColor: "transparent",
+                        color: "#fff",
+                        border: "0",
+                    },
+                    overlayCSS: {
+                        opacity: 0.5,
+                    },
+                    onUnblock: function () {
+                        // Redirigir solo después de que se haya desbloqueado la UI
+                        if (redirectId) {
+                            window.location.href = "/Adjuntos/" + redirectId;
+                        }
+                        $.unblockUI(); // Desbloquear la UI
+                    },
+                });
             });
     }
 

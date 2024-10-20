@@ -6,6 +6,8 @@ use App\Models\Branch;
 use App\Models\Extent;
 use App\Models\Oc\DetOrden;
 use App\Models\Oc\TitOrden;
+use App\Models\Settings;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -42,7 +44,7 @@ class TitOrdenController extends Controller
     {
 
         $oc = new TitOrden(); // Crear una instancia de la clase TitOrden
-        $oc->supllier_id = $request->input('doc_supplier');
+        $oc->supplier_id = $request->input('doc_supplier');
         $oc->branch_id = $request->input('store');
         $oc->typeoc_id = $request->input('type_oc');
         $oc->payment_id = $request->input('payment_method');
@@ -70,7 +72,8 @@ class TitOrdenController extends Controller
                 $oc->raw_material2 = $path2;  // Guardar la ruta en la base de datos
             }
         }
-
+        $oc->igv_amount = 0;
+        $oc->total_amount = 0;
         $oc->observation_oc = $request->input('observation');
         $oc->save();
 
@@ -101,7 +104,7 @@ class TitOrdenController extends Controller
         $order->save();
 
 
-        return response()->json(['icon' => 'success', 'message' => 'Orden de compra agregada correctamente']);
+        return response()->json(['icon' => 'success', 'message' => 'Orden de compra agregada correctamente', 'id' => $id]);
     }
 
     /**
@@ -118,8 +121,12 @@ class TitOrdenController extends Controller
     public function detailAttachment($id)
     {
         $title = 'Productos de Orden';
-        $data['titorden'] = TitOrden::find($id);
-        return view('titorden.attachments', compact('title', 'data'));
+        $order = TitOrden::find($id);
+        $supplier = Supplier::find($order->supplier_id);
+        $setting = Settings::with('sunatCodeUbigeo')->first();
+        $ubigeo = $setting->sunatCodeUbigeo;
+
+        return view('titorden.attachments', compact('title', 'order', 'supplier','setting','ubigeo'));
     }
 
     /**
