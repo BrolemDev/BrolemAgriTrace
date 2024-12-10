@@ -120,6 +120,7 @@ Route::controller(TitOrdenController::class)->group(function ($route) {
     Route::get('/NuevaOrdenCompra', 'create')->name('oc.new');
     Route::get('/Adjuntos/{id}', 'detailAttachment');
     Route::get('/pdfordencompra', 'pdf');
+    Route::get('Adjuntos/getDetails/{id}', 'getDetails');
     Route::post('/newOC', 'store');
 });
 

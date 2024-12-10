@@ -79,9 +79,10 @@
                             </div>
                             <div class="col-12 col-md-5">
                                 <div class="form-floating form-floating-outline">
-                                    <input type="text" id="ubigeo" name="ubigeo" class="form-control"
-                                        placeholder="Ubigeo">
-                                    <label for="ubigeo">Ubigeo</label>
+                                    <select id="ubigeo" name="ubigeo" class="select-ubigeo form-select"
+                                        data-placeholder="Seleccione Ubigeo de Proveedor">
+                                    </select>
+                                    <label for="ubigeo"> Ubigeo * </label>
                                 </div>
                             </div>
                             <div class="col-12 col-md-4">

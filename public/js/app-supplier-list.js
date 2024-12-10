@@ -194,6 +194,12 @@ $(function () {
         placeholder: "Buscar un ubigeo",
         minimumInputLength: 2,
         language: {
+            inputTooShort: function (args) {
+                var remainingChars = args.minimum - args.input.length;
+                return `Por favor, ingresa ${remainingChars} caracter${
+                    remainingChars > 1 ? "es" : ""
+                } más`;
+            },
             searching: function () {
                 return "Buscando...";
             },
@@ -222,7 +228,13 @@ $(function () {
         $("#ubigeo").val(rowData.ubigeo);
         $("#representative").val(rowData.representative);
 
-        var newOption = new Option(rowData.ubigeo, rowData.id_ubigeo, true, true);
+        var newOption = new Option(
+            rowData.ubigeo,
+            rowData.id_ubigeo,
+            true,
+            true
+        );
+
         $("#ubigeo").append(newOption).trigger("change");
 
         $("#title-form").text("Editar Proveedor");
@@ -567,6 +579,7 @@ $(function () {
     function closeForm() {
         f.reset();
         fv.resetForm();
+        
     }
 
     function setLoadingState(btnElement) {

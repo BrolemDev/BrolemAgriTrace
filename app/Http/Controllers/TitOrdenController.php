@@ -121,12 +121,12 @@ class TitOrdenController extends Controller
     public function detailAttachment($id)
     {
         $title = 'Productos de Orden';
-        $order = TitOrden::find($id);
+        $order = TitOrden::with('details')->find($id);
         $supplier = Supplier::find($order->supplier_id);
         $setting = Settings::with('sunatCodeUbigeo')->first();
         $ubigeo = $setting->sunatCodeUbigeo;
 
-        return view('titorden.attachments', compact('title', 'order', 'supplier','setting','ubigeo'));
+        return view('titorden.attachments', compact('title', 'order', 'supplier', 'setting', 'ubigeo'));
     }
 
     /**
@@ -135,9 +135,24 @@ class TitOrdenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function getDetails($id)
     {
-        //
+        $details = DetOrden::where('id_orden', $id)->get();
+
+        // Cambiar el formato de los detalles
+        $formattedDetails = $details->map(function ($detail) {
+            return [
+                'id' => $detail->id_orden,
+                'description' => $detail->description,
+                'file1' => $detail->file1, // Asegúrate de que estos campos existen
+                'file2' => $detail->file2,
+                'quantity' => $detail->quantity,
+                'unit' => $detail->unit_of_measure,
+                'price_unit' => $detail->price, // Cambia según tu estructura
+                'price' => $detail->quantity * $detail->price, // Si necesitas calcular el precio total
+            ];
+        });
+        return response()->json(['data' => $formattedDetails]);
     }
 
     /**

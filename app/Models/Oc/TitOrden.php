@@ -27,4 +27,9 @@ class TitOrden extends Model
         'igv_amount',
         'observation_oc',
     ];
+
+    public function details()
+    {
+        return $this->hasMany(DetOrden::class, 'id_orden', 'id_orden');
+    }
 }

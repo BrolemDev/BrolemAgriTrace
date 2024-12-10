@@ -32,10 +32,11 @@
                                     <span>{{ $order->created_at->format('Y/m/d') }}</span>
                                 </div>
                             </div>
-
+                            <input type="hidden" id="id" name="id" value="{{ $order->id_orden }}">
                         </div>
                     </div>
                     <hr class="my-0" />
+
                     <div class="card-body">
                         <div class="d-flex justify-content-between flex-wrap">
                             <div class="my-3">
@@ -61,29 +62,24 @@
                             </div>
                         </div>
                     </div>
-                    <div class="table-responsive">
-                        <table class="table table-borderless m-0">
-                            <thead class="border-top">
-                                <tr>
-                                    <th>Descripción</th>
-                                    <th>Cantidad</th>
-                                    <th>Unidad</th>
-                                    <th>P. Unitario</th>
-                                    <th>Importe</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="text-nowrap text-heading">
-                                        Vuexy Admin Template
-                                    </td>
-                                    <td class="text-nowrap">HTML Admin Template</td>
-                                    <td>$32</td>
-                                    <td>1</td>
-                                    <td>$32.00</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="card-body">
+
+                        <div class="card-datatable table-responsive">
+                            <table class="table m-0 table-products">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Descripción</th>
+                                        <th>Descripción</th>
+                                        <th>Archivo 1</th>
+                                        <th>Archivo 2</th>
+                                        <th>Cantidad</th>
+                                        <th>Unidad</th>
+                                        <th>P. Unitario</th>
+                                        <th>Importe</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -94,7 +90,7 @@
                                 <div class="invoice-calculations">
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="w-px-150">Subtotal:</span>
-                                        <h6 class="mb-0 pt-1">$1800</h6>
+                                        <h6 class="mb-0 pt-1">{{ $supplier-> }}</h6>
                                     </div>
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="w-px-150">IGV:</span>
@@ -137,5 +133,5 @@
     <script src="{{ asset('vendor/libs/cleavejs/cleave-phone.js') }}"></script>
     <script src="{{ asset('vendor/libs/flatpickr/flatpickr.js') }}"></script>
     <script src="{{ asset('js/form-layouts.js') }}"></script>
-    <script src="{{ asset('js/tables-datatables-titorden.js') }}"></script>
+    <script src="{{ asset('js/attachments.js') }}"></script>
 @endsection

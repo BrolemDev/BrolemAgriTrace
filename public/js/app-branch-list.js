@@ -172,6 +172,48 @@ $(function () {
                 });
             }
         );
+
+    $(".select-ubigeo").select2({
+        dropdownParent: $("#branchForm"),
+        ajax: {
+            url: "/scopeCodeUbigeo",
+            dataType: "json",
+            delay: 250,
+            data: function (params) {
+                return {
+                    query: params.term,
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (row) {
+                        return {
+                            id: row.codigo_ubigeo,
+                            text: `${row.departamento} - ${row.provincia} - ${row.distrito}`,
+                        };
+                    }),
+                };
+            },
+            cache: true,
+        },
+        placeholder: "Buscar un ubigeo",
+        minimumInputLength: 2,
+        language: {
+            inputTooShort: function (args) {
+                var remainingChars = args.minimum - args.input.length;
+                return `Por favor, ingresa ${remainingChars} caracter${
+                    remainingChars > 1 ? "es" : ""
+                } más`;
+            },
+            searching: function () {
+                return "Buscando...";
+            },
+            noResults: function () {
+                return "No se encontraron resultados";
+            },
+        },
+    });
+
     $(".btn-add").on("click", function () {
         $("#title-form").text("Agregar Sucursal");
         $("#title-form").attr("data-i18n", "Add Branch");
@@ -232,7 +274,14 @@ $(function () {
         $("#urbanization").val(rowData.urbanization);
         $("#phone").val(rowData.phone);
         $("#address").val(rowData.address);
-        $("#ubigeo").val(rowData.ubigeo);
+
+        var newOption = new Option(
+            rowData.ubigeo,
+            rowData.id_ubigeo,
+            true,
+            true
+        );
+        $("#ubigeo").append(newOption).trigger("change");
         $("#title-form").text("Editar Sucursal");
         $("#title-form").attr("data-i18n", "Edit Branch");
         $("#addPermissionModal").modal("show");
@@ -377,6 +426,8 @@ $(function () {
     }
 
     function closeForm() {
+        $("#ubigeo").empty();
+ 
         f.reset();
         fv.resetForm();
     }

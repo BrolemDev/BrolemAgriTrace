@@ -28,13 +28,16 @@ class Branch extends Model
 
         $data = [];
         foreach ($branchs as $row) {
+            $ubigeo = SunatCodeUbigeo::where('codigo_ubigeo', $row->ubigeo_branch,)->first();
+
             $data[] = [
                 'id' => $row->id_branch,
                 'anexo' => $row->anexo_branch,
                 'name' => $row->name_branch,
                 'address' => $row->address_branch,
                 'urbanization' => $row->urbanzation_branch,
-                'ubigeo' => $row->ubigeo_branch,
+                'id_ubigeo' => $row->ubigeo_branch,
+                'ubigeo' => optional($ubigeo)->departamento . ' - ' . optional($ubigeo)->provincia . ' - ' . optional($ubigeo)->distrito,
                 'phone' => $row->phone_branch,
                 'email' => $row->email_branch,
                 'status' => $row->status_branch,

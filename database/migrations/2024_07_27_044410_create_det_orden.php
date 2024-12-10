@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id('id_det_orden');
             $table->unsignedBigInteger('id_orden');
             $table->unsignedBigInteger('product_id'); // ID del producto
+            $table->string('ft1'); // Descripción del producto
+            $table->string('ft2'); // Descripción del producto
             $table->string('description'); // Descripción del producto
             $table->integer('quantity'); // Cantidad del producto
             $table->string('unit_of_measure'); // Unidad de medida
